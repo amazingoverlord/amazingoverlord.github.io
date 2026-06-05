@@ -360,7 +360,7 @@
         extended: '█▓▒░▄▀■▌▐●○◘◙◦·:,. ',
         ultra: '$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\'\"^`\'.',
         blocks: '█▓▒░ ',
-        minimal: '@%#+. '
+        minimal: '@%#*+.'
     };
 
     function getActiveCharset() {
@@ -632,20 +632,31 @@
         const bgColor = bgColorPicker.value;
         const textColor = textColorPicker.value;
         
+        // Match output window: font-size 0.6rem, line-height 0.45rem (ratio 0.75)
+        // Use 2x scale for sharpness. Base font ~9px, line height ~6.75px.
+        const scale = 2;
+        const fontSize = 9 * scale;
+        const lineHeight = 6.75 * scale;
         const lines = frames[0].split('\n').length;
         const maxLineLen = Math.max(...frames.map(f => f.split('\n').reduce((a, b) => Math.max(a, b.length), 0)));
-        const charWidth = 7.2;
-        const charHeight = 15;
-        const width = Math.min(1200, Math.max(200, Math.ceil(maxLineLen * charWidth)));
-        const height = Math.max(100, Math.ceil(lines * charHeight));
+
+        // Measure actual char width using a temp canvas
+        const measureCanvas = document.createElement('canvas');
+        const measureCtx = measureCanvas.getContext('2d');
+        measureCtx.font = `${fontSize}px 'Roboto Mono', monospace`;
+        const charWidth = measureCtx.measureText('M').width;
+
+        const width = Math.ceil(maxLineLen * charWidth);
+        const height = Math.ceil(fontSize + lines * lineHeight); // top padding = 1 fontSize
         
         const canvas = document.createElement('canvas');
         canvas.width = width;
         canvas.height = height;
         const ctx = canvas.getContext('2d');
+        ctx.imageSmoothingEnabled = false;
         
         const stream = canvas.captureStream(fps);
-        const recorder = new MediaRecorder(stream, { mimeType: mimeType, videoBitsPerSecond: 2500000 });
+        const recorder = new MediaRecorder(stream, { mimeType: mimeType, videoBitsPerSecond: 5000000 });
         const chunks = [];
         
         recorder.ondataavailable = (e) => chunks.push(e.data);
@@ -665,10 +676,11 @@
             ctx.fillStyle = bgColor;
             ctx.fillRect(0, 0, width, height);
             ctx.fillStyle = textColor;
-            ctx.font = `13px 'Roboto Mono', monospace`;
+            ctx.font = `${fontSize}px 'Roboto Mono', monospace`;
+            ctx.textBaseline = 'top';
             const linesArr = frames[i].split('\n');
             for (let y = 0; y < linesArr.length; y++) {
-                ctx.fillText(linesArr[y], 5, 5 + (y * charHeight));
+                ctx.fillText(linesArr[y], 0, fontSize * 0.2 + y * lineHeight);
             }
             await new Promise(r => setTimeout(r, frameDelay));
         }
