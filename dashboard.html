@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Clearing</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: -apple-system, "Helvetica Neue", sans-serif;
+            padding: 2rem;
+        }
+        
+        /* Dark mode */
+        body.dark {
+            background-color: rgb(38, 38, 38);
+            color: rgb(226, 223, 218);
+        }
+        
+        body.dark .dashboard-container {
+            background-color: rgb(38, 38, 38);
+        }
+        
+        body.dark .title {
+            color: rgb(226, 223, 218);
+            font-family: -apple-system, "Helvetica Neue", sans-serif;
+            font-weight: 100;
+            letter-spacing: 0.02em;
+        }
+        
+        body.dark .paragraph {
+            color: rgb(226, 223, 218);
+            font-family: -apple-system, "Helvetica Neue", sans-serif;
+            font-weight: 400;
+        }
+        
+        /* Light mode */
+        body.light {
+            background-color: rgb(109, 106, 101);
+            color: rgb(249, 246, 239);
+        }
+        
+        body.light .dashboard-container {
+            background-color: rgb(109, 106, 101);
+        }
+        
+        body.light .title {
+            color: rgb(249, 246, 239);
+            font-family: -apple-system, "Helvetica Neue", sans-serif;
+            font-weight: 100;
+            letter-spacing: 0.02em;
+        }
+        
+        body.light .paragraph {
+            color: rgb(249, 246, 239);
+            font-family: -apple-system, "Helvetica Neue", sans-serif;
+            font-weight: 400;
+        }
+        
+        .dashboard-container {
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        /* Top right theme toggle - completely undecorated */
+        .theme-toggle-wrapper {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .theme-toggle {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0;
+            margin: 0;
+            font-family: monospace;
+            opacity: 0.7;
+            transition: opacity 0.2s ease;
+        }
+        
+        body.dark .theme-toggle {
+            color: rgb(226, 223, 218);
+        }
+        
+        body.light .theme-toggle {
+            color: rgb(249, 246, 239);
+        }
+        
+        .theme-toggle:hover {
+            opacity: 1;
+        }
+        
+        /* Content styling */
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .title {
+            font-size: 3rem;
+            padding-left: 0;
+            margin-bottom: 0.5rem;
+        }
+        
+        .paragraph {
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+        
+        @media (max-width: 600px) {
+            .dashboard-container {
+                padding: 1.5rem;
+            }
+            .title {
+                font-size: 2rem;
+            }
+            .paragraph {
+                font-size: 1rem;
+            }
+            .theme-toggle {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="theme-toggle-wrapper">
+        <button class="theme-toggle" id="themeToggle" aria-label="Switch theme">☼</button>
+    </div>
+    
+    <div class="dashboard-container">
+        <div class="content-wrapper">
+            <div class="title" id="dashboardTitle">Loading...</div>
+            <div class="paragraph" id="briefing">Fetching your briefing...</div>
+        </div>
+    </div>
+
+    <!-- Your existing briefing.js -->
+    <script src="https://amazingoverlord.com/briefing.js"></script>
+    
+    <script>
+        // --- DOM Elements ---
+        const titleEl = document.getElementById('dashboardTitle');
+        const briefingEl = document.getElementById('briefing');
+        const themeToggle = document.getElementById('themeToggle');
+        
+        // --- Theme handling ---
+        function setTheme(theme) {
+            if (theme === 'light') {
+                document.body.classList.remove('dark');
+                document.body.classList.add('light');
+                themeToggle.textContent = '☾';
+            } else {
+                document.body.classList.remove('light');
+                document.body.classList.add('dark');
+                themeToggle.textContent = '☼';
+            }
+        }
+        
+        function toggleTheme() {
+            if (document.body.classList.contains('dark')) {
+                setTheme('light');
+            } else {
+                setTheme('dark');
+            }
+        }
+        
+        themeToggle.addEventListener('click', toggleTheme);
+        
+        // --- Extract greeting from briefing text ---
+        function extractGreeting(text) {
+            const match = text.match(/^(Good Morning|Good Afternoon|Good Evening|Good Night)/i);
+            if (match) {
+                const g = match[1].toLowerCase();
+                if (g === 'good morning') return 'Good morning';
+                if (g === 'good afternoon') return 'Good afternoon';
+                if (g === 'good evening') return 'Good evening';
+                if (g === 'good night') return 'Good night';
+            }
+            return null;
+        }
+        
+        // --- Remove greeting from paragraph (keeps the rest intact) ---
+        function removeGreeting(text) {
+            // Remove "Good morning. " or "Good morning " (case insensitive)
+            // Also handles period, space, or nothing after the greeting
+            return text.replace(/^(Good Morning|Good Afternoon|Good Evening|Good Night)[\.\s]*/i, '');
+        }
+        
+        // --- Process the briefing element ---
+        function processBriefing() {
+            if (!briefingEl || !briefingEl.textContent) return;
+            
+            let fullText = briefingEl.textContent;
+            
+            // Skip if it's the loading message
+            if (fullText === 'Fetching your briefing...') return;
+            
+            // Extract greeting for title
+            const greeting = extractGreeting(fullText);
+            if (greeting) {
+                titleEl.textContent = greeting;
+            }
+            
+            // Remove greeting from paragraph
+            const cleanedText = removeGreeting(fullText);
+            if (cleanedText !== fullText) {
+                briefingEl.textContent = cleanedText;
+            }
+        }
+        
+        // --- Auto-set theme based on sunrise/sunset ---
+        async function setAutoThemeFromSunrise() {
+            if (!userLat || !userLon) {
+                setTimeout(setAutoThemeFromSunrise, 1000);
+                return;
+            }
+            
+            try {
+                const url = `https://api.open-meteo.com/v1/forecast?latitude=${userLat}&longitude=${userLon}&daily=sunrise,sunset&timezone=auto`;
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.daily && data.daily.sunrise && data.daily.sunrise.length > 0) {
+                    const now = new Date();
+                    const sunriseUTC = new Date(data.daily.sunrise[0]);
+                    const sunsetUTC = new Date(data.daily.sunset[0]);
+                    const localOffset = now.getTimezoneOffset() * 60000;
+                    
+                    const sunriseLocal = new Date(sunriseUTC.getTime() - localOffset);
+                    const sunsetLocal = new Date(sunsetUTC.getTime() - localOffset);
+                    
+                    const isDaytime = now >= sunriseLocal && now < sunsetLocal;
+                    
+                    if (isDaytime) {
+                        setTheme('light');
+                    } else {
+                        setTheme('dark');
+                    }
+                }
+            } catch (error) {
+                console.error('Auto-theme error:', error);
+                // Fallback: use greeting
+                const titleText = titleEl.textContent;
+                if (titleText === 'Good morning' || titleText === 'Good afternoon') {
+                    setTheme('light');
+                } else if (titleText === 'Good evening' || titleText === 'Good night') {
+                    setTheme('dark');
+                }
+            }
+        }
+        
+        // --- Watch for changes to the briefing element ---
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.type === 'characterData' || mutation.type === 'childList') {
+                    processBriefing();
+                }
+            });
+        });
+        
+        // --- Override generateBriefing ---
+        let originalGenerateBriefing = null;
+        
+        const checkInterval = setInterval(function() {
+            if (typeof generateBriefing !== 'undefined') {
+                clearInterval(checkInterval);
+                
+                // Save original function
+                originalGenerateBriefing = generateBriefing;
+                
+                // Override
+                window.generateBriefing = async function() {
+                    await originalGenerateBriefing();
+                    setTimeout(function() {
+                        processBriefing();
+                        setAutoThemeFromSunrise();
+                    }, 10);
+                };
+                
+                // Start observing the briefing element
+                if (briefingEl) {
+                    observer.observe(briefingEl, { 
+                        characterData: true, 
+                        childList: true, 
+                        subtree: true 
+                    });
+                }
+                
+                // Initial processing
+                setTimeout(() => {
+                    processBriefing();
+                    setAutoThemeFromSunrise();
+                }, 500);
+                
+                // Also run periodically (briefing.js updates every 10 minutes)
+                setInterval(() => {
+                    processBriefing();
+                }, 5000);
+            }
+        }, 100);
+    </script>
+</body>
+</html>

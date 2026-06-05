@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ASCII Animation Converter</title>
+    <style>
+        /* default browser colors, monospace only, no emojis */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: Canvas;
+            color: CanvasText;
+            font-family: monospace;
+            font-size: 16px;
+            line-height: 1.5;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1, h2, p, label, button, pre, input, textarea {
+            font-family: monospace;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: normal;
+            margin-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 1.4rem;
+            font-weight: normal;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            border-bottom: 1px solid CanvasText;
+            padding-bottom: 0.25rem;
+        }
+
+        .drop-zone {
+            border: 2px dashed CanvasText;
+            border-radius: 0;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            background: Canvas;
+            transition: background 0.2s;
+            margin: 1rem 0;
+        }
+
+        .drop-zone.drag-over {
+            background: color-mix(in srgb, CanvasText 15%, Canvas);
+        }
+
+        .input-group {
+            margin: 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .input-group label {
+            font-weight: bold;
+        }
+
+        input {
+            background: Canvas;
+            color: CanvasText;
+            border: 1px solid CanvasText;
+            padding: 0.4rem 0.6rem;
+            font-family: monospace;
+            font-size: 1rem;
+        }
+
+        button {
+            background: Canvas;
+            color: CanvasText;
+            border: 1px solid CanvasText;
+            padding: 0.4rem 1rem;
+            font-family: monospace;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: color-mix(in srgb, CanvasText 20%, Canvas);
+        }
+
+        .status {
+            margin: 1rem 0;
+            padding: 0.5rem;
+            border-left: 3px solid CanvasText;
+            background: color-mix(in srgb, CanvasText 8%, Canvas);
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .status.error {
+            border-left-color: red;
+            color: red;
+        }
+
+        .status.success {
+            border-left-color: green;
+            color: green;
+        }
+
+        .output-area {
+            margin: 1rem 0;
+        }
+
+        pre {
+            background: color-mix(in srgb, CanvasText 10%, Canvas);
+            padding: 1rem;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+            font-size: 0.85rem;
+            border: 1px solid CanvasText;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        hr {
+            margin: 1.5rem 0;
+            border: none;
+            border-top: 1px solid CanvasText;
+        }
+
+        .info {
+            font-size: 0.9rem;
+            color: color-mix(in srgb, CanvasText 70%, Canvas);
+            margin-top: 0.25rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>ASCII Animation Converter</h1>
+    <p>Drop an HTML file containing ASCII animation frames to extract and clean the JavaScript.</p>
+
+    <div class="input-group">
+        <label for="elementId">Element ID for output JS:</label>
+        <input type="text" id="elementId" value="Trish" placeholder="e.g., Trish, animation, ascii">
+        <span class="info">(will replace target element ID in generated script)</span>
+    </div>
+
+    <div class="drop-zone" id="dropZone">
+        Drag & drop HTML file here<br>
+        or click to select file
+    </div>
+    <input type="file" id="fileInput" accept=".html,.htm" style="display: none;">
+
+    <div id="status" class="status"></div>
+
+    <div id="outputSection" style="display: none;">
+        <h2>Generated JavaScript</h2>
+        <div class="output-area">
+            <pre id="outputCode"></pre>
+        </div>
+        <div class="button-group">
+            <button id="copyBtn">Copy to Clipboard</button>
+            <button id="downloadBtn">Download as .js</button>
+        </div>
+    </div>
+
+    <hr>
+    <div class="info">
+        <strong>How it works:</strong><br>
+        1. Drop an HTML file containing a frames array (like the example).<br>
+        2. The tool extracts the frames, detects where the animation starts to loop, and removes duplicate cycle frames.<br>
+        3. It also extracts the frame delay (interval time) from the original code.<br>
+        4. Generates clean JavaScript using your specified element ID.<br>
+        5. You can copy to clipboard or download as .js file.
+    </div>
+
+    <script>
+        (function() {
+            // DOM elements
+            const dropZone = document.getElementById('dropZone');
+            const fileInput = document.getElementById('fileInput');
+            const statusDiv = document.getElementById('status');
+            const outputSection = document.getElementById('outputSection');
+            const outputPre = document.getElementById('outputCode');
+            const copyBtn = document.getElementById('copyBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const elementIdInput = document.getElementById('elementId');
+
+            let currentFrames = null;
+            let currentDelay = 70;
+            let currentName = '';
+
+            function showStatus(message, isError = false) {
+                statusDiv.textContent = message;
+                statusDiv.className = 'status';
+                if (isError) {
+                    statusDiv.classList.add('error');
+                } else {
+                    statusDiv.classList.add('success');
+                }
+                if (!isError) {
+                    setTimeout(() => {
+                        if (statusDiv.textContent === message) {
+                            statusDiv.textContent = '';
+                            statusDiv.className = 'status';
+                        }
+                    }, 5000);
+                }
+            }
+
+            function extractFramesAndDelay(htmlContent) {
+                const framesRegex = /(?:const|let|var)\s+frames\s*=\s*(\[[\s\S]*?\]);/;
+                const match = htmlContent.match(framesRegex);
+                if (!match) {
+                    throw new Error('Could not find frames array in the HTML file.');
+                }
+
+                let framesArrayStr = match[1];
+                let frames;
+                try {
+                    frames = new Function('return ' + framesArrayStr)();
+                } catch (e) {
+                    throw new Error('Failed to parse frames array: ' + e.message);
+                }
+
+                if (!Array.isArray(frames) || frames.length === 0) {
+                    throw new Error('Frames array is empty or invalid.');
+                }
+
+                let delay = 70;
+                const intervalRegex = /setInterval\s*\(\s*(?:\([^)]*\)\s*=>\s*\{[^}]*\}|function\s*\([^)]*\)\s*\{[^}]*\}|[^,]+)\s*,\s*(\d+)\s*\)/;
+                const intervalMatch = htmlContent.match(intervalRegex);
+                if (intervalMatch && intervalMatch[1]) {
+                    delay = parseInt(intervalMatch[1], 10);
+                    if (isNaN(delay)) delay = 70;
+                } else {
+                    const altMatch = htmlContent.match(/setInterval\([^,]+,\s*(\d+)\)/);
+                    if (altMatch && altMatch[1]) {
+                        delay = parseInt(altMatch[1], 10);
+                        if (isNaN(delay)) delay = 70;
+                    }
+                }
+
+                return { frames, delay };
+            }
+
+            // Improved loop detection - finds repeating suffix pattern and truncates before first occurrence
+            function truncateFramesAtLoop(frames) {
+                if (frames.length < 10) return frames;
+                
+                let bestTruncateIndex = frames.length;
+                let foundPattern = false;
+                
+                // Try different pattern lengths - from short to longer
+                // Start with at least 3 frames, up to 1/4 of total frames or 100 max
+                const maxPatternLen = Math.min(100, Math.floor(frames.length / 3));
+                
+                for (let patternLen = 3; patternLen <= maxPatternLen; patternLen++) {
+                    // Get the suffix (end part) of this length
+                    const suffix = frames.slice(-patternLen);
+                    
+                    // Search for this suffix earlier in the array
+                    // We want the first occurrence to truncate before the loop starts
+                    for (let i = 0; i <= frames.length - patternLen - 1; i++) {
+                        const candidate = frames.slice(i, i + patternLen);
+                        
+                        if (JSON.stringify(suffix) === JSON.stringify(candidate)) {
+                            // Found a repeat pattern - the loop would start at position i
+                            if (i < bestTruncateIndex) {
+                                bestTruncateIndex = i;
+                                foundPattern = true;
+                            }
+                            break; // Found earliest match for this pattern length
+                        }
+                    }
+                }
+                
+                // If we found a repeating pattern, truncate before it starts
+                if (foundPattern && bestTruncateIndex < frames.length && bestTruncateIndex > 0) {
+                    // Also verify that the truncated result is reasonable (not too short)
+                    if (bestTruncateIndex > frames.length / 4) {
+                        return frames.slice(0, bestTruncateIndex);
+                    }
+                }
+                
+                // Fallback: look for exact frame match with sequence verification
+                // This handles cases where the suffix pattern is very short or frames are highly unique
+                for (let i = 0; i < frames.length - 10; i++) {
+                    let matchCount = 0;
+                    let maxCheck = Math.min(20, frames.length - i - 1, frames.length - 1);
+                    
+                    for (let j = 0; j < maxCheck && i + j < frames.length - 1; j++) {
+                        if (frames[i + j] === frames[frames.length - maxCheck + j]) {
+                            matchCount++;
+                        } else {
+                            break;
+                        }
+                    }
+                    
+                    if (matchCount >= 5) {
+                        // Found significant overlap - truncate here
+                        if (i > frames.length / 4) {
+                            return frames.slice(0, i);
+                        }
+                    }
+                }
+                
+                // Check for exact duplicate of last frame pattern
+                const lastFew = frames.slice(-20);
+                for (let i = 0; i < frames.length - 25; i++) {
+                    let matches = true;
+                    for (let j = 0; j < lastFew.length && i + j < frames.length; j++) {
+                        if (frames[i + j] !== lastFew[j]) {
+                            matches = false;
+                            break;
+                        }
+                    }
+                    if (matches && i > 0) {
+                        return frames.slice(0, i);
+                    }
+                }
+                
+                return frames;
+            }
+
+            function generateJS(frames, delay, elementId) {
+                const framesStr = JSON.stringify(frames, null, 2);
+                return `// ascii_${elementId}.js
+(function() {
+const frames = ${framesStr};
+
+document.addEventListener('DOMContentLoaded', function() {
+    let i = 0;
+    const p = document.getElementById('${elementId}');
+    if (p) {
+        setInterval(() => {
+            p.innerText = frames[i];
+            i = (i + 1) % frames.length;
+        }, ${delay});
+    } else {
+        console.error('Element with id "${elementId}" not found');
+    }
+});
+})();`;
+            }
+
+            async function processFile(file) {
+                if (!file) return;
+                
+                if (!file.name.match(/\.(html|htm)$/i)) {
+                    showStatus('Please drop an HTML file (.html or .htm).', true);
+                    return;
+                }
+                
+                showStatus('Processing file...');
+                
+                try {
+                    const text = await file.text();
+                    const { frames, delay } = extractFramesAndDelay(text);
+                    
+                    showStatus(`Extracted ${frames.length} frames. Detecting loop pattern...`);
+                    
+                    const truncatedFrames = truncateFramesAtLoop(frames);
+                    const removedCount = frames.length - truncatedFrames.length;
+                    
+                    currentFrames = truncatedFrames;
+                    currentDelay = delay;
+                    currentName = elementIdInput.value.trim() || 'Trish';
+                    
+                    const jsCode = generateJS(truncatedFrames, delay, currentName);
+                    outputPre.textContent = jsCode;
+                    outputSection.style.display = 'block';
+                    
+                    let message = `Success! Extracted ${frames.length} frames. Delay: ${delay}ms.`;
+                    if (removedCount > 0) {
+                        message += ` Removed ${removedCount} duplicate loop frames. Cleaned to ${truncatedFrames.length} unique frames.`;
+                    } else {
+                        message += ` No repeating loop pattern detected. Using all ${truncatedFrames.length} frames.`;
+                    }
+                    showStatus(message);
+                } catch (err) {
+                    console.error(err);
+                    showStatus(`Error: ${err.message}`, true);
+                    outputSection.style.display = 'none';
+                }
+            }
+
+            function handleDragOver(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                dropZone.classList.add('drag-over');
+            }
+            
+            function handleDragLeave(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                dropZone.classList.remove('drag-over');
+            }
+            
+            function handleDrop(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                dropZone.classList.remove('drag-over');
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    processFile(files[0]);
+                }
+            }
+            
+            function handleClick() {
+                fileInput.click();
+            }
+            
+            function handleFileSelect(e) {
+                const files = fileInput.files;
+                if (files.length > 0) {
+                    processFile(files[0]);
+                }
+            }
+            
+            async function copyToClipboard() {
+                const code = outputPre.textContent;
+                if (!code) {
+                    showStatus('No generated code to copy.', true);
+                    return;
+                }
+                try {
+                    await navigator.clipboard.writeText(code);
+                    showStatus('Copied to clipboard!');
+                } catch (err) {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = code;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    showStatus('Copied to clipboard!');
+                }
+            }
+            
+            function downloadJS() {
+                const code = outputPre.textContent;
+                if (!code) {
+                    showStatus('No generated code to download.', true);
+                    return;
+                }
+                const elementId = currentName || elementIdInput.value.trim() || 'animation';
+                const filename = `ascii_${elementId}.js`;
+                const blob = new Blob([code], { type: 'application/javascript' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                showStatus(`Downloaded as ${filename}`);
+            }
+            
+            function updateElementId() {
+                if (currentFrames && currentFrames.length > 0) {
+                    const newId = elementIdInput.value.trim() || 'Trish';
+                    currentName = newId;
+                    const jsCode = generateJS(currentFrames, currentDelay, newId);
+                    outputPre.textContent = jsCode;
+                    showStatus('Updated element ID in generated script.');
+                }
+            }
+            
+            dropZone.addEventListener('dragover', handleDragOver);
+            dropZone.addEventListener('dragleave', handleDragLeave);
+            dropZone.addEventListener('drop', handleDrop);
+            dropZone.addEventListener('click', handleClick);
+            fileInput.addEventListener('change', handleFileSelect);
+            copyBtn.addEventListener('click', copyToClipboard);
+            downloadBtn.addEventListener('click', downloadJS);
+            elementIdInput.addEventListener('input', updateElementId);
+            
+            showStatus('Ready. Drop an HTML file containing a frames array.');
+        })();
+    </script>
+</body>
+</html>

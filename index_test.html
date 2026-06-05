@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AO 3000 BC</title>
+    <link href='https://fonts.googleapis.com/css?family=Cormorant' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Sometype Mono' rel='stylesheet'>
+    <style>
+      body {
+        background-size: cover;
+        background-position: top;
+        background-repeat: no-repeat;
+        background-color: #c8ae8f;
+        font-family: Sometype Mono;
+        color: #000000;
+        font-size: 0.75rem;
+        line-height: 1.5;
+        box-sizing: border-box;
+        margin: 0;
+        min-height: 100vh;
+      }
+
+      H1 {
+        font-family: Cormorant,Times;
+        font-size: 2.5rem;
+        line-height: 2.33rem;
+        padding: 10px;
+        margin: 10px;   
+        position: relative;
+        z-index: 2;
+      }
+
+      div {
+        padding: 10px;
+        margin: 2.5px;   
+      }
+
+      .pillars-container { 
+        z-index: 2;
+        width:51%; 
+        min-width: 180px;
+        display: flex;
+        flex-wrap: wrap;
+        padding: 0px;
+        margin: 10px;   
+        position: relative;
+      }
+
+      /* Background ASCII animation - fixed behind everything */
+      #ascii {
+        position: fixed;
+        top: 0%;
+        left: 66%;
+        transform: translate(-50%, 0%);
+        z-index: 0;
+        overflow: hidden;
+        display: flex;
+      }
+      
+      #ascii pre {
+        font-family: 'Sometype Mono', 'Courier New', monospace;
+        font-size: 1.2rem;
+        line-height: 0.9rem;
+        color: #867354;
+        white-space: pre;
+        margin: 0px;
+        padding: 0px;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      .content {
+        width: 180px;
+        background-color: rgba(255, 215, 184, 0.5);
+      }
+
+      .footer {
+        z-index: 99;
+        width: 180px;
+        background-color: rgba(255, 215, 184, 0.5);
+        position: fixed;
+        left: 10px;
+        bottom: 10px;
+        overflow: hidden;
+        display: flex;
+        font-size: 0.66rem;
+      }
+
+      .c1 {
+        max-height: 200px;   
+        overflow-y: auto;
+        padding: 0px;
+        margin: 0px;   
+      }
+
+      .c1::-webkit-scrollbar {
+        width: 4px;
+      }
+
+      .c1::-webkit-scrollbar-track {
+        background: transparent; 
+        border-radius: 0px;
+      }
+
+      .c1::-webkit-scrollbar-thumb {
+        background: #000000; 
+        border-radius: 4px;
+      }
+
+      .c1::-webkit-scrollbar-thumb:hover {
+        background: #333333;
+      }
+
+      .c1::-webkit-scrollbar-corner {
+        background: transparent;
+      }
+
+      .c1 {
+        scrollbar-width: thin;
+        scrollbar-color: #867354 rgba(134, 115, 84, 1);
+      }
+
+      a {
+        color: #867354;
+        padding-left: 1px;
+        padding-right: 1px;
+      }
+      
+      a:hover {
+        color: #ffd7b8;
+        background-color: #867354;
+      }
+      
+    </style>
+  </head>
+  <body>
+
+  <h1>3000 bc</h1>
+  <div class="pillars-container">
+  
+  <div class="content" id="weather-widget">Loading briefing... <script src="briefing_minimal.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var container = document.getElementById('weather-widget');
+      if (window.WeatherMinimal) {
+        window.WeatherMinimal.init(container);
+      } else {
+        container.innerText = 'Error: weather script not loaded';
+      }
+    });
+  </script>
+  </div>
+  
+  <div class="content">Projects:<br>
+    <a href="https://www.analogobject.studio/" target="_blank">Analog Object Studio</a> → <a href=aos.html>map</a><br>
+    <a href="https://www.b-cruz.com/" target="_blank">b-cruz.com</a><br>
+    <a href="https://bc3000.substack.com/" target="_blank">Grain &amp; Method</a><br>
+    <a href="bed.html">Bed Series</a><br>
+    <a href="projects.html">Web Projects</a>
+  </div>
+   
+  <div class="content">Currently Into:
+    <div class="c1">
+    <a href="https://henryfaber.itch.io/" target="_blank">Playing The Third Place</a><br>
+    <a href="https://www.fionagarden.com/" target="_blank">Photography by Fiona</a><br>
+    <a href="https://www.benashtonart.com/" target="_blank">Art by Ben</a><br>
+    <a href="https://www.juliannmccandless.com/" target="_blank">Styling by Juliann</a><br>
+    <a href="https://www.strangerradio.com/" target="_blank">Streaming Stranger Radio</a><br>
+    <a href="https://www.decadestudio.com/" target="_blank">Denim by Decade Studio</a><br>
+    <a href="https://www.stevenfairweather.com/" target="_blank">Music by Steven</a><br>
+    <a href="https://cocotardiff.com/photo-diary" target="_blank">Photo Diary by Coco</a><br>
+    <a href="https://jodyglenham.bandcamp.com/" target="_blank">Music by Jody</a><br>
+    <a href="https://innerdecay.com/" target="_blank">Pins by InnerDecay</a><br>
+    <a href="https://www.lloydclothing.com/" target="_blank">Toques by LLOYD</a><br>
+    <a href="https://johannastickland.bigcartel.com/" target="_blank">Art by Johanna</a><br>
+    <a href="https://towernyc.bandcamp.com/" target="_blank">Music by Tower</a><br>
+    <a href="https://www.toyotsuchiya.com/" target="_blank">Styling by Toyo</a><br>
+    <a href="https://lonesomepress.com/" target="_blank">Reading Lonesome</a><br>
+    <a href="https://Zu-sb.com" target="_blank">Styling by Zu</a><br>
+    <a href="https://mirrorofvenus.bandcamp.com/" target="_blank">Music by Mirror of Venus</a><br>
+    </div>
+  </div>
+  <div class="footer">Made by hand at <a href="https://neocities.org/" target="_blank">Neocities</a>.</div>
+  
+</div>
+
+<!-- Background ASCII animation container -->
+<div id="ascii">
+  <pre id="walking">Loading animation...</pre>
+</div>
+
+<script src="ascii_walking.js"></script>
+
+</body>
+</html>

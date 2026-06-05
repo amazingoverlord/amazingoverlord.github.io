@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Clearing">
+<meta name="theme-color" content="#262626" id="theme-color-meta">
+<title>Clearing</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg-dark:    #262626;
+    --bg-light:   #6D6A65;
+    --text-dark:  #E2DFDA;
+    --text-light: #F9F6EF;
+    --acc-dark:   #AF9888;
+    --acc-light:  #BFAFA0;
+    --bg:         var(--bg-dark);
+    --text:       var(--text-dark);
+    --acc:        var(--acc-dark);
+    --transition: 420ms;
+  }
+
+  html, body {
+    width: 100%; height: 100%;
+    overflow: hidden;
+  }
+
+  body {
+    font-family: -apple-system, "Helvetica Neue", sans-serif;
+    font-weight: 100;
+    line-height: 1.7;
+    letter-spacing: 0.03em;
+    background: var(--bg);
+    color: var(--text);
+    transition: background var(--transition) ease, color var(--transition) ease;
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+    padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
+  }
+
+  #bg-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--bg-light);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition) ease;
+    z-index: 0;
+  }
+  body.is-light #bg-overlay { opacity: 1; }
+
+  #toggle {
+    position: fixed;
+    top: max(env(safe-area-inset-top, 0px), 14px);
+    right: 24px;
+    color: var(--acc);
+    cursor: pointer;
+    z-index: 100;
+    padding: 12px;
+    margin: -12px;
+    transition: color var(--transition) ease;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #content {
+    position: relative;
+    z-index: 10;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 32px;
+    transition: opacity 130ms ease;
+  }
+
+  #content-inner {
+    width: 100%;
+    max-width: 440px;
+  }
+
+  #greeting {
+    font-family: -apple-system, "Helvetica Neue", sans-serif;
+    font-weight: 100;
+    font-size: clamp(28px, 7vw, 36px);
+    letter-spacing: 0.03em;
+    color: var(--text);
+    margin-bottom: 20px;
+    transition: color var(--transition) ease;
+    opacity: 0;
+    transform: translateY(8px);
+    animation: fadeUp 0.6s 0.1s forwards;
+  }
+
+  #divider {
+    height: 1px;
+    background: var(--acc);
+    margin-bottom: 20px;
+    max-width: 32px;
+    transition: background var(--transition) ease;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.2s forwards;
+  }
+
+  #weather-wrap {
+    opacity: 0;
+    animation: fadeUp 0.6s 0.3s forwards;
+  }
+
+  #weather {
+    font-size: clamp(14px, 3.8vw, 16px);
+    font-weight: 300;
+    line-height: 1.85;
+    color: var(--text);
+    transition: color var(--transition) ease;
+  }
+
+  #loading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    opacity: 0.5;
+  }
+
+  .spinner {
+    width: 14px; height: 14px;
+    border: 1.5px solid transparent;
+    border-top-color: var(--acc);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    flex-shrink: 0;
+  }
+
+  #loading-text {
+    font-size: 13px;
+    color: var(--text);
+  }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  body.transitioning #content { opacity: 0.55; }
+
+  .time-refresh {
+    animation: gentleFade 0.45s ease-out;
+  }
+
+  @keyframes gentleFade {
+    0% { opacity: 1; }
+    40% { opacity: 0.65; }
+    100% { opacity: 1; }
+  }
+</style>
+</head>
+<body>
+
+<div id="bg-overlay"></div>
+
+<button id="toggle" aria-label="Toggle theme"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button>
+
+<div id="content">
+  <div id="content-inner">
+    <div id="greeting"></div>
+    <div id="divider"></div>
+    <div id="weather-wrap">
+      <div id="loading">
+        <div class="spinner"></div>
+        <span id="loading-text">Fetching current weather…</span>
+      </div>
+      <p id="weather" style="display:none;"></p>
+    </div>
+  </div>
+</div>
+
+<script>
+const MONTHS  = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const DAYS    = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+// Set greeting immediately — no async, no flash of wrong content
+(function() {
+  const h = new Date().getHours();
+  let p;
+  if (h >= 23 || h < 5) p = 'night';
+  else if (h < 12) p = 'morning';
+  else if (h < 17) p = 'afternoon';
+  else p = 'evening';
+  const g = { morning:'Good morning.', afternoon:'Good afternoon.', evening:'Good evening.', night:'Still awake?' }[p];
+  document.getElementById('greeting').textContent = g;
+})();
+
+const WEATHER_CODES = {
+  0:'The sky is clear',
+  1:'The sky is mainly clear',
+  2:'It\'s partly cloudy',
+  3:'It\'s overcast',
+  45:'Fog has settled in',
+  48:'It\'s foggy out there',
+  51:'A light drizzle is falling',
+  53:'It\'s drizzling lightly',
+  55:'It\'s drizzling',
+  61:'Light rain is falling',
+  63:'It\'s raining',
+  65:'Heavy rain is coming down',
+  71:'A light snow is falling',
+  73:'It\'s snowing',
+  75:'Heavy snow is coming down',
+  77:'Snow grains are falling',
+  80:'Rain showers are passing through',
+  81:'Showers are falling',
+  82:'Heavy showers are coming down',
+  85:'Snow showers are passing through',
+  86:'Heavy snows are blowing through',
+  95:'Thunderstorms are blowing',
+  96:'Thunderstorms with hail are moving in',
+  99:'Severe thunderstorms are approaching'
+};
+
+const CLOSINGS = {
+  morning:   ['Have a lovely day.','Have a beautiful day.','Enjoy your day.'],
+  afternoon: ['Enjoy the rest of your afternoon.','Have a pleasant afternoon.','Have a lovely rest of your day.','Enjoy the remainder of your day.'],
+  evening:   ['Have a lovely evening.','Have a pleasant evening.','Enjoy your evening.'],
+  night:     ['Have a pleasant night.','Have a lovely night.','Have a good night.','Be well.']
+};
+
+let cachedWeatherData = null;
+let cachedCity = 'your location';
+let timeUpdateInterval = null;
+let weatherRefreshInterval = null;
+let currentLocation = { lat: 40.7128, lon: -74.0060 };
+
+const c2f       = c => Math.round(c * 9/5 + 32);
+const kph2mph   = k => Math.round(k * 0.621371);
+const kph2knots = k => Math.round(k * 0.539957);
+const pick      = arr => arr[Math.floor(Math.random() * arr.length)];
+const usesMetric = () => {
+  try { return new Intl.NumberFormat(navigator.language, { style: 'unit', unit: 'celsius' }).format(0).includes('°C'); }
+  catch { return !['en-US','en-PR','en-VI','en-GU','en-AS','en-MP'].includes(navigator.language); }
+};
+
+function tempStr(c) {
+  const f = c2f(c);
+  return usesMetric() ? `${c}°C (${f}°F)` : `${f}°F (${c}°C)`;
+}
+
+function windStr(kph) {
+  const k = Math.round(kph);
+  const mph = kph2mph(kph);
+  const kn  = kph2knots(kph);
+  const speeds = usesMetric() ? `${k} kph (${mph} mph, ${kn} knots)` : `${mph} mph (${k} kph, ${kn} knots)`;
+  if (k <= 5)   return 'The wind is calm';
+  if (k <= 11)  return `A light breeze is blowing at ${speeds}`;
+  if (k <= 19)  return `A gentle breeze is blowing at ${speeds}`;
+  if (k <= 28)  return `A moderate breeze is blowing at ${speeds}`;
+  if (k <= 38)  return `The wind is blowing at ${speeds}`;
+  if (k <= 49)  return `A stiff wind is blowing at ${speeds}. A fitted jacket will serve you better than a loose one`;
+  if (k <= 61)  return `A near gale is blowing at ${speeds}. An umbrella won't do much in this wind`;
+  if (k <= 74)  return `A gale is blowing at ${speeds}. You'll feel this one — secure anything you're carrying`;
+  if (k <= 88)  return `A strong gale is blowing at ${speeds}. Difficult conditions outside`;
+  if (k <= 102) return `A storm is blowing at ${speeds}. Only venture out if you need to`;
+  if (k <= 117) return `A violent storm is blowing at ${speeds}. Stay indoors if at all possible`;
+  return `Winds are dangerously high at ${speeds}. Don't make unnecessary journeys, don't take risks on treacherous roads, and don't swim in the sea`;
+}
+
+function wardrobeTemp(feels) {
+  if (feels < -10) return "It's absolutely freezing. Wear everything you own.";
+  if (feels < 0)   return "It's properly cold today. Bundle up.";
+  if (feels < 10)  return "A warm jacket and some layers would serve you well today.";
+  if (feels < 20)  return "Worth bringing a light jacket or sweater.";
+  if (feels < 30)  return "Dress lightly.";
+  if (feels < 38)  return "It's hot. Light clothes, a hat, and drink water.";
+  return "Wear as little clothing as the situation allows and drink plenty of water.";
+}
+
+function wardrobeCondition(code) {
+  if ([51,53,55,61,63,65,80,81,82].includes(code)) return "Bring an umbrella.";
+  if ([71,73,75,77,85,86].includes(code))           return "Wear waterproof boots. It'll be slippery out.";
+  if ([45,48].includes(code))                        return "Visibility is low out there.";
+  if (code >= 95)                                    return "Seek shelter and avoid open areas.";
+  return null;
+}
+
+function getPeriod(hour) {
+  if (hour >= 23 || hour < 5) return 'night';
+  if (hour < 12)              return 'morning';
+  if (hour < 17)              return 'afternoon';
+  return 'evening';
+}
+
+function getGreeting(period) {
+  return { morning:'Good morning.', afternoon:'Good afternoon.', evening:'Good evening.', night:'Still awake?' }[period];
+}
+
+function buildParagraphWithFreshTime(data, city) {
+  if (!data) return "Loading weather...";
+  const now    = new Date();
+  const hour   = now.getHours();
+  const min    = now.getMinutes().toString().padStart(2,'0');
+  const ampm   = hour < 12 ? 'AM' : 'PM';
+  const h12    = hour % 12 || 12;
+  const period = getPeriod(hour);
+
+  const temp   = Math.round(data.current.temperature_2m);
+  const feels  = Math.round(data.current.apparent_temperature);
+  const wind   = Math.round(data.current.wind_speed_10m);
+  const code   = data.current.weather_code;
+  const desc   = WEATHER_CODES[code] || 'variable';
+  const uv     = data.current.uv_index ?? 0;
+
+  const sunrise   = data.daily?.sunrise?.[0] ? new Date(data.daily.sunrise[0]) : null;
+  const sunset    = data.daily?.sunset?.[0]  ? new Date(data.daily.sunset[0])  : null;
+  const isDaytime = sunrise && sunset ? now > sunrise && now < sunset : hour >= 6 && hour < 20;
+
+  let p = `It is ${h12}:${min} ${ampm} on ${DAYS[now.getDay()]}, ${MONTHS[now.getMonth()]} ${now.getDate()} in ${city}. `;
+  p += `${desc} with a temperature of ${tempStr(temp)}`;
+  if (Math.abs(temp - feels) >= 1) p += `, though it feels like ${tempStr(feels)}`;
+  p += `. ${windStr(wind)}. `;
+
+  const suggestions = [];
+  suggestions.push(wardrobeTemp(feels));
+  const condSugg = wardrobeCondition(code);
+  if (condSugg) suggestions.push(condSugg);
+  if (uv >= 6 && isDaytime) suggestions.push("The UV is high. Sunscreen and a hat are worth it.");
+  if (suggestions.length) {
+    p += suggestions[0];
+    for (let i = 1; i < suggestions.length; i++) {
+      p += ' Also, ' + suggestions[i].charAt(0).toLowerCase() + suggestions[i].slice(1);
+    }
+    p += ' ';
+  }
+
+  p += pick(CLOSINGS[period]);
+  return p;
+}
+
+function updateDisplayedTimeOnly() {
+  const weatherEl = document.getElementById('weather');
+  if (!weatherEl || weatherEl.style.display === 'none' || !cachedWeatherData) return;
+  const freshParagraph = buildParagraphWithFreshTime(cachedWeatherData, cachedCity);
+  weatherEl.classList.add('time-refresh');
+  weatherEl.textContent = freshParagraph;
+  setTimeout(() => weatherEl.classList.remove('time-refresh'), 450);
+  const currentPeriod = getPeriod(new Date().getHours());
+  const greetingEl = document.getElementById('greeting');
+  const expectedGreeting = getGreeting(currentPeriod);
+  if (greetingEl && greetingEl.textContent !== expectedGreeting) {
+    greetingEl.textContent = expectedGreeting;
+  }
+}
+
+async function refreshWeatherDataFromAPI() {
+  try {
+    const { lat, lon } = currentLocation;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,wind_speed_10m,weather_code,uv_index&daily=sunrise,sunset&timezone=auto`;
+    const response = await fetch(url);
+    if (!response.ok) throw new Error('Weather API error');
+    const newData = await response.json();
+    if (newData.daily?.sunrise?.[0] && newData.daily?.sunset?.[0]) {
+      updateAutoTheme(new Date(newData.daily.sunrise[0]), new Date(newData.daily.sunset[0]));
+    }
+    cachedWeatherData = newData;
+    const weatherEl = document.getElementById('weather');
+    if (weatherEl && weatherEl.style.display !== 'none') {
+      weatherEl.textContent = buildParagraphWithFreshTime(cachedWeatherData, cachedCity);
+      weatherEl.classList.add('time-refresh');
+      setTimeout(() => weatherEl.classList.remove('time-refresh'), 400);
+    }
+  } catch (err) {
+    console.warn("Background weather refresh failed:", err);
+  }
+}
+
+async function getCityFromCoords(lat, lon) {
+  try {
+    const r = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
+    const d = await r.json();
+    return d.address?.city || d.address?.town || d.address?.village || d.address?.county || 'your location';
+  } catch { return 'your location'; }
+}
+
+async function initWeatherAndStart() {
+  const loadingDiv = document.getElementById('loading');
+  const weatherEl  = document.getElementById('weather');
+  loadingDiv.style.display = 'flex';
+  weatherEl.style.display  = 'none';
+
+  let lat = 40.7128, lon = -74.0060, cityName = 'New York';
+
+  try {
+    const position = await new Promise((res, rej) =>
+      navigator.geolocation.getCurrentPosition(res, rej, { timeout: 8000, enableHighAccuracy: false })
+    );
+    lat = position.coords.latitude;
+    lon = position.coords.longitude;
+    currentLocation = { lat, lon };
+    cityName = await getCityFromCoords(lat, lon);
+    cachedCity = cityName;
+  } catch {
+    currentLocation = { lat, lon };
+    cachedCity = 'New York';
+  }
+
+  try {
+    const url  = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,wind_speed_10m,weather_code,uv_index&daily=sunrise,sunset&timezone=auto`;
+    const resp = await fetch(url);
+    if (!resp.ok) throw new Error('Initial weather fetch failed');
+    const data = await resp.json();
+    if (data.daily?.sunrise?.[0] && data.daily?.sunset?.[0]) {
+      updateAutoTheme(new Date(data.daily.sunrise[0]), new Date(data.daily.sunset[0]));
+    }
+    cachedWeatherData = data;
+    const initialParagraph = buildParagraphWithFreshTime(data, cityName);
+    loadingDiv.style.display = 'none';
+    weatherEl.textContent    = initialParagraph;
+    weatherEl.style.display  = 'block';
+    weatherEl.style.opacity  = '0';
+    weatherEl.style.transition = 'opacity 0.5s ease';
+    requestAnimationFrame(() => { weatherEl.style.opacity = '1'; });
+  } catch {
+    loadingDiv.style.display = 'none';
+    weatherEl.textContent    = 'Unable to fetch weather data. Please check your connection.';
+    weatherEl.style.display  = 'block';
+    weatherEl.style.opacity  = '1';
+  }
+
+  if (timeUpdateInterval) clearInterval(timeUpdateInterval);
+  timeUpdateInterval = setInterval(() => {
+    if (cachedWeatherData) {
+      updateDisplayedTimeOnly();
+    } else {
+      const el = document.getElementById('weather');
+      if (el && el.style.display !== 'none') {
+        const now = new Date();
+        const h12 = now.getHours() % 12 || 12;
+        const min = now.getMinutes().toString().padStart(2,'0');
+        const ampm = now.getHours() < 12 ? 'AM' : 'PM';
+        el.textContent = `It is ${h12}:${min} ${ampm} — Weather data unavailable.`;
+        el.classList.add('time-refresh');
+        setTimeout(() => el.classList.remove('time-refresh'), 400);
+      }
+    }
+    const greetingEl = document.getElementById('greeting');
+    const period = getPeriod(new Date().getHours());
+    if (greetingEl && greetingEl.textContent !== getGreeting(period)) {
+      greetingEl.textContent = getGreeting(period);
+    }
+  }, 60000);
+
+  if (weatherRefreshInterval) clearInterval(weatherRefreshInterval);
+  weatherRefreshInterval = setInterval(refreshWeatherDataFromAPI, 900000);
+}
+
+let themeMode = 'auto';
+let isDark    = true;
+
+function applyTheme(dark, animate = true) {
+  isDark = dark;
+  const body   = document.body;
+  const toggle = document.getElementById('toggle');
+  const meta   = document.getElementById('theme-color-meta');
+  if (animate) {
+    body.classList.add('transitioning');
+    setTimeout(() => body.classList.remove('transitioning'), 290);
+  }
+  if (dark) {
+    body.classList.remove('is-light');
+    toggle.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
+    meta.content = '#262626';
+  } else {
+    body.classList.add('is-light');
+    toggle.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+    meta.content = '#6D6A65';
+  }
+  document.documentElement.style.setProperty('--bg',   dark ? 'var(--bg-dark)'   : 'var(--bg-light)');
+  document.documentElement.style.setProperty('--text', dark ? 'var(--text-dark)'  : 'var(--text-light)');
+  document.documentElement.style.setProperty('--acc',  dark ? 'var(--acc-dark)'   : 'var(--acc-light)');
+}
+
+function updateAutoTheme(sunrise, sunset) {
+  if (themeMode !== 'auto') return;
+  const now = new Date();
+  const sunsetPlus30 = new Date(sunset.getTime() + 30 * 60 * 1000);
+  applyTheme(now < sunrise || now >= sunsetPlus30, false);
+}
+
+document.getElementById('toggle').addEventListener('click', () => {
+  themeMode = 'manual';
+  applyTheme(!isDark);
+});
+
+(function setInitialTheme() {
+  const hour = new Date().getHours();
+  applyTheme(hour < 6 || hour >= 20, false);
+})();
+
+setInterval(() => {
+  if (themeMode === 'auto') {
+    const h = new Date().getHours();
+    applyTheme(h < 6 || h >= 20);
+  }
+}, 60000);
+
+initWeatherAndStart();
+
+(function inlineManifest() {
+  const manifest = {
+    name: 'Clearing',
+    short_name: 'Clearing',
+    description: 'A quiet place on your phone.',
+    start_url: '.',
+    display: 'standalone',
+    background_color: '#262626',
+    theme_color: '#262626',
+    orientation: 'portrait',
+    icons: [
+      { src: 'data:image/svg+xml,' + encodeURIComponent(`<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><style>.st0{fill:#262626;}.st1{fill:#E2DFDA;}</style><g><rect class="st0" width="512" height="512"/></g><g><path class="st1" d="M262.4,365.6c-18.8,0-35.3-4.6-49.5-13.7c-14.2-9.1-25.2-21.9-33-38.4c-7.8-16.5-11.7-35.7-11.7-57.6v-0.3c0-22.3,3.8-41.6,11.5-57.9c7.7-16.3,18.6-28.9,32.7-37.9c14.1-9,30.8-13.4,49.9-13.4c14.7,0,27.6,2.9,38.8,8.6c11.2,5.7,20.4,13.6,27.6,23.6c7.2,10,12.1,21.5,14.7,34.5l0.3,1.5h-7.4l-0.3-1.5c-2.7-11.5-7.3-21.8-13.8-30.7c-6.6-9-14.9-16-24.9-21.2s-21.7-7.8-35-7.8c-17.6,0-33,4.2-46,12.6c-13,8.4-23,20.2-30.1,35.5c-7,15.3-10.6,33.4-10.6,54.2v0.3c0,20.6,3.6,38.6,10.7,54c7.1,15.4,17.2,27.4,30.2,35.9c13,8.5,28.2,12.8,45.7,12.8c13.3,0,25-2.6,35-7.8c10.1-5.2,18.4-12.3,25-21.3c6.6-9,11.2-19.3,13.7-30.8l0.3-1.3h7.4l-0.3,1.5c-2.6,13-7.5,24.5-14.7,34.6c-7.2,10.1-16.5,17.9-27.6,23.6C290,362.8,277,365.6,262.4,365.6z"/></g></svg>`), sizes: '512x512', type: 'image/svg+xml', purpose: 'any maskable' }
+    ]
+  };
+  const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+  const link = document.createElement('link');
+  link.rel  = 'manifest';
+  link.href = URL.createObjectURL(blob);
+  document.head.appendChild(link);
+})();
+
+(function inlineServiceWorker() {
+  if (!('serviceWorker' in navigator)) return;
+  const swCode = `
+    const CACHE = 'clearing-v1';
+    const PRECACHE = [self.location.pathname];
+    self.addEventListener('install', e => {
+      e.waitUntil(caches.open(CACHE).then(c => c.addAll(PRECACHE)));
+      self.skipWaiting();
+    });
+    self.addEventListener('activate', e => {
+      e.waitUntil(caches.keys().then(keys =>
+        Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
+      ));
+      self.clients.claim();
+    });
+    self.addEventListener('fetch', e => {
+      if (e.request.method !== 'GET') return;
+      if (e.request.url.includes('api.open-meteo.com') || e.request.url.includes('nominatim')) return;
+      e.respondWith(
+        caches.match(e.request).then(cached => cached || fetch(e.request).then(res => {
+          const clone = res.clone();
+          caches.open(CACHE).then(c => c.put(e.request, clone));
+          return res;
+        }))
+      );
+    });
+  `;
+  const blob = new Blob([swCode], { type: 'text/javascript' });
+  navigator.serviceWorker.register(URL.createObjectURL(blob), { scope: './' }).catch(() => {});
+})();
+</script>
+</body>
+</html>
