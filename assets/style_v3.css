@@ -263,7 +263,7 @@ iframe::-webkit-scrollbar-corner { background: transparent; }
     flex-shrink: 0;
     
 }.sitemap-external-icon {
-    color: #999;
+    color: #B7AAA1;
     display: inline-block;
 }
 
@@ -303,7 +303,7 @@ iframe::-webkit-scrollbar-corner { background: transparent; }
 }
 
 #loginContainer button:hover {
-    background: rgba(0, 0, 0, 0.05);
+    background: rgba(38, 43, 46, 0.05);
 }
 
 #errorMsg {
