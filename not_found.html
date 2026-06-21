@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Not Found</title>
+    <link href="/assets/style_v2.css" rel="stylesheet" type="text/css" media="all">
+    <link href='https://fonts.googleapis.com/css?family=Cormorant' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Sometype Mono' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Public Sans' rel='stylesheet'>
+  </head>
+  <style>
+      .pillars-container { width: 33%;}
+      
+      #ascii {
+        position: fixed;
+        top: 0;
+        left: 40%;
+        transform: translateX(-50%);
+        z-index: 1;
+        overflow: hidden;
+      }
+      
+      #ascii pre {
+        font-family: "Sometype Mono", "Courier New", monospace;
+        font-size: 0.75vw;
+        line-height: 0.75;
+        color: #7d7c7b;
+        white-space: pre;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        
+      }
+    </style>
+<body>
+  <div class="home"><a href="/index.html">3000 bc</a></div>
+    <h1>Error 404</h1>
+
+    <div class="pillars-container">
+      <div class="pillar">
+        File not found.<br>
+      <a href="/index.html">&larr; Return home.</a>
+      </div>
+
+    <div id="ascii">
+      <pre id="muybridge">Loading animation...</pre>
+    </div>
+
+    <script src="/ascii_muybridge.js"></script>
+</body>
+</html>

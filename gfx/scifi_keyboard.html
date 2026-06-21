@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>TERMINAL</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { width: 100%; height: 100%; background: #080c12; overflow: hidden; font-family: 'Courier New', Courier, monospace; }
+
+#app {
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  padding: 16px 18px 18px;
+  background: #080c12;
+  gap: 10px;
+}
+
+/* RIBBON */
+#ribbon-wrap {
+  background: #04080e;
+  border: 1px solid #1de6c8;
+  border-radius: 3px;
+  height: 90px;
+  overflow: hidden;
+  padding: 7px 14px;
+  flex-shrink: 0;
+  position: relative;
+  width: 100%;
+}
+#ribbon-wrap::after {
+  content: 'ACTIVE INPUT';
+  position: absolute; top: 7px; right: 12px;
+  font-size: 9px; letter-spacing: 0.14em; color: #1de6c840;
+}
+#ribbon {
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  justify-content: flex-end; overflow: hidden;
+}
+.ribbon-line {
+  font-size: 18px; color: #1de6c8;
+  line-height: 1.6; white-space: pre-wrap; word-break: break-all;
+  min-height: 1.6em;
+}
+.cursor {
+  display: inline-block; width: 11px; height: 16px;
+  background: #1de6c8; vertical-align: middle; margin-left: 1px;
+  animation: blink 1s step-end infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+/* MIDDLE */
+#middle { display: flex; gap: 10px; flex: 1; min-height: 0; }
+
+/* LEFT COLUMN (spinner + status) */
+#left-column { flex: 1.1; display: flex; flex-direction: column; gap: 10px; min-height: 0; }
+
+/* UPLINK SYNC SPINNER */
+#spinner-panel {
+  border: 1px solid #1de6c855;
+  border-radius: 3px;
+  background: #04080e;
+  padding: 10px 14px;
+  display: flex; flex-direction: column; gap: 6px;
+  flex: 0.9;
+  min-height: 0;
+}
+#spinner-wrap {
+  flex: 1;
+  display: flex; align-items: center; justify-content: center;
+  gap: 12px;
+  min-height: 0;
+}
+.spinner-svg { width: auto; height: 100%; max-width: 48%; }
+.spinner-ring {
+  fill: none;
+  stroke: #1de6c830;
+  stroke-width: 2.5;
+}
+.spinner-orbit {
+  transform-origin: 50px 50px;
+  animation: spin-orbit 4.8s linear infinite;
+}
+.spinner-orbit-slow {
+  animation-duration: 14.4s;
+}
+.spinner-dot {
+  fill: #1de6c8;
+  filter: drop-shadow(0 0 4px #1de6c8aa);
+}
+.spinner-inner-ring {
+  fill: none;
+  stroke: #1de6c8;
+  stroke-width: 1.5;
+}
+@keyframes spin-orbit { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+/* STATUS PANEL */
+#status-panel {
+  flex: 1;
+  border: 1px solid #1de6c855;
+  border-radius: 3px;
+  background: #04080e;
+  padding: 10px 14px;
+  display: flex; flex-direction: column; gap: 6px;
+  overflow: hidden;
+}
+.status-header {
+  font-size: 9px; letter-spacing: 0.18em; color: #1de6c870;
+  border-bottom: 1px solid #1de6c820; padding-bottom: 6px; margin-bottom: 2px;
+}
+.status-row { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.status-label { font-size: 10px; color: #1de6c855; letter-spacing: 0.1em; white-space: nowrap; }
+.status-value { font-size: 11px; color: #1de6c8; text-align: right; letter-spacing: 0.05em; }
+.status-value.blink-slow { animation: blink-slow 2.4s step-end infinite; }
+@keyframes blink-slow { 0%,80%{opacity:1} 81%,99%{opacity:0.2} }
+.status-divider { border: none; border-top: 1px solid #1de6c815; margin: 2px 0; }
+
+/* CLOCK + SIGNAL */
+#signal-clock { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+#clock-box {
+  border: 1px solid #1de6c855; border-radius: 3px;
+  background: #04080e; padding: 10px 14px;
+  display: flex; flex-direction: column; gap: 3px;
+}
+.clock-header { font-size: 9px; letter-spacing: 0.18em; color: #1de6c870; }
+#clock-date { font-size: 12px; color: #1de6c8aa; letter-spacing: 0.08em; margin-top: 2px; }
+#clock-time { font-size: 30px; color: #1de6c8; letter-spacing: 0.06em; }
+#clock-met  { font-size: 11px; color: #1de6c870; letter-spacing: 0.1em; margin-top: 1px; }
+
+#signal-box {
+  border: 1px solid #1de6c855; border-radius: 3px;
+  background: #04080e; padding: 10px 14px;
+  flex: 1; display: flex; flex-direction: column; gap: 10px;
+}
+.signal-row { display: flex; flex-direction: column; gap: 10px; }
+.signal-label-row { display: flex; justify-content: space-between; }
+.signal-label { font-size: 9px; letter-spacing: 0.14em; color: #1de6c870; }
+.signal-pct   { font-size: 9px; color: #1de6c8; }
+.bar-track { width: 100%; height: 8px; background: #1de6c815; border-radius: 2px; overflow: hidden; }
+.bar-fill  { height: 100%; border-radius: 2px; background: #1de6c8; transition: width 1.4s ease; }
+
+#buffer-box {
+  display: flex; flex-direction: column; gap: 6px;
+  border: 1px solid #1de6c830; border-radius: 3px;
+  background: #02050a; padding: 8px 10px;
+  flex: 1; justify-content: center;
+  min-height: 0;
+}
+#buffer-grid {
+  display: flex; flex-wrap: wrap;
+  gap: 5px 8px;
+  font-size: 11px; line-height: 1;
+  letter-spacing: 0;
+}
+.buffer-cell { color: #1de6c860; transition: color 0.4s ease; }
+.buffer-cell.filled { color: #1de6c8; }
+.buffer-cell.flicker { color: #e06a00; transition: color 0.08s ease; }
+
+/* TX LOG */
+#log-wrap {
+  flex: 1.2;
+  display: flex; flex-direction: column; gap: 8px; overflow: hidden;
+}
+#network-log-section, #command-log-section {
+  flex: 1;
+  border: 1px solid #1de6c855; border-radius: 3px;
+  background: #04080e; padding: 8px 14px;
+  display: flex; flex-direction: column; overflow: hidden;
+  min-height: 0;
+}
+#log-header {
+  font-size: 9px; letter-spacing: 0.18em; color: #1de6c870;
+  border-bottom: 1px solid #1de6c820; padding-bottom: 6px; margin-bottom: 6px;
+  flex-shrink: 0;
+}
+#network-log-inner, #command-log-inner {
+  flex: 1; overflow: hidden;
+  display: flex; flex-direction: column; justify-content: flex-end;
+}
+.log-line { font-size: 11px; line-height: 1.65; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-shrink: 0; }
+.log-line .log-ts  { color: #1de6c850; margin-right: 6px; }
+.log-line .log-pfx { color: #1de6c8bb; margin-right: 5px; }
+.log-line .log-txt { color: #1de6c8; }
+.log-line.log-rx .log-pfx { color: #1de6c855; }
+.log-line.log-rx .log-txt { color: #1de6c877; }
+
+/* KEYBOARD */
+#keyboard { display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; }
+.row { display: flex; gap: 5px; justify-content: center; }
+.key {
+  background: #0b1622; border: 1px solid #1de6c8;
+  border-radius: 5px; color: #1de6c8;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 13px; height: 62px; min-width: 0;
+  display: flex; align-items: center; justify-content: center;
+  flex: 1; cursor: pointer; touch-action: manipulation;
+  padding: 0 2px; user-select: none;
+  transition: background 0.06s, border-color 0.06s, color 0.06s;
+}
+.key.wide   { flex: 1.6; }
+.key.wider  { flex: 2.4; }
+.key.widest { flex: 5.2; }
+.key.active { background: #e06a00; border-color: #e06a00; color: #fff; }
+.key.mod-on { background: #1de6c815; }
+.sym-wrap { display: flex; flex-direction: column; align-items: center; line-height: 1.15; pointer-events: none; }
+.sym-wrap .top { font-size: 12px; }
+.sym-wrap .bot { font-size: 10px; color: #0fa88a; }
+.key.active .sym-wrap .bot { color: #ffffffaa; }
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="middle">
+    <div id="left-column">
+      <div id="spinner-panel">
+        <div class="status-header">UPLINK SYNC</div>
+        <div id="spinner-wrap">
+          <svg class="spinner-svg" viewBox="0 0 100 100">
+            <circle class="spinner-ring" cx="50" cy="50" r="38"></circle>
+            <circle class="spinner-inner-ring" cx="50" cy="50" r="28.5"></circle>
+            <g class="spinner-orbit">
+              <circle class="spinner-dot" cx="50" cy="12" r="4"></circle>
+            </g>
+          </svg>
+          <svg class="spinner-svg" viewBox="0 0 100 100">
+            <circle class="spinner-ring" cx="50" cy="50" r="38"></circle>
+            <circle class="spinner-inner-ring" cx="50" cy="50" r="28.5"></circle>
+            <g class="spinner-orbit spinner-orbit-slow">
+              <circle class="spinner-dot" cx="50" cy="12" r="4"></circle>
+            </g>
+          </svg>
+        </div>
+      </div>
+
+      <div id="status-panel">
+        <div class="status-header">SYSTEM STATUS</div>
+      </div>
+    </div>
+
+    <div id="signal-clock">
+      <div id="clock-box">
+        <div class="clock-header">MISSION ELAPSED TIME</div>
+        <div id="clock-date"></div>
+        <div id="clock-time"></div>
+        <div id="clock-met"></div>
+      </div>
+      <div id="signal-box">
+        <div class="signal-row">
+          <div class="signal-label-row">
+            <span class="signal-label">UPLINK</span>
+            <span class="signal-pct" id="ul-pct"></span>
+          </div>
+          <div class="bar-track"><div class="bar-fill" id="ul-bar"></div></div>
+        </div>
+        <div class="signal-row">
+          <div class="signal-label-row">
+            <span class="signal-label">DOWNLINK</span>
+            <span class="signal-pct" id="dl-pct"></span>
+          </div>
+          <div class="bar-track"><div class="bar-fill" id="dl-bar"></div></div>
+        </div>
+        <div id="buffer-box">
+          <div class="signal-label">DATA BUFFER</div>
+          <div id="buffer-grid"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="log-wrap">
+      <div id="network-log-section">
+        <div id="log-header">NETWORK TRAFFIC</div>
+        <div id="network-log-inner"></div>
+      </div>
+      <div id="command-log-section">
+        <div id="log-header">COMMAND LOG</div>
+        <div id="command-log-inner"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="ribbon-wrap"><div id="ribbon"></div></div>
+
+  <div id="keyboard"></div>
+</div>
+
+<script>
+/* ==============================================
+   CONFIG — edit these values for each shoot
+============================================== */
+const CONFIG = {
+  satellite_id:  'SAT-7 ORION',
+  node:          'GS-ALPHA / 44.2N',
+  operator:      'CMDR. REYES',
+  encryption:    'AES-256 / ACTIVE',
+  protocol:      'DELTA-UPLINK v4',
+  clearance:     'LEVEL 5 / COSMIC',
+  mission_date:  '2157.084',    // fictional stardate shown above clock
+  clock_start:   '06:22:41',   // HH:MM:SS — counts up from here on load & after clear
+};
+/* ============================================== */
+
+/* STATUS PANEL */
+(function buildStatus() {
+  const fields = [
+    ['SATELLITE',  CONFIG.satellite_id,  false],
+    ['NODE',       CONFIG.node,          false],
+    ['OPERATOR',   CONFIG.operator,      false],
+    null,
+    ['ENCRYPTION', CONFIG.encryption,    true],
+    ['PROTOCOL',   CONFIG.protocol,      false],
+    ['CLEARANCE',  CONFIG.clearance,     false],
+  ];
+  const panel = document.getElementById('status-panel');
+  fields.forEach(f => {
+    if (!f) {
+      const hr = document.createElement('hr');
+      hr.className = 'status-divider';
+      panel.appendChild(hr);
+      return;
+    }
+    const row = document.createElement('div'); row.className = 'status-row';
+    const lbl = document.createElement('span'); lbl.className = 'status-label'; lbl.textContent = f[0];
+    const val = document.createElement('span'); val.className = 'status-value' + (f[2] ? ' blink-slow' : ''); val.textContent = f[1];
+    row.appendChild(lbl); row.appendChild(val); panel.appendChild(row);
+  });
+})();
+
+/* MISSION CLOCK */
+function parseHMS(str) {
+  const p = str.split(':').map(Number);
+  return p[0] * 3600 + p[1] * 60 + p[2];
+}
+function fmtHMS(secs) {
+  const h = Math.floor(secs / 3600);
+  const m = Math.floor((secs % 3600) / 60);
+  const s = secs % 60;
+  return String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+}
+
+const clockBase = parseHMS(CONFIG.clock_start);
+let clockTick = 0;
+let metTick = 0;
+
+function resetClock() {
+  clockTick = 0;
+  metTick = 0;
+}
+
+function updateClock() {
+  document.getElementById('clock-date').textContent = CONFIG.mission_date;
+  document.getElementById('clock-time').textContent = fmtHMS(clockBase + clockTick);
+  document.getElementById('clock-met').textContent  = 'MET +' + fmtHMS(metTick);
+  clockTick++;
+  metTick++;
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+/* SIGNAL BARS */
+function randRange(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+function updateSignal() {
+  const ul = randRange(72, 96);
+  const dl = randRange(65, 91);
+  document.getElementById('ul-bar').style.width = ul + '%';
+  document.getElementById('dl-bar').style.width = dl + '%';
+  document.getElementById('ul-pct').textContent = ul + '%';
+  document.getElementById('dl-pct').textContent = dl + '%';
+}
+setInterval(updateSignal, 2800);
+updateSignal();
+
+/* DATA BUFFER GRID */
+const BUFFER_ROWS = 10;
+const BUFFER_COLS = 23;
+const BUFFER_SIZE = BUFFER_ROWS * BUFFER_COLS;
+let bufferState = [];
+
+function buildBufferGrid() {
+  const grid = document.getElementById('buffer-grid');
+  grid.innerHTML = '';
+  bufferState = [];
+  for (let i = 0; i < BUFFER_SIZE; i++) {
+    const filled = Math.random() < 0.6;
+    bufferState.push(filled);
+    const span = document.createElement('span');
+    span.className = 'buffer-cell' + (filled ? ' filled' : '');
+    span.textContent = filled ? '■' : '□';
+    grid.appendChild(span);
+  }
+}
+buildBufferGrid();
+
+function flickerBuffer() {
+  const grid = document.getElementById('buffer-grid');
+  const cells = grid.children;
+  const flickerCount = randRange(3, 8);
+  for (let n = 0; n < flickerCount; n++) {
+    const i = Math.floor(Math.random() * BUFFER_SIZE);
+    const cell = cells[i];
+    cell.classList.add('flicker');
+    cell.textContent = '■';
+    setTimeout(() => {
+      bufferState[i] = !bufferState[i];
+      cell.classList.remove('flicker');
+      cell.classList.toggle('filled', bufferState[i]);
+      cell.textContent = bufferState[i] ? '■' : '□';
+    }, 220);
+  }
+}
+setInterval(flickerBuffer, 900);
+
+/* TWO LOGS */
+const MAX_LOG = 10;
+
+function currentClockStr() {
+  return fmtHMS(clockBase + clockTick - 1);
+}
+
+/* -- Network Traffic Log (ambient, never affected by user input or clear) -- */
+const networkLog = [];
+
+function addNetworkLine(text) {
+  networkLog.push({ text, ts: currentClockStr() });
+  renderNetworkLog();
+}
+
+function renderNetworkLog() {
+  const inner = document.getElementById('network-log-inner');
+  inner.innerHTML = '';
+  networkLog.slice(-MAX_LOG).forEach(entry => {
+    const div = document.createElement('div');
+    div.className = 'log-line log-rx';
+    const ts  = document.createElement('span'); ts.className  = 'log-ts';  ts.textContent = '[' + entry.ts + ']';
+    const pfx = document.createElement('span'); pfx.className = 'log-pfx'; pfx.textContent = 'RX <<';
+    const txt = document.createElement('span'); txt.className = 'log-txt'; txt.textContent = entry.text;
+    div.appendChild(ts); div.appendChild(pfx); div.appendChild(txt);
+    inner.appendChild(div);
+  });
+}
+
+/* -- Command Log (user TX + sequential ACK responses, resets on clear) -- */
+let commandLog = [];
+
+function addCommandLine(text, type) {
+  commandLog.push({ text, ts: currentClockStr(), type });
+  renderCommandLog();
+}
+
+function renderCommandLog() {
+  const inner = document.getElementById('command-log-inner');
+  inner.innerHTML = '';
+  commandLog.slice(-MAX_LOG).forEach(entry => {
+    const div = document.createElement('div');
+    div.className = 'log-line ' + (entry.type === 'rx' ? 'log-rx' : '');
+    const ts  = document.createElement('span'); ts.className  = 'log-ts';  ts.textContent = '[' + entry.ts + ']';
+    const pfx = document.createElement('span'); pfx.className = 'log-pfx';
+    pfx.textContent = entry.type === 'rx' ? 'RX <<' : 'TX >>';
+    const txt = document.createElement('span'); txt.className = 'log-txt'; txt.textContent = entry.text;
+    div.appendChild(ts); div.appendChild(pfx); div.appendChild(txt);
+    inner.appendChild(div);
+  });
+}
+
+/* -- Sequential ACK responses for command log -- */
+const ACK_SEQUENCE = [
+  'ACK: COMMAND RECEIVED',
+  'VALIDATING SYNTAX...',
+  'SYNTAX OK / AUTH CONFIRMED',
+  'ROUTING TO ' + CONFIG.satellite_id,
+  'UPLINK QUEUED / PRIORITY 1',
+  'PROCESSING...',
+  'EXECUTING COMMAND',
+  'CMD ACCEPTED BY TARGET',
+  'STATUS: COMPLETE',
+  'STANDBY FOR NEXT INPUT',
+];
+let ackIndex = 0;
+
+function nextAck() {
+  const msg = ACK_SEQUENCE[ackIndex];
+  ackIndex = (ackIndex + 1) % ACK_SEQUENCE.length;
+  return msg;
+}
+
+function resetCommandLog() {
+  commandLog = [];
+  ackIndex = 0;
+  renderCommandLog();
+}
+
+/* INCOMING NETWORK MESSAGES */
+const RX_POOL = [
+  'NODE-3 SYNC OK',
+  'HANDSHAKE CONFIRMED',
+  'PACKET LOSS 0.2%',
+  'CARRIER LOCK STABLE',
+  'CHECKSUM VERIFIED',
+  'ACK 0x4F7A RECEIVED',
+  'BUFFER FLUSH COMPLETE',
+  'LINK MARGIN +4.2dB',
+  'CMDR. WALSH: standing by',
+  'CMDR. WALSH: confirm receipt',
+  'GS-BETA: orbit window T-04:12',
+  'GS-BETA: standing by on freq 2',
+  'GS-DELTA: uplink nominal',
+  'OPS-CTR: proceed on your mark',
+  'OPS-CTR: all stations report',
+  'ALT 408.2km STABLE',
+  'SOLAR ARRAY 94% OUTPUT',
+  'GYRO DRIFT +0.003 DEG/S',
+  'THRUSTER B2 NOMINAL',
+  'ATTITUDE CTRL LOCKED',
+  'THERMAL ZONE 4 OK',
+  'ORBIT PERIOD 92.4 MIN',
+  'DOWNLINK SNR 18.7dB',
+  'TELEMETRY FRAME 4471 OK',
+  'CMD QUEUE DEPTH: 2',
+  'RANGING LOCK ACQUIRED',
+  'DOPPLER SHIFT NOMINAL',
+  'POWER BUS NOMINAL 28.4V',
+  'MEMORY UTILIZATION 61%',
+  'ANTENNA SLEW COMPLETE',
+];
+
+function prepopulateNetworkLog(count) {
+  const shuffled = [...RX_POOL].sort(() => Math.random() - 0.5).slice(0, count);
+  shuffled.forEach((msg, i) => {
+    const secsAgo = (count - i) * 6;
+    const ts = fmtHMS(Math.max(0, clockBase - secsAgo));
+    networkLog.push({ text: msg, ts });
+  });
+  renderNetworkLog();
+}
+prepopulateNetworkLog(6);
+
+function scheduleNextRx() {
+  const delay = 5000 + Math.random() * 3000;
+  setTimeout(() => {
+    const msg = RX_POOL[Math.floor(Math.random() * RX_POOL.length)];
+    addNetworkLine(msg);
+    scheduleNextRx();
+  }, delay);
+}
+scheduleNextRx();
+
+/* RIBBON */
+let lines = [''];
+let shiftOn = false;
+let capsOn  = false;
+const MAX_RIBBON_LINES = 3;
+
+function charsPerLine() {
+  const w = document.getElementById('ribbon-wrap').clientWidth - 32;
+  return Math.floor(w / 11);
+}
+
+function getDisplayLines() {
+  const cpl = charsPerLine();
+  const all = [];
+  for (const line of lines) {
+    const content = '> ' + line;
+    if (line.length === 0) { all.push('>'); continue; }
+    for (let i = 0; i < content.length; i += cpl) {
+      all.push(content.slice(i, i + cpl));
+    }
+  }
+  return all;
+}
+
+function renderRibbon() {
+  const ribbon = document.getElementById('ribbon');
+  const visible = getDisplayLines().slice(-MAX_RIBBON_LINES);
+  ribbon.innerHTML = '';
+  visible.forEach((text, i) => {
+    const div = document.createElement('div'); div.className = 'ribbon-line';
+    div.textContent = text;
+    if (i === visible.length - 1) {
+      const cur = document.createElement('span'); cur.className = 'cursor';
+      div.appendChild(cur);
+    }
+    ribbon.appendChild(div);
+  });
+}
+
+function handleKey(action, l, s) {
+  switch (action) {
+    case 'bksp': {
+      const cur = lines[lines.length - 1];
+      if (cur.length > 0) lines[lines.length - 1] = cur.slice(0, -1);
+      else if (lines.length > 1) lines.pop();
+      break;
+    }
+    case 'enter': {
+      const submitted = lines[lines.length - 1].trim();
+      if (submitted.toLowerCase() === 'clear') {
+        lines = [''];
+        resetClock();
+        resetCommandLog();
+      } else {
+        if (submitted.length > 0) {
+          addCommandLine(submitted, 'tx');
+          addCommandLine(nextAck(), 'rx');
+        }
+        lines.push('');
+      }
+      break;
+    }
+    case 'space': lines[lines.length - 1] += ' '; break;
+    case 'tab':   lines[lines.length - 1] += '    '; break;
+    case 'shift': shiftOn = !shiftOn; updateModifiers(); return;
+    case 'caps':  capsOn  = !capsOn;  updateModifiers(); return;
+    case 'none':  return;
+    default: {
+      let ch = l;
+      if (s && shiftOn) ch = s;
+      else if (!s && (shiftOn ^ capsOn)) ch = l.toUpperCase();
+      lines[lines.length - 1] += ch;
+      if (shiftOn) { shiftOn = false; updateModifiers(); }
+    }
+  }
+  renderRibbon();
+}
+
+function updateModifiers() {
+  document.querySelectorAll('[data-action="shift"]').forEach(k => k.classList.toggle('mod-on', shiftOn));
+  document.querySelectorAll('[data-action="caps"]').forEach(k  => k.classList.toggle('mod-on', capsOn));
+}
+
+/* KEYBOARD BUILD */
+const ROWS = [
+  [
+    {l:'`',s:'~'},{l:'1',s:'!'},{l:'2',s:'@'},{l:'3',s:'#'},{l:'4',s:'$'},
+    {l:'5',s:'%'},{l:'6',s:'^'},{l:'7',s:'&'},{l:'8',s:'*'},{l:'9',s:'('},
+    {l:'0',s:')'},{l:'-',s:'_'},{l:'=',s:'+'},{label:'bksp',w:'wide',action:'bksp'}
+  ],
+  [
+    {label:'tab',w:'wide',action:'tab'},
+    {l:'q'},{l:'w'},{l:'e'},{l:'r'},{l:'t'},{l:'y'},{l:'u'},{l:'i'},{l:'o'},{l:'p'},
+    {l:'[',s:'{'},{l:']',s:'}'},{l:'\\',s:'|',w:'wide'}
+  ],
+  [
+    {label:'caps',w:'wide',action:'caps'},
+    {l:'a'},{l:'s'},{l:'d'},{l:'f'},{l:'g'},{l:'h'},{l:'j'},{l:'k'},{l:'l'},
+    {l:';',s:':'},{l:"'",s:'"'},{label:'enter',w:'wider',action:'enter'}
+  ],
+  [
+    {label:'shift',w:'wider',action:'shift'},
+    {l:'z'},{l:'x'},{l:'c'},{l:'v'},{l:'b'},{l:'n'},{l:'m'},
+    {l:',',s:'<'},{l:'.',s:'>'},{l:'/',s:'?'},{label:'shift',w:'wider',action:'shift'}
+  ],
+  [
+    {label:'ctrl',w:'wide',action:'none'},{label:'alt',w:'wide',action:'none'},
+    {label:'',w:'widest',action:'space'},
+    {label:'alt',w:'wide',action:'none'},{label:'ctrl',w:'wide',action:'none'}
+  ]
+];
+
+function flash(btn) {
+  btn.classList.add('active');
+  setTimeout(() => btn.classList.remove('active'), 130);
+}
+
+(function buildKeyboard() {
+  const kb = document.getElementById('keyboard');
+  ROWS.forEach(row => {
+    const rowDiv = document.createElement('div'); rowDiv.className = 'row';
+    row.forEach(key => {
+      const btn = document.createElement('div'); btn.className = 'key';
+      const action = key.action || 'char';
+      const l = key.l || '', s = key.s || '';
+      const label = key.label !== undefined ? key.label : l;
+      if (key.w) btn.classList.add(key.w);
+      btn.dataset.action = action;
+      if (s) {
+        const wrap = document.createElement('div'); wrap.className = 'sym-wrap';
+        const top = document.createElement('span'); top.className = 'top'; top.textContent = s;
+        const bot = document.createElement('span'); bot.className = 'bot'; bot.textContent = l;
+        wrap.appendChild(top); wrap.appendChild(bot); btn.appendChild(wrap);
+      } else {
+        btn.textContent = label;
+      }
+      let touchFired = false;
+      btn.addEventListener('touchstart', (e) => {
+        e.preventDefault(); touchFired = true;
+        flash(btn); handleKey(action, l, s);
+      }, { passive: false });
+      btn.addEventListener('mousedown', (e) => {
+        if (touchFired) { touchFired = false; return; }
+        e.preventDefault(); flash(btn); handleKey(action, l, s);
+      });
+      rowDiv.appendChild(btn);
+    });
+    kb.appendChild(rowDiv);
+  });
+})();
+
+renderRibbon();
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Backspace') { handleKey('bksp'); return; }
+  if (e.key === 'Enter')     { handleKey('enter'); return; }
+  if (e.key === ' ')         { e.preventDefault(); handleKey('space'); return; }
+  if (e.key === 'Tab')       { e.preventDefault(); handleKey('tab'); return; }
+  if (e.key === 'Shift')     { shiftOn = true; updateModifiers(); return; }
+  if (e.key === 'CapsLock')  { capsOn = !capsOn; updateModifiers(); return; }
+  if (e.key.length === 1)    { lines[lines.length - 1] += e.key; renderRibbon(); }
+});
+document.addEventListener('keyup', (e) => {
+  if (e.key === 'Shift') { shiftOn = false; updateModifiers(); }
+});
+</script>
+</body>
+</html>

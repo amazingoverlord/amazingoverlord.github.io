@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Petit Plaisir</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #f8f6f1;
+    --ink: #1a1612;
+    --brown: #3b1f0f;
+    --muted: #8a7f6e;
+    --rule: #c8bfa8;
+    --gold-kitchen: #c8a96e;
+    --kitchen-bg: #0f0f0d;
+    --kitchen-surface: #191916;
+    --kitchen-border: #2a2a24;
+    --kitchen-dim: #4a4a3e;
+    --kitchen-text: #f0ede6;
+  }
+
+  html, body { min-height: 100vh; background: var(--kitchen-bg); font-family: 'Jost', sans-serif; }
+
+  .kitchen { max-width: 680px; margin: 0 auto; padding: 3rem 2rem 2rem; }
+  .kitchen-header { margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--kitchen-border); }
+  .kitchen-eyebrow { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.3em; color: var(--kitchen-dim); text-transform: uppercase; margin-bottom: 8px; }
+  .kitchen-title { font-family: 'Space Mono', monospace; font-size: 22px; color: var(--kitchen-text); font-weight: 700; letter-spacing: 0.04em; }
+  .kitchen-title span { color: var(--gold-kitchen); }
+  .kitchen-sub { font-family: 'Jost', sans-serif; font-size: 12px; font-weight: 300; color: #5a5a4e; letter-spacing: 0.08em; margin-top: 5px; }
+
+  .ticket { background: var(--kitchen-surface); border: 1px solid var(--kitchen-border); border-radius: 2px; padding: 1.25rem; margin-bottom: 1rem; }
+  .ticket-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.28em; color: var(--kitchen-dim); text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .ticket-label::after { content: ''; flex: 1; height: 0.5px; background: var(--kitchen-border); }
+
+  .input-row { display: flex; gap: 8px; }
+  #activity-input {
+    flex: 1; background: var(--kitchen-bg); border: 0.5px solid #2e2e26; border-radius: 2px;
+    padding: 10px 14px; font-family: 'Jost', sans-serif; font-size: 13px; font-weight: 300;
+    color: #d4d0c8; letter-spacing: 0.03em; outline: none;
+  }
+  #activity-input::placeholder { color: #3a3a30; }
+  #activity-input:focus { border-color: var(--gold-kitchen); }
+
+  .add-btn {
+    background: var(--gold-kitchen); color: var(--kitchen-bg); border: none; border-radius: 2px;
+    font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 0.15em;
+    padding: 10px 16px; cursor: pointer; white-space: nowrap; transition: opacity 0.15s;
+  }
+  .add-btn:hover { opacity: 0.85; }
+
+  .suggestion-box {
+    display: none; margin-top: 8px;
+    background: var(--kitchen-bg); border: 0.5px dashed #2e2e26; border-radius: 2px;
+    padding: 10px 12px;
+  }
+  .suggestion-box.visible { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .suggestion-text { font-family: 'Space Mono', monospace; font-size: 9px; color: #7a7a60; letter-spacing: 0.04em; flex: 1; min-width: 180px; }
+  .suggestion-text span { color: var(--gold-kitchen); }
+  .confirm-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+  .btn-yes { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; padding: 5px 12px; background: var(--gold-kitchen); color: var(--kitchen-bg); border: none; border-radius: 2px; cursor: pointer; }
+  .btn-change { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; padding: 5px 10px; background: transparent; color: #5a5a4e; border: 0.5px solid var(--kitchen-border); border-radius: 2px; cursor: pointer; }
+
+  .dur-row { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+  .dur-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.18em; color: var(--kitchen-dim); text-transform: uppercase; white-space: nowrap; }
+  #dur-input {
+    flex: 1; background: var(--kitchen-bg); border: 0.5px solid #2e2e26; border-radius: 2px;
+    padding: 6px 10px; font-family: 'Jost', sans-serif; font-size: 12px; font-weight: 300;
+    color: #d4d0c8; outline: none;
+  }
+  #dur-input:focus { border-color: var(--gold-kitchen); }
+
+  .cat-picker { display: none; margin-top: 8px; gap: 6px; flex-wrap: wrap; }
+  .cat-picker.visible { display: flex; }
+  .cat-opt {
+    font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; padding: 5px 10px;
+    background: transparent; color: var(--kitchen-dim); border: 0.5px solid var(--kitchen-border);
+    border-radius: 2px; cursor: pointer; transition: all 0.15s;
+  }
+  .cat-opt:hover { border-color: var(--gold-kitchen); color: var(--gold-kitchen); }
+
+  .items-ticket { background: var(--kitchen-surface); border: 1px solid var(--kitchen-border); border-radius: 2px; padding: 1.25rem; margin-bottom: 1rem; }
+  .empty-state { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--kitchen-dim); letter-spacing: 0.12em; text-align: center; padding: 1rem 0; }
+
+  .item-line { display: flex; align-items: center; gap: 8px; padding: 7px 0; border-bottom: 0.5px solid #1e1e18; }
+  .item-line:last-child { border-bottom: none; }
+  .item-bullet { width: 5px; height: 5px; border-radius: 50%; background: var(--gold-kitchen); flex-shrink: 0; }
+  .item-name-text { font-family: 'Jost', sans-serif; font-size: 13px; font-weight: 300; color: #d4d0c8; flex: 1; }
+  .item-tag {
+    font-family: 'Space Mono', monospace; font-size: 7.5px; letter-spacing: 0.08em;
+    padding: 2px 7px; border: 0.5px solid var(--kitchen-border); border-radius: 2px;
+    white-space: nowrap; cursor: pointer; position: relative; transition: opacity 0.15s;
+  }
+  .item-tag:hover { opacity: 0.75; }
+  .tag-small   { color: #8a7a5a; border-color: #3a3020; }
+  .tag-large   { color: #6a7a5a; border-color: #2a3020; }
+  .tag-side    { color: #5a6a7a; border-color: #202830; }
+  .tag-dessert { color: #7a5a6a; border-color: #301828; }
+  .tag-special { color: #7a6a8a; border-color: #2a2038; }
+
+  .cat-dropdown {
+    position: absolute; right: 0; top: calc(100% + 4px);
+    background: #1e1e1a; border: 0.5px solid var(--kitchen-border);
+    border-radius: 2px; z-index: 50; min-width: 110px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  }
+  .cat-dropdown button {
+    display: block; width: 100%;
+    font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em;
+    padding: 7px 10px; background: transparent; border: none;
+    text-align: left; cursor: pointer; transition: background 0.12s;
+    color: var(--kitchen-dim); text-transform: uppercase;
+  }
+  .cat-dropdown button:hover { background: #2a2a24; color: var(--gold-kitchen); }
+  .cat-dropdown button.active { color: var(--gold-kitchen); }
+
+  .item-remove { font-family: 'Space Mono', monospace; font-size: 11px; color: #3a3a30; background: none; border: none; cursor: pointer; padding: 0 2px; line-height: 1; transition: color 0.15s; }
+  .item-remove:hover { color: #aa4444; }
+
+  .generate-btn {
+    width: 100%; margin-top: 0.5rem; padding: 14px;
+    background: var(--gold-kitchen); color: var(--kitchen-bg);
+    font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+    letter-spacing: 0.24em; text-transform: uppercase; border: none; border-radius: 2px; cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .generate-btn:hover { opacity: 0.88; }
+
+  .arrow-divider { max-width: 680px; margin: 0 auto; display: flex; align-items: center; gap: 12px; padding: 0.75rem 2rem; }
+  .arrow-line { flex: 1; height: 0.5px; background: var(--kitchen-border); }
+
+  .menu-section { max-width: 680px; margin: 0 auto; padding: 0 2rem 3rem; }
+  .menu-wrap { background: var(--cream); border-radius: 2px; padding: 2.5rem 2rem; }
+  .menu-border { border: 1px solid var(--ink); padding: 2rem 1.75rem; position: relative; }
+  .menu-border::before { content: ''; position: absolute; inset: 5px; border: 0.5px solid var(--rule); pointer-events: none; }
+
+  .menu-header { text-align: center; margin-bottom: 1.75rem; padding-bottom: 1.5rem; border-bottom: 0.5px solid var(--rule); }
+  .menu-title-display {
+    font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 400;
+    letter-spacing: 0.08em; color: var(--ink); margin-bottom: 6px;
+    cursor: pointer; border-bottom: 1px dashed transparent; transition: border-color 0.2s;
+    display: inline-block;
+  }
+  .menu-title-display:hover { border-color: var(--rule); }
+  .menu-title-input {
+    font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 400;
+    letter-spacing: 0.08em; color: var(--ink); background: transparent;
+    border: none; border-bottom: 1px solid var(--ink); outline: none;
+    text-align: center; width: 100%; display: none;
+  }
+  .menu-sub-display {
+    font-family: 'Jost', sans-serif; font-size: 10px; font-weight: 300;
+    letter-spacing: 0.28em; color: var(--muted); text-transform: uppercase;
+    cursor: pointer; border-bottom: 1px dashed transparent; transition: border-color 0.2s;
+    display: inline-block;
+  }
+  .menu-sub-display:hover { border-color: var(--rule); }
+  .menu-sub-input {
+    font-family: 'Jost', sans-serif; font-size: 10px; font-weight: 300;
+    letter-spacing: 0.28em; color: var(--muted); text-transform: uppercase;
+    background: transparent; border: none; border-bottom: 1px solid var(--rule);
+    outline: none; text-align: center; width: 100%; display: none;
+  }
+  .edit-hint { font-family: 'Jost', sans-serif; font-size: 10px; font-weight: 300; color: var(--rule); margin-top: 8px; letter-spacing: 0.06em; }
+
+  .menu-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 2.5rem; }
+  .menu-col-full { grid-column: 1 / -1; }
+
+  .sec-header { display: flex; align-items: center; gap: 10px; margin-bottom: 0.85rem; }
+  .sec-line { flex: 1; height: 0.5px; background: var(--ink); }
+  .sec-name-display {
+    font-family: 'Jost', sans-serif; font-size: 8.5px; font-weight: 400;
+    letter-spacing: 0.3em; text-transform: uppercase; color: var(--ink);
+    white-space: nowrap; cursor: pointer; border-bottom: 1px dashed transparent; transition: border-color 0.2s;
+  }
+  .sec-name-display:hover { border-color: var(--rule); }
+  .sec-name-input {
+    font-family: 'Jost', sans-serif; font-size: 8.5px; font-weight: 400;
+    letter-spacing: 0.3em; text-transform: uppercase; color: var(--ink);
+    background: transparent; border: none; border-bottom: 1px solid var(--rule);
+    outline: none; width: 120px; text-align: center; display: none;
+  }
+
+  .menu-item { margin-bottom: 0.9rem; }
+  .item-top { display: flex; justify-content: space-between; align-items: baseline; gap: 6px; }
+  .item-n { font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 400; color: var(--ink); }
+  .item-dots { flex: 1; border-bottom: 1px dotted var(--rule); margin: 0 5px 3px; }
+  .item-dur { font-family: 'Jost', sans-serif; font-size: 10.5px; font-weight: 300; color: var(--muted); white-space: nowrap; }
+  .item-desc { font-family: 'Playfair Display', serif; font-size: 11.5px; font-style: italic; color: #6b6050; line-height: 1.55; margin-top: 2px; }
+
+  .menu-divider { grid-column: 1 / -1; height: 0.5px; background: var(--rule); margin: 0.5rem 0 1.5rem; }
+
+  .menu-footer { text-align: center; margin-top: 1.5rem; padding-top: 1.25rem; border-top: 0.5px solid var(--rule); }
+  .menu-footer-text { font-family: 'Jost', sans-serif; font-size: 9px; font-weight: 300; letter-spacing: 0.22em; text-transform: uppercase; color: #a89880; }
+
+  .empty-menu { font-family: 'Playfair Display', serif; font-style: italic; font-size: 13px; color: var(--rule); text-align: center; padding: 1.5rem 0; }
+
+  /* FIX Bug 8: clean border declaration — only bottom border, no conflicting overrides */
+  .dl-row { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 1.25rem; padding-top: 1rem; border-top: 0.5px solid var(--rule); }
+  .dl-link {
+    font-family: 'Jost', sans-serif; font-size: 10px; font-weight: 400;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--brown);
+    text-decoration: none; cursor: pointer; background: none;
+    border: none; border-bottom: 0.5px solid var(--brown);
+    padding: 0 0 1px 0; transition: opacity 0.15s;
+  }
+  .dl-link:hover { opacity: 0.5; }
+  .dl-sep { font-family: 'Jost', sans-serif; font-size: 10px; color: var(--rule); font-weight: 300; }
+
+  .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--cream); font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.12em; padding: 10px 20px; border-radius: 2px; opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 100; white-space: nowrap; }
+  .toast.show { opacity: 1; }
+
+  .suggestions-list { margin-top: 1rem; }
+  .suggestions-label { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.22em; color: var(--kitchen-dim); text-transform: uppercase; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+  .suggestions-label::after { content: ''; flex: 1; height: 0.5px; background: var(--kitchen-border); }
+  .suggestions-grid { display: flex; flex-wrap: wrap; gap: 5px; }
+  .sugg-pill { font-family: 'Jost', sans-serif; font-size: 11px; font-weight: 300; color: #5a5a4e; background: transparent; border: 0.5px solid var(--kitchen-border); border-radius: 2px; padding: 4px 9px; cursor: pointer; transition: all 0.15s; }
+  .sugg-pill:hover { color: var(--gold-kitchen); border-color: var(--gold-kitchen); }
+
+  @media (max-width: 500px) {
+    .kitchen, .menu-section, .arrow-divider { padding-left: 1rem; padding-right: 1rem; }
+    .menu-cols { grid-template-columns: 1fr; }
+    .menu-col-full { grid-column: 1; }
+    .menu-divider { display: none; }
+    .menu-border { padding: 1.5rem 1.25rem; }
+    .menu-title-display, .menu-title-input { font-size: 22px; }
+  }
+
+  @media print {
+    * { background: white !important; color: black !important; -webkit-print-color-adjust: exact; }
+    body { background: white !important; }
+    .kitchen, .arrow-divider { display: none !important; }
+    .menu-section { max-width: 100%; padding: 0; margin: 0; }
+    .menu-wrap { background: white !important; padding: 0.5rem; box-shadow: none !important; }
+    .menu-border { border-color: black !important; }
+    .menu-border::before { border-color: #aaa !important; }
+    .sec-line, .menu-divider { background: black !important; }
+    .out-sl { background: black !important; }
+    .item-dots { border-color: #999 !important; }
+    .menu-footer-text, .menu-sub-display, .out-sub { color: #555 !important; }
+    .item-desc, .out-desc { color: #444 !important; }
+    .dl-row, .edit-hint { display: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="kitchen">
+  <div class="kitchen-header">
+    <p class="kitchen-eyebrow">Mise en place</p>
+    <h1 class="kitchen-title">Petit <span>Plaisir</span></h1>
+    <p class="kitchen-sub">Create your personal menu of little joys.</p>
+  </div>
+
+  <div class="ticket">
+    <div class="ticket-label">New activity</div>
+    <div class="input-row">
+      <input id="activity-input" type="text" placeholder="e.g. morning coffee, go for a run, watch TV..." autocomplete="off">
+      <button class="add-btn" onclick="handleAdd()">Add</button>
+    </div>
+    <div class="dur-row" id="dur-row" style="display:none;">
+      <span class="dur-label">How long?</span>
+      <input id="dur-input" type="text" placeholder="e.g. 10-20 min, ongoing...">
+      <button class="btn-yes" onclick="confirmAdd()">Add it</button>
+    </div>
+    <div class="suggestions-list">
+      <div class="suggestions-label">Try one of these</div>
+      <div class="suggestions-grid" id="suggestions-grid"></div>
+    </div>
+  </div>
+
+  <div class="items-ticket">
+    <div class="ticket-label">On the menu</div>
+    <div id="items-list">
+      <div class="empty-state">Nothing added yet -- start above</div>
+    </div>
+  </div>
+
+  <button class="generate-btn" onclick="scrollToMenu()">-- View my menu --</button>
+</div>
+
+<div class="arrow-divider">
+  <div class="arrow-line"></div>
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="color:var(--gold-kitchen)">
+    <path d="M8 2v12M3 9l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  <div class="arrow-line"></div>
+</div>
+
+<div class="menu-section" id="menu-section">
+  <div class="menu-wrap" id="menu-wrap">
+    <div class="menu-border" id="menu-printable">
+
+      <div class="menu-header">
+        <div>
+          <span class="menu-title-display" id="menu-title-display" onclick="editTitle()">Petit Plaisir</span>
+          <input class="menu-title-input" id="menu-title-input" value="Petit Plaisir" onblur="saveTitle()" onkeydown="if(event.key==='Enter')saveTitle()">
+        </div>
+        <div style="margin-top:6px">
+          <span class="menu-sub-display" id="menu-sub-display" onclick="editSub()">A curated menu of little joys</span>
+          <input class="menu-sub-input" id="menu-sub-input" value="A curated menu of little joys" onblur="saveSub()" onkeydown="if(event.key==='Enter')saveSub()">
+        </div>
+        <div class="edit-hint">click any title or section name to edit</div>
+      </div>
+
+      <div class="menu-cols" id="menu-cols">
+        <div class="empty-menu" style="grid-column:1/-1">Add activities above to build your menu</div>
+      </div>
+
+      <div class="menu-footer">
+        <p class="menu-footer-text">Savor intentionally &nbsp;&middot;&nbsp; Nourish freely &nbsp;&middot;&nbsp; Indulge wisely</p>
+      </div>
+
+    </div>
+
+    <div class="dl-row">
+      <button class="dl-link" onclick="printPDF()">Print / PDF</button>
+      <span class="dl-sep">&middot;</span>
+      <button class="dl-link" onclick="saveImage()">Save image</button>
+      <span class="dl-sep">&middot;</span>
+      <button class="dl-link" onclick="copyLink()">Copy link</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const CATS = {
+  small:   { label: 'Small Plates', tag: 'Small Plate',  tagClass: 'tag-small'   },
+  large:   { label: 'Large Plates', tag: 'Large Plate',  tagClass: 'tag-large'   },
+  side:    { label: 'Sides',        tag: 'Side',          tagClass: 'tag-side'    },
+  dessert: { label: 'Desserts',     tag: 'Dessert',       tagClass: 'tag-dessert' },
+  special: { label: 'Specials',     tag: 'Special',       tagClass: 'tag-special' },
+};
+
+const sectionNames = {
+  small: 'Small Plates', large: 'Large Plates',
+  side: 'Sides', dessert: 'Desserts', special: 'Specials'
+};
+
+let items = [];
+let nextId = 1;
+let currentInput = '';
+let currentGuess = null;
+
+// FIX Bug 4: use straight ASCII apostrophes throughout desc strings
+const rules = [
+  { keywords: ['coffee','tea','espresso','matcha','latte','cappuccino'], cat:'small', dur:'5-10 min', desc:'Quiet ritual, warm cup, a moment that is yours alone' },
+  { keywords: ['snack','chocolate','fruit','berries','dark choc'], cat:'small', dur:'5 min', desc:'A small, deliberate pleasure -- nourishment for the now' },
+  { keywords: ['stretch','yoga','poses','flow'], cat:'small', dur:'5-15 min', desc:'Gentle movement that wakes the body without demanding more' },
+  { keywords: ['shower','bath'], cat:'small', dur:'10-20 min', desc:'Steam, warmth, the simplest of resets' },
+  { keywords: ['jump','jumping jacks','pushups','push-ups','situps'], cat:'small', dur:'1-5 min', desc:'A percussive burst -- let the body move before the mind catches up' },
+  { keywords: ['song','music','listen','playlist','album','track'], cat:'small', dur:'3-5 min', desc:'A brief sonic escape -- let the melody carry you' },
+  { keywords: ['crossword','puzzle','wordle','sudoku'], cat:'small', dur:'10-20 min', desc:'A pleasurable challenge for a restless mind' },
+  { keywords: ['candle','scent','essential oil','aromatherapy'], cat:'small', dur:'ongoing', desc:'Let the senses do the work -- comfort without effort' },
+  { keywords: ['meditat','breathe','breathing','mindfulness'], cat:'small', dur:'5-20 min', desc:'Five minutes of deliberate stillness -- the mind\'s reset button' },
+  { keywords: ['sunlight','sunshine','sun'], cat:'small', dur:'5-15 min', desc:'Nature\'s own dopamine trigger -- step into the light' },
+  { keywords: ['gratitude','journal','write','writing','journaling'], cat:'large', dur:'15-30 min', desc:'A conversation with yourself, honest and unhurried' },
+  { keywords: ['run','running','jog','jogging'], cat:'large', dur:'20-45 min', desc:'Pavement, rhythm, the world falling quiet behind you' },
+  { keywords: ['walk','walking','stroll','hike','hiking','nature walk'], cat:'large', dur:'20-60 min', desc:'Fresh air, forward motion, and the slow return to yourself' },
+  { keywords: ['workout','gym','exercise','lift','weights','pilates','reformer','spin','cycling','swim','swimming'], cat:'large', dur:'30-60 min', desc:'The body asks, and you answer -- every rep a small act of care' },
+  { keywords: ['dance','dancing'], cat:'large', dur:'10-30 min', desc:'Unchoreographed joy -- no audience required' },
+  { keywords: ['cook','cooking','bake','baking','bread','recipe'], cat:'large', dur:'30 min-2 hrs', desc:'Patient alchemy -- warmth, patience, and something made by hand' },
+  { keywords: ['guitar','piano','instrument','practice','drums','violin','sing','singing'], cat:'large', dur:'30-60 min', desc:'Fingers finding their way, the world falling quiet' },
+  { keywords: ['knit','knitting','crochet','needlepoint','sew','sewing','paint','painting','draw','drawing','craft','crafting','hobby'], cat:'large', dur:'30-90 min', desc:'The unhurried pleasure of making something with your hands' },
+  { keywords: ['dog','walk the dog','pet'], cat:'large', dur:'20-40 min', desc:'Unconditional company and a reason to go outside' },
+  { keywords: ['read','reading','book'], cat:'large', dur:'20-60 min', desc:'A world within a world -- disappear for a while' },
+  { keywords: ['learn','skill','language','course','study'], cat:'large', dur:'30-60 min', desc:'The slow accumulation of capability -- deeply satisfying' },
+  { keywords: ['friend','call a friend','phone','catch up'], cat:'large', dur:'20-60 min', desc:'Real voices, shared laughter -- the irreplaceable comfort of connection' },
+  { keywords: ['podcast','audio'], cat:'side', dur:'ongoing', desc:'A voice in the room, the silence held at bay' },
+  { keywords: ['white noise','rain sounds','ambient'], cat:'side', dur:'ongoing', desc:'Texture for the air -- presence without distraction' },
+  { keywords: ['fidget','spinner','fidget toy'], cat:'side', dur:'ongoing', desc:'Small hands, busy mind -- let the fingers wander freely' },
+  { keywords: ['body double','accountability','timer','set a timer'], cat:'side', dur:'ongoing', desc:'A structure that makes the ordinary feel like sport' },
+  { keywords: ['scroll','scrolling','social media','instagram','tiktok','twitter','reddit'], cat:'dessert', dur:'15-30 min', desc:'Sweet and quick -- best enjoyed in small, intentional bites' },
+  { keywords: ['tv','television','netflix','show','series','episode','watch'], cat:'dessert', dur:'30-60 min', desc:'A familiar comfort -- easy to overindulge, lovely in doses' },
+  { keywords: ['video game','gaming','game'], cat:'dessert', dur:'30-90 min', desc:'An immersive escape -- reward yourself, then return' },
+  { keywords: ['text','texting','message'], cat:'dessert', dur:'10-20 min', desc:'Connection through a screen -- light, but still connection' },
+  { keywords: ['concert','live music','gig'], cat:'special', dur:'2-4 hrs', desc:'Rare, loud, and bucket-filling -- worth every effort to attend' },
+  { keywords: ['vacation','trip','holiday','travel','getaway'], cat:'special', dur:'2-7 days', desc:'Step outside the routine entirely -- breathe completely different air' },
+  { keywords: ['dinner','restaurant','dining out'], cat:'special', dur:'1-2 hrs', desc:'An occasion worthy of your full attention and appetite' },
+  { keywords: ['play','comedy show','theatre','theater','musical'], cat:'special', dur:'2-3 hrs', desc:'Live performance -- irreplaceable in the age of screens' },
+  { keywords: ['massage','spa','facial','nail','salon','manicure','pedicure'], cat:'special', dur:'1-2 hrs', desc:'A deliberate act of care -- for the body, by the body' },
+  { keywords: ['documentary','film','movie','cinema'], cat:'dessert', dur:'1-2 hrs', desc:'A window into another world -- choose one that leaves you thinking' },
+];
+
+const SUGGESTIONS = [
+  { name: 'Morning coffee',        dur: '5-10 min',  desc: 'Quiet ritual, warm cup, a moment that is yours alone' },
+  { name: 'Go for a walk',         dur: '20-40 min', desc: 'Fresh air, forward motion, a slow return to yourself' },
+  { name: 'Listen to a song',      dur: '3-5 min',   desc: 'A brief sonic escape -- let the melody carry you' },
+  { name: 'Podcast in background', dur: 'ongoing',   desc: 'A voice in the room, the silence held at bay' },
+  { name: 'Social media scroll',   dur: '15-30 min', desc: 'Sweet and quick -- best enjoyed in small, intentional bites' },
+  { name: 'Live concert',          dur: '2-4 hrs',   desc: 'Rare, loud, and bucket-filling -- worth every effort' },
+  { name: 'Bake something',        dur: '1-2 hrs',   desc: 'Patient alchemy -- warmth, patience, and something made by hand' },
+  { name: 'Stretches or yoga',     dur: '10-15 min', desc: 'Gentle movement that wakes the body without demanding more' },
+  { name: 'Play an instrument',    dur: '30-60 min', desc: 'Fingers finding their way, the world falling quiet' },
+  { name: 'Use a fidget toy',      dur: 'ongoing',   desc: 'Small hands, busy mind -- let the fingers wander' },
+  { name: 'Watch a show',          dur: '30-60 min', desc: 'A familiar comfort -- easy to overindulge, lovely in doses' },
+  { name: 'Get a massage',         dur: '1 hr',      desc: 'A deliberate act of care -- for the body, by the body' },
+];
+
+function classify(text) {
+  const lower = text.toLowerCase();
+  for (const rule of rules) {
+    if (rule.keywords.some(k => lower.includes(k))) {
+      return { dur: rule.dur, desc: rule.desc };
+    }
+  }
+  return null;
+}
+
+// Derive category purely from the duration string the user provides
+function catFromDur(dur) {
+  const s = dur.toLowerCase().trim();
+  if (!s || s === '--') return 'small';
+  if (s.includes('ongoing') || s.includes('background') || s.includes('always')) return 'side';
+  // extract the largest number mentioned (handles "30-60 min", "2 hrs", "1-2 days" etc.)
+  const dayMatch = s.match(/(\d+)\s*day/);
+  if (dayMatch) return 'special';
+  const hrMatch = s.match(/(\d+(?:\.\d+)?)\s*hr/);
+  if (hrMatch) {
+    const hrs = parseFloat(hrMatch[1]);
+    if (hrs >= 1.5) return 'special';
+    return 'large';
+  }
+  // find all numbers and take the largest
+  const nums = [...s.matchAll(/\d+/g)].map(m => parseInt(m[0]));
+  if (nums.length === 0) return 'small';
+  const max = Math.max(...nums);
+  if (max <= 10) return 'small';
+  if (max <= 60) return 'large';
+  return 'special';
+}
+
+function showDurInput(prefill) {
+  const row = document.getElementById('dur-row');
+  const inp = document.getElementById('dur-input');
+  inp.value = prefill || '';
+  row.style.display = 'flex';
+  inp.focus();
+  inp.select();
+}
+
+function hideDurInput() {
+  document.getElementById('dur-row').style.display = 'none';
+  document.getElementById('dur-input').value = '';
+}
+
+function handleAdd() {
+  const input = document.getElementById('activity-input');
+  const val = input.value.trim();
+  if (!val) return;
+  currentInput = val;
+  const guess = classify(val);
+  currentGuess = guess;
+  showDurInput(guess ? guess.dur : '');
+}
+
+function confirmAdd() {
+  if (!currentInput) return;
+  const dur = document.getElementById('dur-input').value.trim() || '--';
+  const cat = catFromDur(dur);
+  const desc = currentGuess ? currentGuess.desc : 'A personal favourite -- yours to savor whenever you need it most';
+  addItem(currentInput, cat, dur, desc);
+}
+
+function addItem(name, cat, dur, desc) {
+  items.push({ id: nextId++, name, cat, dur, desc });
+  document.getElementById('activity-input').value = '';
+  hideDurInput();
+  currentInput = '';
+  currentGuess = null;
+  renderList();
+  renderMenu();
+  saveToURL();
+}
+
+function toggleCatDropdown(e, id) {
+  e.stopPropagation();
+  const dd = document.getElementById(`cat-dd-${id}`);
+  const isOpen = dd.style.display === 'block';
+  // close all open dropdowns first
+  document.querySelectorAll('.cat-dropdown').forEach(d => d.style.display = 'none');
+  if (!isOpen) dd.style.display = 'block';
+}
+
+function changeCat(e, id, newCat) {
+  e.stopPropagation();
+  const item = items.find(i => i.id === id);
+  if (item) {
+    item.cat = newCat;
+    renderList();
+    renderMenu();
+    saveToURL();
+  }
+}
+
+// close dropdowns when clicking outside
+document.addEventListener('click', () => {
+  document.querySelectorAll('.cat-dropdown').forEach(d => d.style.display = 'none');
+});
+
+function removeItem(id) {
+  items = items.filter(i => i.id !== id);
+  renderList();
+  renderMenu();
+  saveToURL();
+}
+
+function renderList() {
+  const el = document.getElementById('items-list');
+  if (items.length === 0) {
+    el.innerHTML = '<div class="empty-state">Nothing added yet -- start above</div>';
+    return;
+  }
+  el.innerHTML = items.map(item => `
+    <div class="item-line">
+      <div class="item-bullet"></div>
+      <div class="item-name-text">${esc(item.name)}</div>
+      <div class="item-tag ${CATS[item.cat].tagClass}" onclick="toggleCatDropdown(event,${item.id})">
+        ${CATS[item.cat].tag} &#9662;
+        <div class="cat-dropdown" id="cat-dd-${item.id}" style="display:none">
+          ${Object.entries(CATS).map(([k,v]) => `
+            <button onclick="changeCat(event,${item.id},'${k}')" class="${k===item.cat?'active':''}">${v.tag}</button>
+          `).join('')}
+        </div>
+      </div>
+      <button class="item-remove" onclick="removeItem(${item.id})" aria-label="Remove">&times;</button>
+    </div>
+  `).join('');
+}
+
+function renderMenu() {
+  const cols = document.getElementById('menu-cols');
+  if (items.length === 0) {
+    cols.innerHTML = '<div class="empty-menu" style="grid-column:1/-1">Add activities above to build your menu</div>';
+    return;
+  }
+
+  const groups = { small: [], large: [], side: [], dessert: [], special: [] };
+  items.forEach(i => groups[i.cat].push(i));
+
+  let leftHTML = '';
+  let rightHTML = '';
+  let fullHTML = '';
+
+  if (groups.small.length > 0) leftHTML += secHTML('small', groups.small);
+  if (groups.side.length > 0) {
+    if (leftHTML) leftHTML += '<div style="height:1.25rem"></div>';
+    leftHTML += secHTML('side', groups.side);
+  }
+  if (groups.large.length > 0) rightHTML += secHTML('large', groups.large);
+  if (groups.dessert.length > 0) {
+    if (rightHTML) rightHTML += '<div style="height:1.25rem"></div>';
+    rightHTML += secHTML('dessert', groups.dessert);
+  }
+  if (groups.special.length > 0) fullHTML = secHTML('special', groups.special, true);
+
+  let html = '';
+  if (leftHTML || rightHTML) html += `<div>${leftHTML}</div><div>${rightHTML}</div>`;
+  // FIX Bug 5: proper boolean for needDivider
+  const needDivider = Boolean(leftHTML || rightHTML) && Boolean(fullHTML);
+  if (needDivider) html += '<div class="menu-divider"></div>';
+  if (fullHTML) html += `<div class="menu-col-full">${fullHTML}</div>`;
+
+  cols.innerHTML = html;
+}
+
+function secHTML(cat, itemsArr, twoCol) {
+  const name = sectionNames[cat];
+  const inner = (twoCol && itemsArr.length > 1)
+    ? `<div style="display:grid;grid-template-columns:1fr 1fr;gap:0 2.5rem">${itemsArr.map(itemHTML).join('')}</div>`
+    : itemsArr.map(itemHTML).join('');
+  return `
+    <div class="sec-header">
+      <div class="sec-line"></div>
+      <span class="sec-name-display" data-cat="${cat}" onclick="editSecName('${cat}')">${esc(name)}</span>
+      <input class="sec-name-input" data-cat="${cat}" value="${esc(name)}"
+        onblur="saveSecName('${cat}')" onkeydown="if(event.key==='Enter')saveSecName('${cat}')">
+      <div class="sec-line"></div>
+    </div>
+    ${inner}
+  `;
+}
+
+function itemHTML(item) {
+  return `
+    <div class="menu-item">
+      <div class="item-top">
+        <span class="item-n">${esc(toTitleCase(item.name))}</span>
+        <span class="item-dots"></span>
+        <span class="item-dur">${esc(item.dur)}</span>
+      </div>
+      <div class="item-desc">${esc(item.desc)}</div>
+    </div>
+  `;
+}
+
+// Inline editing
+function editTitle() {
+  document.getElementById('menu-title-display').style.display = 'none';
+  const inp = document.getElementById('menu-title-input');
+  inp.style.display = 'inline-block'; inp.focus(); inp.select();
+}
+function saveTitle() {
+  const inp = document.getElementById('menu-title-input');
+  const val = inp.value.trim() || 'Petit Plaisir';
+  inp.value = val;
+  document.getElementById('menu-title-display').textContent = val;
+  document.getElementById('menu-title-display').style.display = 'inline-block';
+  inp.style.display = 'none';
+  saveToURL();
+}
+function editSub() {
+  document.getElementById('menu-sub-display').style.display = 'none';
+  const inp = document.getElementById('menu-sub-input');
+  inp.style.display = 'inline-block'; inp.focus(); inp.select();
+}
+function saveSub() {
+  const inp = document.getElementById('menu-sub-input');
+  const val = inp.value.trim() || 'A curated menu of little joys';
+  inp.value = val;
+  document.getElementById('menu-sub-display').textContent = val;
+  document.getElementById('menu-sub-display').style.display = 'inline-block';
+  inp.style.display = 'none';
+  saveToURL();
+}
+function editSecName(cat) {
+  document.querySelectorAll(`.sec-name-display[data-cat="${cat}"]`).forEach(d => d.style.display = 'none');
+  document.querySelectorAll(`.sec-name-input[data-cat="${cat}"]`).forEach(i => {
+    i.style.display = 'inline-block'; i.focus(); i.select();
+  });
+}
+function saveSecName(cat) {
+  let val = CATS[cat].label;
+  document.querySelectorAll(`.sec-name-input[data-cat="${cat}"]`).forEach(i => {
+    val = i.value.trim() || CATS[cat].label;
+    i.value = val; i.style.display = 'none';
+  });
+  sectionNames[cat] = val;
+  document.querySelectorAll(`.sec-name-display[data-cat="${cat}"]`).forEach(d => {
+    d.textContent = val; d.style.display = 'inline-block';
+  });
+  saveToURL();
+}
+
+document.getElementById('activity-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') handleAdd();
+});
+
+document.getElementById('dur-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') confirmAdd();
+});
+
+// FIX Bug 6: use map index directly
+function renderSuggestions() {
+  const grid = document.getElementById('suggestions-grid');
+  grid.innerHTML = SUGGESTIONS.map((s, i) =>
+    `<button class="sugg-pill" onclick="addSuggestion(${i})">${esc(s.name)}</button>`
+  ).join('');
+}
+
+function addSuggestion(idx) {
+  const s = SUGGESTIONS[idx];
+  // pre-fill the activity input and duration, then confirm immediately
+  document.getElementById('activity-input').value = s.name;
+  currentInput = s.name;
+  currentGuess = { dur: s.dur, desc: s.desc };
+  showDurInput(s.dur);
+}
+
+// FIX Bug 4: use TextEncoder/TextDecoder for robust Unicode URL encoding
+function encodeState(obj) {
+  const json = JSON.stringify(obj);
+  const bytes = new TextEncoder().encode(json);
+  let binary = '';
+  bytes.forEach(b => binary += String.fromCharCode(b));
+  return btoa(binary);
+}
+
+function decodeState(str) {
+  const binary = atob(str);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  const json = new TextDecoder().decode(bytes);
+  return JSON.parse(json);
+}
+
+function saveToURL() {
+  const state = {
+    items, nextId,
+    title: document.getElementById('menu-title-input').value,
+    sub: document.getElementById('menu-sub-input').value,
+    sectionNames,
+  };
+  try {
+    history.replaceState(null, '', '#' + encodeState(state));
+  } catch(e) { /* ignore */ }
+}
+
+function loadFromURL() {
+  const hash = location.hash.slice(1);
+  if (!hash) return;
+  try {
+    const state = decodeState(hash);
+    items = state.items || [];
+    nextId = state.nextId || items.length + 1;
+    if (state.sectionNames) Object.assign(sectionNames, state.sectionNames);
+    if (state.title) {
+      document.getElementById('menu-title-input').value = state.title;
+      document.getElementById('menu-title-display').textContent = state.title;
+    }
+    if (state.sub) {
+      document.getElementById('menu-sub-input').value = state.sub;
+      document.getElementById('menu-sub-display').textContent = state.sub;
+    }
+    renderList();
+    renderMenu();
+  } catch(e) { /* ignore bad hash */ }
+}
+
+function scrollToMenu() {
+  document.getElementById('menu-section').scrollIntoView({ behavior: 'smooth' });
+}
+
+// FIX Bug 1: restore UI after print dialog closes, not before
+function printPDF() {
+  const dlRow = document.querySelector('.dl-row');
+  const hints = document.querySelectorAll('.edit-hint');
+  const hide = () => { dlRow.style.display = 'none'; hints.forEach(h => h.style.display = 'none'); };
+  const show = () => { dlRow.style.display = ''; hints.forEach(h => h.style.display = ''); };
+  hide();
+  setTimeout(() => {
+    window.print();
+    // Use afterprint event where supported, fallback to timeout
+    const restore = () => { show(); window.removeEventListener('afterprint', restore); };
+    window.addEventListener('afterprint', restore);
+    setTimeout(restore, 1000); // fallback if afterprint doesn't fire
+  }, 50);
+}
+
+function saveImage() {
+  const dlRow = document.querySelector('.dl-row');
+  const hints = document.querySelectorAll('.edit-hint');
+  dlRow.style.display = 'none';
+  hints.forEach(h => h.style.display = 'none');
+  html2canvas(document.getElementById('menu-wrap'), {
+    backgroundColor: '#f8f6f1',
+    scale: 2,
+    useCORS: true,
+  }).then(canvas => {
+    dlRow.style.display = '';
+    hints.forEach(h => h.style.display = '');
+    const link = document.createElement('a');
+    link.download = 'petit-plaisir.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    showToast('Image saved');
+  }).catch(() => {
+    dlRow.style.display = '';
+    hints.forEach(h => h.style.display = '');
+    showToast('Could not save image');
+  });
+}
+
+function copyLink() {
+  saveToURL();
+  const url = location.href;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(url).then(() => showToast('Link copied to clipboard'));
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = url; document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast('Link copied to clipboard');
+  }
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function esc(str) {
+  return String(str)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+}
+
+// Minor words that stay lowercase unless they're the first word
+const MINOR = new Set(['a','an','the','and','but','or','nor','for','so','yet','at','by','in','of','on','to','up','as','is','it']);
+
+function toTitleCase(str) {
+  return String(str).split(' ').map((word, i) => {
+    const lower = word.toLowerCase();
+    if (i === 0 || !MINOR.has(lower)) {
+      return lower.charAt(0).toUpperCase() + lower.slice(1);
+    }
+    return lower;
+  }).join(' ');
+}
+
+renderSuggestions();
+loadFromURL();
+</script>
+</body>
+</html>

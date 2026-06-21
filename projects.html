@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Projects</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300..700;1,300..700&family=Sometype+Mono:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <link href="/assets/style_v2.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="home"><a href="index.html">3000 bc</a></div>
+    <h1>Projects</h1>
+    <div class="pillars-container" id="projects-container"></div>
+
+    <script>
+      async function loadProjects() {
+        const res = await fetch('/projects_v2.json');
+        const data = await res.json();
+        const container = document.getElementById('projects-container');
+
+        data.projects.forEach(project => {
+          const pillar = document.createElement('div');
+          pillar.className = 'pillar';
+
+          const h2 = document.createElement('h2');
+          h2.textContent = project.title;
+          pillar.appendChild(h2);
+
+          if (project.description) {
+            const p = document.createElement('p');
+            p.textContent = project.description;
+            pillar.appendChild(p);
+          }
+
+          if (project.links) {
+            project.links.forEach(item => {
+              const p = document.createElement('p');
+              const a = document.createElement('a');
+              a.href = item.url;
+              a.textContent = item.label;
+              if (item.external) a.target = '_blank';
+              p.appendChild(a);
+              pillar.appendChild(p);
+            });
+          }
+
+          if (project.guestbook) {
+            const iframe = document.createElement('iframe');
+            iframe.height = '220';
+            iframe.src = project.guestbook;
+            iframe.title = 'Guestbook';
+            pillar.appendChild(iframe);
+          }
+
+          if (project.footnote) {
+            const p = document.createElement('p');
+            p.innerHTML = project.footnote;
+            pillar.appendChild(p);
+          }
+
+          container.appendChild(pillar);
+        });
+      }
+
+      loadProjects();
+    </script>
+  </body>
+</html>

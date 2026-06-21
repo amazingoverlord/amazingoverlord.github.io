@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link href="/assets/style_v2.css" rel="stylesheet" type="text/css" media="all">
+    <link href='https://fonts.googleapis.com/css?family=Cormorant' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Sometype Mono' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Public Sans' rel='stylesheet'>
+</head>
+<body>
+
+
+<!-- LOGIN FORM -->
+<div id="loginContainer" style="text-align: center; margin-top: 100px;">
+    <input type="password" id="passwordInput" placeholder="Enter password" style="padding: 8px; margin: 10px; border: none; background: none; border-bottom: 1px solid #000000;">
+    <button onclick="checkPassword()" style="padding: 8px 16px; border: 1px solid #000000;background: none;">Unlock</button>
+    <div id="errorMsg" style="color: red; margin-top: 10px; display: none;">Wrong password</div>
+</div>
+
+<!-- DASHBOARD CONTENT (protected) -->
+<div id="dashboardContent" style="display: none;">
+
+    <div class="home"><a href="/index.html">3000 bc</a></div>
+    <h1>Dashboard</h1>
+<div class="pillars-container">
+    
+    
+    <div class="pillar">
+      <h2>Upcoming AOS Content</h2>
+      <iframe height="360" src="ao_upcoming_posts.html" title="Upcoming"></iframe>
+    </div>
+    
+    <div class="pillar">
+      <h2>Latest Work</h2>
+      <div id="latest-work"></div>
+      <br>
+      <h2>Current Forms</h2>
+      <div id="current-forms"></div>
+      <br>
+      <h2>Social</h2>
+      <div id="social"></div>
+    </div>
+    
+    <div class="pillar">
+      <h2>Recommended</h2>
+      <div id="recommended"></div>
+    </div>
+    
+    <div class="pillar">
+      <h2>AOS Resources</h2>
+      <a target="_blank" href="https://analogobject.studio">Website</a><br>
+      <a target="_blank" href="https://analogobject.squarespace.com/config/">Squarespace</a><br>
+      <a target="_blank" href="https://maps.app.goo.gl/xZgbW5Nksd3jKbTP7">AO Locations</a><br>
+      <a target="_blank" href="https://docs.proton.me/u/0/recents">Proton Docs</a><br>
+      <br>
+      <h2>Tools</h2>
+      <a target="_blank" href="https://aereference.com/">AE Expressions Reference</a><br>
+      <a target="_blank" href="https://claude.ai/new">Claude</a><br>
+      <a target="_blank" href="https://chat.deepseek.com/">Deepseek</a><br>
+      <a target="_blank" href="https://www.figma.com/files/team/1643341974778137328/recents-and-sharing?fuid=1643341971886767310">Figma</a><br>
+      <a target="_blank" href="https://jitter.video/files/">Jitter</a><br>
+      <a target="_blank" href="https://lovable.dev/dashboard">Lovable</a><br>
+      <a target="_blank" href="https://hailuoai.video/create/image-to-video">Minimax</a><br>
+      <a target="_blank" href="https://neocities.org/dashboard">Neocities</a><br>
+      <a target="_blank" href="https://editor.rive.app/">Rive</a><br>
+      <a target="_blank" href="https://app.spline.design/files">Spline</a><br>
+    </div>
+    
+    <div class="pillar">
+      <h2>Sitemap</h2>
+      <div id="jsonSitemapContainer">
+        <ul class="sitemap-tree" id="sitemapTree"></ul>
+      </div>
+    </div>
+    
+    <div class="pillar">
+      <h2>AOS Maps by Location</h2>
+      <iframe height="400" src="maps.html" title="Maps"></iframe>
+    </div>
+    
+    <div class="pillar">
+      <h2>AOS Maps by Pillar</h2>
+      <iframe height="400" src="pillar.html" title="Pillars"></iframe>
+    </div>
+    
+</div>
+
+    <h1>Projects</h1>
+    <div class="pillars-container" id="projects-container"></div>
+
+</div> <!-- END OF PROTECTED DASHBOARD CONTENT -->
+
+<!-- External JavaScript files -->
+<script src="/sitemap/sitemap.js"></script>
+<script src="/content_loader_v2.js"></script>
+
+<script>
+    const CORRECT_PASSWORD = "freepalestine";
+
+    function unlockDashboard() {
+        document.getElementById("loginContainer").style.display = "none";
+        document.getElementById("dashboardContent").style.display = "block";
+        loadProjects();
+        // buildSitemapTree() is now called from sitemap.js
+        // Make sure it's defined before calling
+        if (typeof buildSitemapTree === 'function') {
+            buildSitemapTree();
+        }
+    }
+
+    function checkPassword() {
+        const input = document.getElementById("passwordInput").value;
+        const errorMsg = document.getElementById("errorMsg");
+        
+        if (input === CORRECT_PASSWORD) {
+            sessionStorage.setItem("dashboardUnlocked", "true");
+            errorMsg.style.display = "none";
+            unlockDashboard();
+        } else {
+            errorMsg.style.display = "block";
+            document.getElementById("passwordInput").value = "";
+        }
+    }
+
+    // Check if already unlocked this session
+    if (sessionStorage.getItem("dashboardUnlocked") === "true") {
+        unlockDashboard();
+    }
+
+    // Allow Enter key to submit
+    document.getElementById("passwordInput").addEventListener("keypress", function(e) {
+        if (e.key === "Enter") {
+            checkPassword();
+        }
+    });
+
+    async function loadProjects() {
+        const res = await fetch('/projects_v2.json');
+        const data = await res.json();
+        const container = document.getElementById('projects-container');
+
+        data.projects.forEach(project => {
+          const pillar = document.createElement('div');
+          pillar.className = 'pillar';
+
+          const h2 = document.createElement('h2');
+          h2.textContent = project.title;
+          pillar.appendChild(h2);
+
+          if (project.description) {
+            const p = document.createElement('p');
+            p.textContent = project.description;
+            pillar.appendChild(p);
+          }
+
+          if (project.links) {
+            project.links.forEach(item => {
+              const p = document.createElement('p');
+              const a = document.createElement('a');
+              a.href = item.url;
+              a.textContent = item.label;
+              if (item.external) a.target = '_blank';
+              p.appendChild(a);
+              pillar.appendChild(p);
+            });
+          }
+
+          if (project.guestbook) {
+            const iframe = document.createElement('iframe');
+            iframe.height = '220';
+            iframe.src = project.guestbook;
+            iframe.title = 'Guestbook';
+            pillar.appendChild(iframe);
+          }
+
+          if (project.footnote) {
+            const p = document.createElement('p');
+            p.innerHTML = project.footnote;
+            pillar.appendChild(p);
+          }
+
+          container.appendChild(pillar);
+        });
+    }
+</script>
+
+</body>
+</html>

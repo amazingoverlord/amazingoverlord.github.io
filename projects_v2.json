@@ -1,0 +1,77 @@
+{
+  "projects": [
+    {
+      "title": "UI GFX",
+      "description": "Interactive UI props for film, programmed for live on-set interaction (HTML/JavaScript web apps, with exploration into Rive for advanced motion graphics) to capture authentic actor performance without the need for post-production VFX replacements.",
+      "links": [
+        { "label": "→ Satellite Terminal Panel (for iPad)", "url": "/gfx/scifi_keyboard", "external": true }
+      ]
+    },
+    {
+      "title": "HALFTXT",
+      "description": "A suite of client-side tools for creating ASCII art. Includes a media converter for converting images, GIFs, and video into color ASCII art and a frame-by-frame animator with export to WebM, MP4, HTML, and plain text — no backend, no dependencies.",
+      "links": [
+        { "label": "→ Launch", "url": "/halftxt/", "external": true }
+      ]
+    },
+    {
+      "title": "Unstick",
+      "description": "Unstick is a single-screen prompt generator for artists and makers who are stuck. Move the slider from gentle to chaos, get a task, do it.",
+      "links": [
+        { "label": "→ Launch", "url": "/unstick/", "external": true }
+      ]
+    },
+    {
+      "title": "Petit Plaisir",
+      "description": "A beautifully designed personal menu builder that helps you curate and remember the activities that make you feel alive.",
+      "links": [
+        { "label": "→ Launch", "url": "/petitplaisir/", "external": true }
+      ]
+    },
+    {
+      "title": "Clearing",
+      "description": "A minimal home screen dashboard. Live weather, the time, and a quiet way to launch any app, without distraction.",
+      "links": [
+        { "label": "→ Launch", "url": "clearing.html", "external": true },
+        { "label": "→ About Clearing", "url": "about_clearing.html", "external": true },
+        { "label": "→ Debug / Data Panel", "url": "clearing_debug.html", "external": true }
+      ]
+    },
+    {
+      "title": "Feeed Studio",
+      "description": "Generate a fake Instagram feed: upload images, crop to IG ratios, auto-fill usernames, captions and likes, then download as PNG.",
+      "links": [
+        { "label": "→ Launch", "url": "https://feeedstudio.lovable.app", "external": true }
+      ]
+    },
+    {
+      "title": "Vibe Color",
+      "description": "Generate beautiful color palettes from your mood. Describe how you feel, get five colors that capture the vibe.",
+      "links": [
+        { "label": "→ Launch", "url": "https://vibe-color.lovable.app", "external": true }
+      ]
+    },
+    {
+      "title": "Vibe Check",
+      "description": "Keep your brand visually consistent with AI-powered image analysis and scoring.",
+      "links": [
+        { "label": "→ Launch", "url": "https://vibe-fingerprint-forge.lovable.app", "external": true }
+      ]
+    },
+    {
+      "title": "Art",
+      "description": "Traditional fine art practice.",
+      "links": [
+        { "label": "→ Beds", "url": "/art/beds.html", "external": true }
+      ]
+    },
+    {
+      "title": "Guestbook",
+      "guestbook": "https://bc3000.atabook.org"
+    },
+    {
+      "title": "Archive",
+      "footnote": "Front Page Archive: <a href=\"/index_v1.html\">v1</a>"
+    }
+  ]
+}

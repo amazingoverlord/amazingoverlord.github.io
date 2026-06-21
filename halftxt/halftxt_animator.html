@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HALFTXT ANIMATOR</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+    }
+
+    body {
+      background: #262B2E;
+      font-family: Helvetica, Arial, sans-serif;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* TOPBAR */
+    .topbar {
+      height: 32px;
+      background: #262B2E;
+      border-bottom: 1px solid #4C5154;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px;
+      flex-shrink: 0;
+    }
+
+    .app-title {
+      color: #B7AAA1;
+      font-size: 0.6rem;
+      letter-spacing: 2px;
+      font-weight: 500;
+    }
+
+    .topbar-actions {
+      display: flex;
+      gap: 16px;
+    }
+
+    .topbar-btn {
+      background: none;
+      border: none;
+      color: #4C5154;
+      font-size: 0.6rem;
+      cursor: pointer;
+      font-family: inherit;
+      padding: 0;
+      letter-spacing: 1px;
+    }
+
+    .topbar-btn:hover { color: #EAE3D6; }
+
+    /* MAIN LAYOUT */
+    .main-layout {
+      flex: 1;
+      display: flex;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    /* STAGE */
+    .stage-zone {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .stage-wrapper {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #1a1e20;
+      overflow: hidden;
+      padding: 10px;
+      position: relative;
+    }
+
+    #stageCanvas {
+      display: block;
+      cursor: crosshair;
+      outline: 1px solid #4C5154;
+    }
+
+    /* FILMSTRIP */
+    .filmstrip-area {
+      height: 78px;
+      background: #262B2E;
+      border-top: 1px solid #4C5154;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 8px;
+      flex-shrink: 0;
+    }
+
+    .filmstrip-area::-webkit-scrollbar { height: 3px; }
+    .filmstrip-area::-webkit-scrollbar-thumb { background: #4C5154; }
+
+    .filmstrip-track {
+      display: flex;
+      gap: 6px;
+      height: 100%;
+      align-items: center;
+    }
+
+    .film-thumb {
+      width: 50px;
+      height: 58px;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      position: relative;
+      cursor: pointer;
+      flex-shrink: 0;
+      border: 1px solid #4C5154;
+    }
+
+    .film-thumb.active { border: 1px solid #EAE3D6; }
+    .film-thumb.drag-over { border: 1px solid #EAE3D6; background: #4C5154; }
+
+    .film-thumb .thumb-canvas {
+      display: block;
+      width: 44px;
+      height: 44px;
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+
+    .thumb-label {
+      font-size: 7px;
+      color: #4C5154;
+      font-family: Helvetica, Arial, sans-serif;
+      padding: 2px 0;
+      width: 100%;
+      text-align: center;
+      background: #1a1e20;
+      margin-top: auto;
+    }
+
+    .film-thumb.active .thumb-label { color: #EAE3D6; }
+
+    .add-frame-btn {
+      width: 50px;
+      height: 58px;
+      border: 1px dashed #4C5154;
+      background: none;
+      color: #4C5154;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .add-frame-btn:hover { border-color: #B7AAA1; color: #B7AAA1; }
+
+    /* RIGHT PANEL */
+    .right-panel {
+      width: 200px;
+      background: #262B2E;
+      border-left: 1px solid #4C5154;
+      overflow-y: auto;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .right-panel::-webkit-scrollbar { width: 3px; }
+    .right-panel::-webkit-scrollbar-thumb { background: #4C5154; }
+
+    .panel-section {
+      border-bottom: 1px solid #4C5154;
+      padding: 9px 10px;
+    }
+
+    .section-title {
+      color: #4C5154;
+      font-size: 0.55rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    /* PLAYBACK */
+    .playback-buttons {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 8px;
+    }
+
+    .pb-btn {
+      background: none;
+      border: none;
+      color: #4C5154;
+      font-size: 0.6rem;
+      cursor: pointer;
+      font-family: inherit;
+      padding: 2px 4px;
+      flex: 1;
+      text-align: center;
+    }
+
+    .pb-btn:hover { color: #EAE3D6; }
+
+    .fps-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .fps-row label {
+      color: #B7AAA1;
+      font-size: 0.6rem;
+    }
+
+    .fps-row input {
+      width: 44px;
+      background: #1a1e20;
+      border: 1px solid #4C5154;
+      color: #EAE3D6;
+      font-size: 0.6rem;
+      padding: 2px 4px;
+      font-family: inherit;
+      text-align: right;
+    }
+
+    /* RANGE SLIDER */
+    input[type=range] {
+      flex: 1;
+      -webkit-appearance: none;
+      height: 2px;
+      background: #4C5154;
+      outline: none;
+      cursor: pointer;
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 8px;
+      height: 8px;
+      background: #EAE3D6;
+      cursor: pointer;
+    }
+
+    /* ONION SKIN */
+    .onion-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .onion-row label {
+      color: #B7AAA1;
+      font-size: 0.6rem;
+      white-space: nowrap;
+    }
+
+    .onion-row span {
+      color: #EAE3D6;
+      font-size: 0.6rem;
+      min-width: 8px;
+      text-align: right;
+    }
+
+    /* CONTROL ROWS */
+    .ctrl-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 5px;
+      font-size: 0.6rem;
+      color: #B7AAA1;
+    }
+
+    .ctrl-row:last-child { margin-bottom: 0; }
+
+    .ctrl-row input[type=number],
+    .ctrl-row input[type=text] {
+      width: 58px;
+      background: #1a1e20;
+      border: 1px solid #4C5154;
+      color: #EAE3D6;
+      font-size: 0.6rem;
+      padding: 2px 4px;
+      font-family: inherit;
+      text-align: right;
+    }
+
+    select {
+      background: #1a1e20;
+      border: 1px solid #4C5154;
+      color: #EAE3D6;
+      width: 100%;
+      font-size: 0.6rem;
+      padding: 3px 4px;
+      font-family: inherit;
+      margin-top: 2px;
+    }
+
+    /* ACTION BUTTONS */
+    .action-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .act-btn {
+      background: none;
+      border: 1px solid #4C5154;
+      color: #B7AAA1;
+      font-size: 0.6rem;
+      padding: 3px 5px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .act-btn:hover { border-color: #B7AAA1; color: #EAE3D6; }
+
+    /* STATUS BAR */
+    .status-bar {
+      height: 20px;
+      background: #1a1e20;
+      border-top: 1px solid #4C5154;
+      display: flex;
+      align-items: center;
+      padding: 0 14px;
+      gap: 20px;
+      flex-shrink: 0;
+    }
+
+    .status-bar span {
+      font-size: 0.55rem;
+      color: #4C5154;
+      font-family: Helvetica, Arial, sans-serif;
+    }
+
+    .status-bar span b {
+      color: #B7AAA1;
+      font-weight: 400;
+    }
+
+    input, button, select { outline: none; }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="app-title">HALFTXT ANIMATOR</div>
+    <div class="topbar-actions">
+      <button class="topbar-btn" id="importBtn">import</button>
+      <button class="topbar-btn" id="newBtn">new</button>
+    </div>
+  </div>
+
+  <div class="main-layout">
+
+    <div class="stage-zone">
+      <div class="stage-wrapper" id="stageWrapper">
+        <canvas id="stageCanvas"></canvas>
+      </div>
+      <div class="filmstrip-area">
+        <div class="filmstrip-track" id="filmstripTrack"></div>
+      </div>
+    </div>
+
+    <div class="right-panel">
+
+      <div class="panel-section">
+        <div class="section-title">playback</div>
+        <div class="playback-buttons">
+          <button class="pb-btn" id="firstFrameBtn">|&lt;</button>
+          <button class="pb-btn" id="prevFrameBtn">&lt;</button>
+          <button class="pb-btn" id="playPauseBtn">&#9654;</button>
+          <button class="pb-btn" id="nextFrameBtn">&gt;</button>
+          <button class="pb-btn" id="lastFrameBtn">&gt;|</button>
+        </div>
+        <div class="fps-row">
+          <label>fps</label>
+          <input type="number" id="fpsInput" min="1" max="30" value="12">
+        </div>
+      </div>
+
+      <div class="panel-section">
+        <div class="section-title">onion skin</div>
+        <div class="onion-row">
+          <label>frames</label>
+          <input type="range" id="onionRange" min="0" max="4" value="0" step="1">
+          <span id="onionValue">0</span>
+        </div>
+      </div>
+
+      <div class="panel-section">
+        <div class="section-title">stage</div>
+        <div class="ctrl-row">
+          <span>width</span>
+          <input type="number" id="gridCols" min="1" max="360" value="32">
+        </div>
+        <div class="ctrl-row">
+          <span>height</span>
+          <input type="number" id="gridRows" min="1" max="360" value="32">
+        </div>
+        <select id="fontSelect">
+          <option value="Roboto Mono">Roboto Mono</option>
+          <option value="IBM Plex Mono">IBM Plex Mono</option>
+          <option value="Courier New">Courier New</option>
+          <option value="monospace">monospace</option>
+        </select>
+        <div class="ctrl-row" style="margin-top: 6px;">
+          <span>bg</span>
+          <input type="text" id="bgColorInput" value="#ffffff" maxlength="7">
+        </div>
+        <div class="ctrl-row">
+          <span>char</span>
+          <input type="text" id="charColorInput" value="#000000" maxlength="7">
+        </div>
+      </div>
+
+      <div class="panel-section">
+        <div class="section-title">frame</div>
+        <div class="action-group">
+          <button class="act-btn" id="duplicateBtn">duplicate</button>
+          <button class="act-btn" id="insertBlankBtn">insert blank</button>
+          <button class="act-btn" id="reverseAllBtn">reverse all</button>
+          <button class="act-btn" id="deleteFrameBtn">delete</button>
+        </div>
+      </div>
+
+      <div class="panel-section">
+        <div class="section-title">export</div>
+        <div class="action-group">
+          <button class="act-btn" id="exportHtmlBtn">.html</button>
+          <button class="act-btn" id="exportMp4Btn">.mp4</button>
+          <button class="act-btn" id="exportWebmBtn">.webm</button>
+          <button class="act-btn" id="exportTxtBtn">.txt</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="status-bar">
+    <span>frame <b id="sbFrame">1 / 1</b></span>
+    <span>cursor <b id="sbCursor">1, 1</b></span>
+    <span>font <b id="sbFont">Roboto Mono</b></span>
+  </div>
+
+<script>
+
+// ═══════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════
+
+let proj = {
+  fps: 12,
+  cols: 32,
+  rows: 32,
+  bgColor: '#ffffff',
+  charColor: '#000000',
+  font: 'Roboto Mono',
+  frames: [],
+  currentFrame: 0
+};
+
+let onionFrames = 0;
+let cursor      = { col: 0, row: 0 };
+let sel         = { active: false, startCol: 0, startRow: 0, endCol: 0, endRow: 0 };
+let clipboard   = null; // { cols, rows, chars[] }
+let history     = [];
+let histIdx     = -1;
+let playing     = false;
+let playTimer   = null;
+let dragSrc     = null;
+let isMouseDown = false;
+let unsaved     = false;
+
+
+// ═══════════════════════════════════════════════
+//  PROJECT HELPERS
+// ═══════════════════════════════════════════════
+
+function emptyFrame(cols, rows) {
+  return { chars: Array(cols * rows).fill(' ') };
+}
+
+function initProject(cols = 32, rows = 32, bg = '#ffffff', charCol = '#000000', font = 'Roboto Mono', fps = 12) {
+  if (playing) stopPlay();
+  proj = { fps, cols, rows, bgColor: bg, charColor: charCol, font, frames: [emptyFrame(cols, rows)], currentFrame: 0 };
+  cursor = { col: 0, row: 0 };
+  sel.active = false;
+  history = [];
+  histIdx = -1;
+  unsaved = false;
+  pushHistory();
+  syncPanelInputs();
+  renderAll();
+}
+
+function pushHistory() {
+  history = history.slice(0, histIdx + 1);
+  history.push(proj.frames.map(f => ({ chars: [...f.chars] })));
+  histIdx++;
+  if (history.length > 200) { history.shift(); histIdx--; }
+  unsaved = true;
+}
+
+function undo() {
+  if (histIdx > 0) { histIdx--; restoreHistory(); }
+}
+
+function redo() {
+  if (histIdx < history.length - 1) { histIdx++; restoreHistory(); }
+}
+
+function restoreHistory() {
+  proj.frames = history[histIdx].map(f => ({ chars: [...f.chars] }));
+  proj.currentFrame = Math.min(proj.currentFrame, proj.frames.length - 1);
+  renderAll();
+}
+
+
+// ═══════════════════════════════════════════════
+//  STAGE RENDERING
+// ═══════════════════════════════════════════════
+
+const stageCanvas = document.getElementById('stageCanvas');
+const ctx = stageCanvas.getContext('2d');
+
+function getStageMetrics() {
+  const wrapper = document.getElementById('stageWrapper');
+  const maxW = wrapper.clientWidth - 20;
+  const maxH = wrapper.clientHeight - 20;
+  const aspect = proj.cols / (proj.rows * 0.8);
+  let cw = maxW, ch = cw / aspect;
+  if (ch > maxH) { ch = maxH; cw = ch * aspect; }
+  const cellH = ch / proj.rows;
+  const cellW = cw / proj.cols;
+  const fontSize = cellH / 0.8;
+  return { cw: Math.floor(cw), ch: Math.floor(ch), cellW, cellH, fontSize };
+}
+
+function drawStage() {
+  const { cw, ch, cellW, cellH, fontSize } = getStageMetrics();
+  stageCanvas.width = cw;
+  stageCanvas.height = ch;
+
+  ctx.fillStyle = proj.bgColor;
+  ctx.fillRect(0, 0, cw, ch);
+
+  // onion skin
+  if (onionFrames > 0) {
+    ctx.globalAlpha = 0.15;
+    ctx.fillStyle = proj.charColor;
+    ctx.font = `${fontSize}px ${proj.font}`;
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+    for (let offset = -onionFrames; offset <= onionFrames; offset++) {
+      if (offset === 0) continue;
+      const fi = proj.currentFrame + offset;
+      if (fi < 0 || fi >= proj.frames.length) continue;
+      drawFrameChars(proj.frames[fi], cellW, cellH, fontSize);
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  // current frame
+  ctx.fillStyle = proj.charColor;
+  ctx.font = `${fontSize}px ${proj.font}`;
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'top';
+  drawFrameChars(proj.frames[proj.currentFrame], cellW, cellH, fontSize);
+
+  // cursor
+  if (!playing) {
+    ctx.fillStyle = 'rgba(180,180,180,0.45)';
+    ctx.fillRect(cursor.col * cellW, cursor.row * cellH, cellW, cellH);
+  }
+
+  // selection
+  if (sel.active) {
+    const sc = Math.min(sel.startCol, sel.endCol);
+    const ec = Math.max(sel.startCol, sel.endCol);
+    const sr = Math.min(sel.startRow, sel.endRow);
+    const er = Math.max(sel.startRow, sel.endRow);
+    ctx.fillStyle = 'rgba(80,130,190,0.3)';
+    ctx.fillRect(sc * cellW, sr * cellH, (ec - sc + 1) * cellW, (er - sr + 1) * cellH);
+  }
+}
+
+function drawFrameChars(frame, cellW, cellH, fontSize) {
+  ctx.font = `${fontSize}px ${proj.font}`;
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'top';
+  for (let r = 0; r < proj.rows; r++) {
+    for (let c = 0; c < proj.cols; c++) {
+      const ch = frame.chars[r * proj.cols + c];
+      if (ch !== ' ') ctx.fillText(ch, c * cellW, r * cellH);
+    }
+  }
+}
+
+
+// ═══════════════════════════════════════════════
+//  FILMSTRIP
+// ═══════════════════════════════════════════════
+
+function buildFilmstrip() {
+  const track = document.getElementById('filmstripTrack');
+  track.innerHTML = '';
+
+  proj.frames.forEach((frame, idx) => {
+    const div = document.createElement('div');
+    div.className = 'film-thumb' + (idx === proj.currentFrame ? ' active' : '');
+    div.draggable = true;
+
+    const tc = document.createElement('canvas');
+    tc.className = 'thumb-canvas';
+    tc.width = 88;
+    tc.height = 88;
+    drawThumb(tc, frame);
+
+    const lbl = document.createElement('div');
+    lbl.className = 'thumb-label';
+    lbl.textContent = idx + 1;
+
+    div.appendChild(tc);
+    div.appendChild(lbl);
+
+    div.addEventListener('click', () => {
+      if (playing) stopPlay();
+      proj.currentFrame = idx;
+      renderAll();
+    });
+
+    div.addEventListener('dragstart', e => {
+      dragSrc = idx;
+      e.dataTransfer.effectAllowed = 'move';
+    });
+
+    div.addEventListener('dragover', e => {
+      e.preventDefault();
+      div.classList.add('drag-over');
+    });
+
+    div.addEventListener('dragleave', () => div.classList.remove('drag-over'));
+
+    div.addEventListener('drop', e => {
+      e.preventDefault();
+      div.classList.remove('drag-over');
+      if (dragSrc !== null && dragSrc !== idx) {
+        const [removed] = proj.frames.splice(dragSrc, 1);
+        proj.frames.splice(idx, 0, removed);
+        proj.currentFrame = idx;
+        pushHistory();
+        renderAll();
+      }
+      dragSrc = null;
+    });
+
+    track.appendChild(div);
+  });
+
+  const addBtn = document.createElement('button');
+  addBtn.className = 'add-frame-btn';
+  addBtn.textContent = '+';
+  addBtn.addEventListener('click', () => {
+    proj.frames.push(emptyFrame(proj.cols, proj.rows));
+    proj.currentFrame = proj.frames.length - 1;
+    pushHistory();
+    renderAll();
+  });
+
+  track.appendChild(addBtn);
+}
+
+function drawThumb(canvas, frame) {
+  const tc = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const cellW = W / proj.cols;
+  const cellH = H / proj.rows;
+  const fontSize = cellH / 0.8;
+  tc.fillStyle = proj.bgColor;
+  tc.fillRect(0, 0, W, H);
+  tc.font = `${fontSize}px ${proj.font}`;
+  tc.textAlign = 'left';
+  tc.textBaseline = 'top';
+  tc.fillStyle = proj.charColor;
+  for (let r = 0; r < proj.rows; r++) {
+    for (let c = 0; c < proj.cols; c++) {
+      const ch = frame.chars[r * proj.cols + c];
+      if (ch !== ' ') tc.fillText(ch, c * cellW, r * cellH);
+    }
+  }
+}
+
+function updateThumb(idx) {
+  const thumbs = document.querySelectorAll('.film-thumb');
+  if (thumbs[idx]) {
+    const tc = thumbs[idx].querySelector('canvas');
+    if (tc) drawThumb(tc, proj.frames[idx]);
+  }
+}
+
+
+// ═══════════════════════════════════════════════
+//  STATUS + PANEL SYNC
+// ═══════════════════════════════════════════════
+
+function updateStatus() {
+  document.getElementById('sbFrame').textContent = `${proj.currentFrame + 1} / ${proj.frames.length}`;
+  document.getElementById('sbCursor').textContent = `${cursor.col + 1}, ${cursor.row + 1}`;
+  document.getElementById('sbFont').textContent = proj.font;
+}
+
+function syncPanelInputs() {
+  document.getElementById('fpsInput').value = proj.fps;
+  document.getElementById('gridCols').value = proj.cols;
+  document.getElementById('gridRows').value = proj.rows;
+  document.getElementById('bgColorInput').value = proj.bgColor;
+  document.getElementById('charColorInput').value = proj.charColor;
+  document.getElementById('fontSelect').value = proj.font;
+}
+
+function renderAll() {
+  drawStage();
+  buildFilmstrip();
+  updateStatus();
+}
+
+
+// ═══════════════════════════════════════════════
+//  GRID EDITING
+// ═══════════════════════════════════════════════
+
+function canvasToCell(clientX, clientY) {
+  const rect = stageCanvas.getBoundingClientRect();
+  const { cw, ch } = getStageMetrics();
+  const mx = (clientX - rect.left) * (cw / rect.width);
+  const my = (clientY - rect.top)  * (ch / rect.height);
+  return {
+    col: Math.max(0, Math.min(proj.cols - 1, Math.floor(mx / (cw / proj.cols)))),
+    row: Math.max(0, Math.min(proj.rows - 1, Math.floor(my / (ch / proj.rows))))
+  };
+}
+
+function setChar(col, row, ch) {
+  const idx = row * proj.cols + col;
+  if (idx >= 0 && idx < proj.frames[proj.currentFrame].chars.length) {
+    proj.frames[proj.currentFrame].chars[idx] = ch;
+  }
+}
+
+function typeChar(ch) {
+  if (playing) return;
+  if (sel.active) {
+    fillSelection(ch);
+    cursor = { col: Math.min(sel.startCol, sel.endCol), row: Math.min(sel.startRow, sel.endRow) };
+    sel.active = false;
+  } else {
+    setChar(cursor.col, cursor.row, ch);
+    let nc = cursor.col + 1, nr = cursor.row;
+    if (nc >= proj.cols) { nc = 0; nr++; }
+    if (nr >= proj.rows) nr = proj.rows - 1;
+    cursor = { col: nc, row: nr };
+  }
+  updateThumb(proj.currentFrame);
+  drawStage();
+  updateStatus();
+  pushHistory();
+}
+
+function doBackspace() {
+  if (playing) return;
+  if (sel.active) {
+    fillSelection(' ');
+    cursor = { col: Math.min(sel.startCol, sel.endCol), row: Math.min(sel.startRow, sel.endRow) };
+    sel.active = false;
+  } else {
+    setChar(cursor.col, cursor.row, ' ');
+    let nc = cursor.col - 1, nr = cursor.row;
+    if (nc < 0) { nc = proj.cols - 1; nr--; }
+    if (nr < 0) { nc = 0; nr = 0; }
+    cursor = { col: nc, row: nr };
+  }
+  updateThumb(proj.currentFrame);
+  drawStage();
+  updateStatus();
+  pushHistory();
+}
+
+function fillSelection(ch) {
+  const sc = Math.min(sel.startCol, sel.endCol);
+  const ec = Math.max(sel.startCol, sel.endCol);
+  const sr = Math.min(sel.startRow, sel.endRow);
+  const er = Math.max(sel.startRow, sel.endRow);
+  for (let r = sr; r <= er; r++) {
+    for (let c = sc; c <= ec; c++) setChar(c, r, ch);
+  }
+}
+
+function copySelection() {
+  if (!sel.active) return;
+  const sc = Math.min(sel.startCol, sel.endCol);
+  const ec = Math.max(sel.startCol, sel.endCol);
+  const sr = Math.min(sel.startRow, sel.endRow);
+  const er = Math.max(sel.startRow, sel.endRow);
+  const cols = ec - sc + 1;
+  const rows = er - sr + 1;
+  const chars = [];
+  for (let r = sr; r <= er; r++) {
+    for (let c = sc; c <= ec; c++) {
+      chars.push(proj.frames[proj.currentFrame].chars[r * proj.cols + c]);
+    }
+  }
+  clipboard = { cols, rows, chars };
+}
+
+function pasteCells() {
+  if (!clipboard) return;
+  for (let r = 0; r < clipboard.rows; r++) {
+    for (let c = 0; c < clipboard.cols; c++) {
+      const dc = cursor.col + c, dr = cursor.row + r;
+      if (dc < proj.cols && dr < proj.rows) {
+        setChar(dc, dr, clipboard.chars[r * clipboard.cols + c]);
+      }
+    }
+  }
+  updateThumb(proj.currentFrame);
+  drawStage();
+  pushHistory();
+}
+
+function pasteText(text) {
+  const lines = text.split('\n');
+  lines.forEach((line, ri) => {
+    [...line].forEach((ch, ci) => {
+      const dc = cursor.col + ci, dr = cursor.row + ri;
+      if (dc < proj.cols && dr < proj.rows) setChar(dc, dr, ch);
+    });
+  });
+  updateThumb(proj.currentFrame);
+  drawStage();
+  pushHistory();
+}
+
+
+// ═══════════════════════════════════════════════
+//  PLAYBACK
+// ═══════════════════════════════════════════════
+
+function startPlay() {
+  playing = true;
+  document.getElementById('playPauseBtn').textContent = '⏸';
+  playTimer = setInterval(() => {
+    proj.currentFrame = (proj.currentFrame + 1) % proj.frames.length;
+    drawStage();
+    document.querySelectorAll('.film-thumb').forEach((el, i) => {
+      el.classList.toggle('active', i === proj.currentFrame);
+      el.querySelector('.thumb-label').style.color = i === proj.currentFrame ? '#EAE3D6' : '#4C5154';
+    });
+    updateStatus();
+  }, 1000 / proj.fps);
+}
+
+function stopPlay() {
+  playing = false;
+  clearInterval(playTimer);
+  document.getElementById('playPauseBtn').textContent = '▶';
+}
+
+function togglePlay() {
+  if (playing) stopPlay(); else startPlay();
+}
+
+
+// ═══════════════════════════════════════════════
+//  FRAME OPERATIONS
+// ═══════════════════════════════════════════════
+
+function duplicateFrame() {
+  proj.frames.splice(proj.currentFrame + 1, 0, { chars: [...proj.frames[proj.currentFrame].chars] });
+  proj.currentFrame++;
+  pushHistory();
+  renderAll();
+}
+
+function insertBlank() {
+  proj.frames.splice(proj.currentFrame + 1, 0, emptyFrame(proj.cols, proj.rows));
+  proj.currentFrame++;
+  pushHistory();
+  renderAll();
+}
+
+function reverseAll() {
+  proj.frames.reverse();
+  proj.currentFrame = 0;
+  pushHistory();
+  renderAll();
+}
+
+function deleteFrame() {
+  if (proj.frames.length <= 1) return;
+  proj.frames.splice(proj.currentFrame, 1);
+  proj.currentFrame = Math.min(proj.currentFrame, proj.frames.length - 1);
+  pushHistory();
+  renderAll();
+}
+
+
+// ═══════════════════════════════════════════════
+//  EXPORT
+// ═══════════════════════════════════════════════
+
+function projectJSON() {
+  return {
+    version: 2,
+    fps: proj.fps,
+    cols: proj.cols,
+    rows: proj.rows,
+    bgColor: proj.bgColor,
+    charColor: proj.charColor,
+    font: proj.font,
+    frames: proj.frames.map(f => ({ chars: [...f.chars] }))
+  };
+}
+
+function exportHtml() {
+  const data = projectJSON();
+  const frameStrings = data.frames.map(f => {
+    let out = '';
+    for (let r = 0; r < data.rows; r++) {
+      out += f.chars.slice(r * data.cols, (r + 1) * data.cols).join('');
+      if (r < data.rows - 1) out += '\n';
+    }
+    return out;
+  });
+  const fs = 9;
+  const lh = fs * 0.8;
+  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>ASCII Animation</title><style>body{margin:0;background:#111;display:flex;justify-content:center;align-items:center;min-height:100vh}pre{background:${data.bgColor};color:${data.charColor};font-family:'${data.font}',monospace;font-size:${fs}px;line-height:${lh}px;white-space:pre;padding:12px}</style></head><body><pre id="a"></pre><script>const f=${JSON.stringify(frameStrings)};let i=0;const p=document.getElementById('a');setInterval(()=>{p.textContent=f[i];i=(i+1)%f.length},${Math.round(1000 / data.fps)});<\/script></body></html>`;
+  download(html, 'animation.html', 'text/html');
+  unsaved = false;
+}
+
+function exportTxt() {
+  const frame = proj.frames[proj.currentFrame];
+  let out = '';
+  for (let r = 0; r < proj.rows; r++) {
+    for (let c = 0; c < proj.cols; c++) out += frame.chars[r * proj.cols + c];
+    out += '\n';
+  }
+  download(out, 'frame.txt', 'text/plain');
+}
+
+async function exportVideo(mimeType, ext) {
+  if (playing) stopPlay();
+  const SCALE = 2;
+  const offW = proj.cols * 6 * SCALE;
+  const offH = proj.rows * 6 * SCALE * 0.8;
+  const off = document.createElement('canvas');
+  off.width = offW;
+  off.height = offH;
+  const offCtx = off.getContext('2d');
+  const cellW = offW / proj.cols;
+  const cellH = offH / proj.rows;
+  const fontSize = cellH / 0.8;
+  const stream = off.captureStream(proj.fps);
+  let mime = mimeType;
+  if (!MediaRecorder.isTypeSupported(mime)) mime = 'video/webm;codecs=vp8';
+  if (!MediaRecorder.isTypeSupported(mime)) mime = 'video/webm';
+  const recorder = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 5000000 });
+  const chunks = [];
+  recorder.ondataavailable = e => { if (e.data.size > 0) chunks.push(e.data); };
+  const done = new Promise(res => { recorder.onstop = res; });
+  recorder.start();
+  for (let i = 0; i < proj.frames.length; i++) {
+    const frame = proj.frames[i];
+    offCtx.fillStyle = proj.bgColor;
+    offCtx.fillRect(0, 0, offW, offH);
+    offCtx.fillStyle = proj.charColor;
+    offCtx.font = `${fontSize}px ${proj.font}`;
+    offCtx.textAlign = 'left';
+    offCtx.textBaseline = 'top';
+    for (let r = 0; r < proj.rows; r++) {
+      for (let c = 0; c < proj.cols; c++) {
+        const ch = frame.chars[r * proj.cols + c];
+        if (ch !== ' ') offCtx.fillText(ch, c * cellW, r * cellH);
+      }
+    }
+    await new Promise(r => setTimeout(r, 1000 / proj.fps));
+  }
+  recorder.stop();
+  await done;
+  const blob = new Blob(chunks, { type: mime });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `animation${ext}`;
+  a.click();
+}
+
+function download(content, filename, mime) {
+  const blob = new Blob([content], { type: mime });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  a.click();
+}
+
+
+// ═══════════════════════════════════════════════
+//  IMPORT
+// ═══════════════════════════════════════════════
+
+function importProject() {
+  if (unsaved && !confirm('Import will replace your current project. Continue?')) return;
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.html';
+  input.onchange = async e => {
+    const text = await e.target.files[0].text();
+
+    // Path 1: Halftxt Animator JSON blob
+    const jsonMatch = text.match(/<script[^>]+id="ascii-animator-data"[^>]*>([\s\S]*?)<\/script>/i);
+    if (jsonMatch) {
+      try {
+        const data = JSON.parse(jsonMatch[1]);
+        if (playing) stopPlay();
+        proj.fps      = data.fps;
+        proj.cols     = data.cols;
+        proj.rows     = data.rows;
+        proj.bgColor  = data.bgColor;
+        proj.charColor = data.charColor;
+        proj.font     = data.font;
+        proj.frames   = data.frames.map(f => ({
+          chars: f.chars ? [...f.chars] : f.cells.map(c => c.char)
+        }));
+        proj.currentFrame = 0;
+        cursor = { col: 0, row: 0 };
+        sel.active = false;
+        history = [];
+        histIdx = -1;
+        pushHistory();
+        unsaved = false;
+        syncPanelInputs();
+        renderAll();
+        return;
+      } catch(err) { /* fall through */ }
+    }
+
+    // Path 2: generic frame-string array
+    const arrMatch = text.match(/(?:const|var|let)\s+\w+\s*=\s*(\[[\s\S]*?\])\s*;/);
+    if (arrMatch) {
+      try {
+        const frameStrings = JSON.parse(arrMatch[1]);
+        if (!Array.isArray(frameStrings) || !frameStrings.length || typeof frameStrings[0] !== 'string') throw new Error();
+        const rows = frameStrings[0].split('\n').length;
+        const cols = Math.max(...frameStrings[0].split('\n').map(l => l.length));
+        const fpsMatch = text.match(/setInterval\s*\([^,]+,\s*(\d+)\s*\)/);
+        const fps = fpsMatch ? Math.round(1000 / parseInt(fpsMatch[1])) : 12;
+        const bgMatch  = text.match(/background(?:-color)?\s*:\s*(#[0-9a-fA-F]{3,6})/);
+        const colMatch = text.match(/[^-]color\s*:\s*(#[0-9a-fA-F]{3,6})/);
+        if (playing) stopPlay();
+        proj.fps       = Math.max(1, Math.min(30, fps));
+        proj.cols      = cols;
+        proj.rows      = rows;
+        proj.bgColor   = bgMatch  ? bgMatch[1]  : '#ffffff';
+        proj.charColor = colMatch ? colMatch[1] : '#000000';
+        proj.font      = 'Courier New';
+        proj.frames    = frameStrings.map(str => {
+          const ls = str.split('\n');
+          const chars = [];
+          for (let r = 0; r < rows; r++) {
+            const line = (ls[r] || '').padEnd(cols, ' ');
+            for (let c = 0; c < cols; c++) chars.push(line[c]);
+          }
+          return { chars };
+        });
+        proj.currentFrame = 0;
+        cursor = { col: 0, row: 0 };
+        sel.active = false;
+        history = [];
+        histIdx = -1;
+        pushHistory();
+        unsaved = false;
+        syncPanelInputs();
+        renderAll();
+        return;
+      } catch(err) { /* fall through */ }
+    }
+
+    alert('No recognisable animation data found in this file.');
+  };
+  input.click();
+}
+
+
+// ═══════════════════════════════════════════════
+//  MOUSE EVENTS
+// ═══════════════════════════════════════════════
+
+stageCanvas.addEventListener('mousedown', e => {
+  if (playing) return;
+  isMouseDown = true;
+  const { col, row } = canvasToCell(e.clientX, e.clientY);
+  cursor = { col, row };
+  sel = { active: false, startCol: col, startRow: row, endCol: col, endRow: row };
+  drawStage();
+  updateStatus();
+  e.preventDefault();
+});
+
+stageCanvas.addEventListener('mousemove', e => {
+  if (!isMouseDown || playing) return;
+  const { col, row } = canvasToCell(e.clientX, e.clientY);
+  if (col !== sel.endCol || row !== sel.endRow) {
+    sel.active = (col !== sel.startCol || row !== sel.startRow);
+    sel.endCol = col;
+    sel.endRow = row;
+    drawStage();
+  }
+});
+
+window.addEventListener('mouseup', () => { isMouseDown = false; });
+
+
+// ═══════════════════════════════════════════════
+//  KEYBOARD
+// ═══════════════════════════════════════════════
+
+window.addEventListener('keydown', e => {
+  if (['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+  const ctrl = e.ctrlKey || e.metaKey;
+  if (ctrl && e.key === 'z' && !e.shiftKey)                      { undo();          e.preventDefault(); return; }
+  if (ctrl && (e.key === 'Z' || (e.key === 'z' && e.shiftKey))) { redo();          e.preventDefault(); return; }
+  if (ctrl && e.key === 'y')                                      { redo();          e.preventDefault(); return; }
+  if (ctrl && e.key === 'c')                                      { copySelection(); e.preventDefault(); return; }
+  if (ctrl && e.key === 'v') {
+    e.preventDefault();
+    // Try OS clipboard first; fall back to internal clipboard
+    if (navigator.clipboard && navigator.clipboard.readText) {
+      navigator.clipboard.readText().then(text => {
+        if (text) pasteText(text);
+        else pasteCells();
+      }).catch(() => pasteCells());
+    } else {
+      pasteCells();
+    }
+    return;
+  }
+  if (e.key === 'Backspace' || e.key === 'Delete')                { doBackspace();   e.preventDefault(); return; }
+  if (e.key === 'ArrowLeft')                                      { moveCursor(-1, 0); e.preventDefault(); return; }
+  if (e.key === 'ArrowRight')                                     { moveCursor(1, 0);  e.preventDefault(); return; }
+  if (e.key === 'ArrowUp')                                        { moveCursor(0, -1); e.preventDefault(); return; }
+  if (e.key === 'ArrowDown')                                      { moveCursor(0, 1);  e.preventDefault(); return; }
+  if (e.key === 'Tab')                                            { moveCursor(4, 0);  e.preventDefault(); return; }
+  if (e.key === ' ')                                              { typeChar(' ');     e.preventDefault(); return; }
+  if (e.key.length === 1 && !ctrl)                                { typeChar(e.key);   e.preventDefault(); return; }
+});
+
+
+
+function moveCursor(dc, dr) {
+  if (sel.active) sel.active = false;
+  cursor.col = Math.min(proj.cols - 1, Math.max(0, cursor.col + dc));
+  cursor.row = Math.min(proj.rows - 1, Math.max(0, cursor.row + dr));
+  drawStage();
+  updateStatus();
+}
+
+
+// ═══════════════════════════════════════════════
+//  PANEL BINDINGS
+// ═══════════════════════════════════════════════
+
+function bindEvents() {
+  document.getElementById('playPauseBtn').onclick  = togglePlay;
+  document.getElementById('firstFrameBtn').onclick = () => { if (!playing) { proj.currentFrame = 0; renderAll(); } };
+  document.getElementById('lastFrameBtn').onclick  = () => { if (!playing) { proj.currentFrame = proj.frames.length - 1; renderAll(); } };
+  document.getElementById('prevFrameBtn').onclick  = () => { if (!playing) { proj.currentFrame = Math.max(0, proj.currentFrame - 1); renderAll(); } };
+  document.getElementById('nextFrameBtn').onclick  = () => { if (!playing) { proj.currentFrame = Math.min(proj.frames.length - 1, proj.currentFrame + 1); renderAll(); } };
+
+  document.getElementById('fpsInput').onchange = e => {
+    proj.fps = Math.max(1, Math.min(30, parseInt(e.target.value) || 12));
+    if (playing) { stopPlay(); startPlay(); }
+  };
+
+  document.getElementById('onionRange').oninput = e => {
+    onionFrames = parseInt(e.target.value);
+    document.getElementById('onionValue').textContent = onionFrames;
+    drawStage();
+  };
+
+  document.getElementById('bgColorInput').onchange = e => {
+    const v = e.target.value.trim();
+    if (/^#[0-9a-fA-F]{6}$/.test(v)) { proj.bgColor = v; renderAll(); }
+  };
+
+  document.getElementById('charColorInput').onchange = e => {
+    const v = e.target.value.trim();
+    if (/^#[0-9a-fA-F]{6}$/.test(v)) { proj.charColor = v; renderAll(); }
+  };
+
+  document.getElementById('fontSelect').onchange = e => {
+    proj.font = e.target.value;
+    renderAll();
+  };
+
+  document.getElementById('gridCols').onchange = e => {
+    const v = Math.max(1, Math.min(360, parseInt(e.target.value) || proj.cols));
+    if (v !== proj.cols) {
+      if (confirm('Changing size will clear all frames. Continue?')) initProject(v, proj.rows, proj.bgColor, proj.charColor, proj.font, proj.fps);
+      else e.target.value = proj.cols;
+    }
+  };
+
+  document.getElementById('gridRows').onchange = e => {
+    const v = Math.max(1, Math.min(360, parseInt(e.target.value) || proj.rows));
+    if (v !== proj.rows) {
+      if (confirm('Changing size will clear all frames. Continue?')) initProject(proj.cols, v, proj.bgColor, proj.charColor, proj.font, proj.fps);
+      else e.target.value = proj.rows;
+    }
+  };
+
+  document.getElementById('duplicateBtn').onclick   = duplicateFrame;
+  document.getElementById('insertBlankBtn').onclick = insertBlank;
+  document.getElementById('reverseAllBtn').onclick  = reverseAll;
+  document.getElementById('deleteFrameBtn').onclick = deleteFrame;
+
+  document.getElementById('exportHtmlBtn').onclick = exportHtml;
+  document.getElementById('exportTxtBtn').onclick  = exportTxt;
+  document.getElementById('exportMp4Btn').onclick  = () => exportVideo('video/mp4', '.mp4');
+  document.getElementById('exportWebmBtn').onclick = () => exportVideo('video/webm', '.webm');
+
+  document.getElementById('newBtn').onclick    = () => { if (!unsaved || confirm('Discard current project?')) initProject(); };
+  document.getElementById('importBtn').onclick = importProject;
+
+
+}
+
+
+// ═══════════════════════════════════════════════
+//  RESIZE OBSERVER
+// ═══════════════════════════════════════════════
+
+new ResizeObserver(() => drawStage()).observe(document.getElementById('stageWrapper'));
+
+
+// ═══════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════
+
+bindEvents();
+initProject();
+
+</script>
+</body>
+</html>

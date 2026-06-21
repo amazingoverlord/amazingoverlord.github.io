@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WeatherData · core weather only</title>
+  <style>
+    /* no classes — only body style with default sans-serif and font-size: 0.75rem */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #ffffff;
+      color: #000000;
+      line-height: 1.4;
+      margin: 0;
+      padding: 1rem;
+      font-size: 0.75rem;
+    }
+    /* container div: exactly 240px wide */
+    #weather-container {
+      width: 240px;
+      margin: 0 auto;
+      border: 1px solid #ccc;
+      padding: 0.75rem;
+      background: #fff;
+    }
+    /* all text inside container inherits sans-serif and 0.75rem */
+    #weather-container, #weather-container pre, #weather-container div, #weather-container span, #output {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 0.75rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    pre {
+      margin: 0;
+      padding: 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    hr {
+      margin: 0.5rem 0;
+      border: none;
+      border-top: 1px solid #aaa;
+    }
+    .section-header {
+      font-weight: 600;
+      margin-top: 0.5rem;
+      margin-bottom: 0.25rem;
+    }
+  </style>
+</head>
+<body>
+<div id="weather-container">
+  <pre style="margin:0 0 0.5rem 0; font-weight:600;">
+===================================
+ Open-Meteo API
+ CORE WEATHER CONDITIONS
+===================================
+</pre>
+  <div id="output">
+    [ initializing ... ]
+  </div>
+  <div style="margin-top:0.75rem; padding-top:0.5rem; border-top:1px solid #ccc; color:#444;">core weather only | 0.75rem sans-serif | 240px wide
+  </div>
+</div>
+
+<script>
+  // ------------------------------------------------------------------
+  // WEATHER CODE MAPPING (original spec, human readable)
+  // ------------------------------------------------------------------
+  const WEATHER_CODES_DESC = {
+    0:  "Clear sky", 1:  "Mainly clear", 2:  "Partly cloudy", 3:  "Overcast",
+    45: "Fog", 48: "Depositing rime fog",
+    51: "Light drizzle", 53: "Moderate drizzle", 55: "Dense drizzle",
+    61: "Slight rain", 63: "Moderate rain", 65: "Heavy rain",
+    71: "Slight snow", 73: "Moderate snow", 75: "Heavy snow", 77: "Snow grains",
+    80: "Slight rain showers", 81: "Moderate rain showers", 82: "Violent rain showers",
+    85: "Slight snow showers", 86: "Heavy snow showers",
+    95: "Thunderstorm", 96: "Thunderstorm with slight hail", 99: "Thunderstorm with heavy hail"
+  };
+
+  // ------------------------------------------------------------------
+  // FORMATTING HELPERS (no emoji, plain text)
+  // ------------------------------------------------------------------
+  function formatTempCelsius(celsius) {
+    let c = Math.round(celsius);
+    let f = Math.round(c * 9/5 + 32);
+    return c + "°C (" + f + "°F)";
+  }
+
+  function formatWindCompact(kph) {
+    let k = Math.round(kph);
+    let mph = Math.round(kph * 0.621371);
+    let knots = Math.round(kph * 0.539957);
+    return k + "/" + mph + "/" + knots + " kph | mph | kn";
+  }
+
+  // custom date/time format: "F 05-22-2026 | 19:45" (weekday first letter)
+  function getCustomDateTimeString(dateObj) {
+    const weekdaysShort = ["S", "M", "T", "W", "T", "F", "S"];
+    let weekdayLetter = weekdaysShort[dateObj.getDay()];
+    let month = (dateObj.getMonth() + 1).toString().padStart(2, '0');
+    let day = dateObj.getDate().toString().padStart(2, '0');
+    let year = dateObj.getFullYear();
+    let hours24 = dateObj.getHours().toString().padStart(2, '0');
+    let minutes = dateObj.getMinutes().toString().padStart(2, '0');
+    return `${weekdayLetter} ${month}-${day}-${year} | ${hours24}:${minutes}`;
+  }
+
+  // helper: format optional values (null/undefined -> "n/a")
+  function formatValue(value, unit = "") {
+    if (value === undefined || value === null) return "n/a";
+    if (typeof value === "number") {
+      if (unit === "percent") return Math.round(value) + "%";
+      if (unit === "hPa") return Math.round(value) + " hPa";
+      if (unit === "m") return value.toFixed(1) + " m";
+      if (unit === "mm") return value.toFixed(1) + " mm";
+      if (unit === "°") return Math.round(value) + "°";
+      if (unit === "index") return value.toFixed(1);
+      return value;
+    }
+    return value;
+  }
+
+  // build compact report that fits 240px width (wrapped lines)
+  function buildCompactReport(weatherJson, locationStr, timestamp) {
+    if (!weatherJson || !weatherJson.current) {
+      return "[ ERROR ] No weather data\n";
+    }
+    
+    const current = weatherJson.current;
+    const weatherCode = current.weather_code;
+    const codeMeaning = WEATHER_CODES_DESC[weatherCode] || "unknown";
+    
+    // core parameters
+    const tempC = current.temperature_2m;
+    const feelsLike = current.apparent_temperature;
+    const humidity = current.relative_humidity_2m;
+    const cloudCover = current.cloud_cover;
+    const pressureMsl = current.pressure_msl;
+    const surfacePressure = current.surface_pressure;
+    const windDir = current.wind_direction_10m;
+    const windGust = current.wind_gusts_10m;
+    const windSpeed = current.wind_speed_10m;
+    const uv = current.uv_index;
+    const isDay = current.is_day;
+    const precipitation = current.precipitation;
+    const rain = current.rain;
+    const snowfall = current.snowfall;
+    const visibility = current.visibility;
+    
+    // sunrise/sunset
+    let sunriseStr = null, sunsetStr = null;
+    if (weatherJson.daily && weatherJson.daily.sunrise && weatherJson.daily.sunrise.length > 0) {
+      const rawSunrise = weatherJson.daily.sunrise[0];
+      const rawSunset = weatherJson.daily.sunset[0];
+      if (rawSunrise) sunriseStr = new Date(rawSunrise).toLocaleTimeString([], { hour: '2-digit', minute:'2-digit', hour12: false });
+      if (rawSunset) sunsetStr = new Date(rawSunset).toLocaleTimeString([], { hour: '2-digit', minute:'2-digit', hour12: false });
+    }
+    
+    let lines = [];
+    lines.push("-----------------------------------");
+    lines.push("LOCATION: " + locationStr);
+    lines.push("TIME: " + getCustomDateTimeString(timestamp));
+    lines.push("");
+    lines.push("--- WEATHER CODE & TEMP ---");
+    lines.push("Code: " + weatherCode + " (" + codeMeaning + ")");
+    lines.push("Temp: " + formatTempCelsius(tempC));
+    lines.push("Feels: " + formatTempCelsius(feelsLike));
+    lines.push("");
+    lines.push("--- CORE CONDITIONS ---");
+    lines.push("Humidity: " + formatValue(humidity, "percent"));
+    lines.push("Clouds: " + formatValue(cloudCover, "percent"));
+    lines.push("Pressure msl: " + formatValue(pressureMsl, "hPa"));
+    lines.push("Pressure sfc: " + formatValue(surfacePressure, "hPa"));
+    lines.push("Wind dir: " + formatValue(windDir, "°"));
+    lines.push("Wind speed: " + formatWindCompact(windSpeed));
+    lines.push("Wind gust: " + formatValue(windGust, "") + " kph");
+    lines.push("UV index: " + formatValue(uv, "index"));
+    lines.push("Daytime: " + (isDay === 1 ? "yes" : (isDay === 0 ? "night" : "n/a")));
+    lines.push("Precip (1h): " + formatValue(precipitation, "mm"));
+    lines.push("Rain (1h): " + formatValue(rain, "mm"));
+    lines.push("Snowfall (1h): " + formatValue(snowfall, "mm"));
+    lines.push("Visibility: " + formatValue(visibility, "m"));
+    if (sunriseStr && sunsetStr) {
+      lines.push("Sunrise: " + sunriseStr);
+      lines.push("Sunset: " + sunsetStr);
+    }
+    lines.push("");
+    lines.push("--- RAW METRICS ---");
+    lines.push("t_2m: " + tempC + " C");
+    lines.push("app_t: " + feelsLike + " C");
+    lines.push("rh: " + formatValue(humidity, "percent"));
+    lines.push("cloud: " + formatValue(cloudCover, "percent"));
+    lines.push("pres_msl: " + formatValue(pressureMsl, "hPa"));
+    lines.push("pres_sfc: " + formatValue(surfacePressure, "hPa"));
+    lines.push("wind_spd: " + windSpeed + " kph");
+    lines.push("wind_dir: " + formatValue(windDir, "°"));
+    lines.push("wind_gust: " + (windGust !== undefined ? windGust : "n/a") + " kph");
+    lines.push("w_code: " + weatherCode);
+    lines.push("uv: " + formatValue(uv, "index"));
+    lines.push("is_day: " + (isDay !== undefined ? isDay : "n/a"));
+    lines.push("precip: " + formatValue(precipitation, "mm"));
+    lines.push("rain: " + formatValue(rain, "mm"));
+    lines.push("snow: " + formatValue(snowfall, "mm"));
+    lines.push("vis: " + formatValue(visibility, "m"));
+    lines.push("-----------------------------------");
+    
+    return lines.join("\n");
+  }
+  
+  // ------------------------------
+  // FETCH HELPERS (Open-Meteo API)
+  // ------------------------------
+  async function fetchWeatherData(lat, lon) {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,wind_speed_10m,wind_direction_10m,wind_gusts_10m,weather_code,uv_index,relative_humidity_2m,cloud_cover,pressure_msl,surface_pressure,is_day,precipitation,rain,snowfall,visibility&daily=sunrise,sunset&timezone=auto`;
+    const resp = await fetch(url);
+    if (!resp.ok) throw new Error(`Weather API error: ${resp.status}`);
+    return resp.json();
+  }
+  
+  async function getCityFromCoords(lat, lon) {
+    try {
+      const r = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&zoom=10&addressdetails=1`);
+      const data = await r.json();
+      const addr = data.address;
+      let city = addr?.city || addr?.town || addr?.village || addr?.county || addr?.state || "unknown";
+      if (city.length > 20) city = city.substring(0, 18) + "..";
+      return city;
+    } catch {
+      return "coords";
+    }
+  }
+  
+  // ------------- GLOBALS & MAIN -------------
+  let currentWeatherData = null;
+  let currentLocationName = "unknown";
+  let refreshInterval = null;
+  const outputDiv = document.getElementById('output');
+  
+  async function updateWeather() {
+    outputDiv.innerHTML = "[ fetching weather ... ]";
+    
+    // geolocation
+    let lat = 40.7128, lon = -74.0060;
+    let locationName = "New York";
+    try {
+      const position = await new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 7000, enableHighAccuracy: false });
+      });
+      lat = position.coords.latitude;
+      lon = position.coords.longitude;
+      locationName = await getCityFromCoords(lat, lon);
+      currentLocationName = locationName;
+    } catch (geoErr) {
+      console.warn("Geolocation fallback", geoErr);
+      lat = 40.7128;
+      lon = -74.0060;
+      locationName = "New York (fallback)";
+      currentLocationName = locationName;
+    }
+    
+    // fetch weather
+    try {
+      const weatherJson = await fetchWeatherData(lat, lon);
+      currentWeatherData = weatherJson;
+      const now = new Date();
+      const report = buildCompactReport(weatherJson, locationName, now);
+      outputDiv.innerHTML = "<pre style='margin:0; white-space:pre-wrap;'>" + report + "</pre>";
+    } catch (err) {
+      console.error("weather fetch error", err);
+      let errorMsg = "[ ERROR ] Weather fetch failed.\n";
+      errorMsg += err.message + "\n";
+      if (currentWeatherData) {
+        errorMsg += "\n--- CACHED (stale) ---\n";
+        const fallbackReport = buildCompactReport(currentWeatherData, currentLocationName, new Date());
+        errorMsg += fallbackReport;
+      } else {
+        errorMsg += "No cached data. Check network/location.";
+      }
+      outputDiv.innerHTML = "<pre style='margin:0; white-space:pre-wrap;'>" + errorMsg + "</pre>";
+    }
+  }
+  
+  // refresh every 12 minutes
+  function startRefresh() {
+    if (refreshInterval) clearInterval(refreshInterval);
+    refreshInterval = setInterval(() => {
+      updateWeather().catch(e => console.warn("refresh error", e));
+    }, 12 * 60 * 1000);
+  }
+  
+  updateWeather().then(() => startRefresh()).catch(e => {
+    console.error(e);
+    outputDiv.innerHTML = "<pre>[ CRITICAL ] Unable to load weather data.</pre>";
+  });
+</script>
+</body>
+</html>
