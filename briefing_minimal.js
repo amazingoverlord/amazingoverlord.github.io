@@ -1,5 +1,5 @@
-// weather-minimal.js
-// Minimal weather widget: displays date/time, conditions, temp, feels-like temp
+// briefing_minimal.js
+// Date/time renders immediately; weather fills in separately when available.
 
 (function () {
   const WEATHER_DESCRIPTIONS = {
@@ -54,25 +54,6 @@
     return str.length > max ? str.slice(0, max - 2) + ".." : str;
   }
 
-  function buildReport(weatherData, location, timestamp) {
-    if (!weatherData?.current) {
-      return "[ unavailable ]\nCould not retrieve weather data.";
-    }
-
-    const { weather_code, temperature_2m, apparent_temperature } = weatherData.current;
-    const condition = WEATHER_DESCRIPTIONS[weather_code] ?? "Variable";
-    const shortLocation = truncate(location, 24);
-
-    return [
-      shortLocation + "<br>",
-      formatDateTime(timestamp),
-      "<br><br>",
-      condition + "<br>",
-      "Temp:        " + formatTemp(temperature_2m) + "<br>",
-      "Feels like:  " + formatTemp(apparent_temperature),
-    ].join("\n");
-  }
-
   async function fetchWeather(lat, lon) {
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,weather_code&timezone=auto`;
     const res = await fetch(url);
@@ -110,18 +91,33 @@
 
   // Module state
   let cachedWeather = null;
-  let cachedLocation = "loading...";
-  let outputElement = null;
+  let cachedLocation = null;
+  let dateEl = null;
+  let weatherEl = null;
   let timeInterval = null;
   let weatherInterval = null;
 
-  function updateDisplay() {
-    if (!outputElement) return;
-    if (!cachedWeather) {
-      outputElement.innerHTML = "[ waiting for weather data... ]";
+  function updateDateTime() {
+    if (!dateEl) return;
+    dateEl.innerHTML = formatDateTime(new Date());
+  }
+
+  function updateWeather() {
+    if (!weatherEl) return;
+    if (!cachedWeather?.current) {
+      weatherEl.innerHTML = "[ weather unavailable ]";
       return;
     }
-    outputElement.innerHTML = buildReport(cachedWeather, cachedLocation, new Date());
+    const { weather_code, temperature_2m, apparent_temperature } = cachedWeather.current;
+    const condition = WEATHER_DESCRIPTIONS[weather_code] ?? "Variable";
+    const loc = cachedLocation ? truncate(cachedLocation, 24) + "<br><br>" : "";
+
+    weatherEl.innerHTML = [
+      loc,
+      condition + "<br>",
+      "Temp:        " + formatTemp(temperature_2m) + "<br>",
+      "Feels like:  " + formatTemp(apparent_temperature),
+    ].join("\n");
   }
 
   async function refreshWeather() {
@@ -129,7 +125,7 @@
     if (!lat || !lon) return;
     try {
       cachedWeather = await fetchWeather(lat, lon);
-      updateDisplay();
+      updateWeather();
     } catch (err) {
       console.warn("Background weather refresh failed:", err);
     }
@@ -137,13 +133,29 @@
 
   async function init(container) {
     if (!container) {
-      console.error("weather-minimal: no container element provided");
+      console.error("briefing-minimal: no container element provided");
       return;
     }
 
-    outputElement = container;
-    outputElement.innerHTML = "[ locating & fetching weather... ]";
+    // Build two sub-elements: one for date/time, one for weather
+    container.innerHTML = "";
 
+    dateEl = document.createElement("div");
+    dateEl.id = "briefing-datetime";
+
+    weatherEl = document.createElement("div");
+    weatherEl.id = "briefing-weather";
+    weatherEl.innerHTML = "[ fetching weather... ]";
+
+    container.appendChild(dateEl);
+    container.appendChild(weatherEl);
+
+    // Date/time starts immediately and ticks every minute
+    updateDateTime();
+    clearInterval(timeInterval);
+    timeInterval = setInterval(updateDateTime, 60_000);
+
+    // Weather fetches in the background — doesn't block date/time
     let lat = FALLBACK_LAT;
     let lon = FALLBACK_LON;
     cachedLocation = FALLBACK_LOCATION;
@@ -161,16 +173,11 @@
 
     try {
       cachedWeather = await fetchWeather(lat, lon);
-      updateDisplay();
+      updateWeather();
     } catch (err) {
-      console.error("Weather fetch failed:", err);
-      outputElement.innerHTML =
-        "[ ERROR ] Could not fetch weather.\nCheck connection or location permissions.";
-      return;
+      console.warn("Weather fetch failed:", err);
+      updateWeather(); // renders "[ weather unavailable ]"
     }
-
-    clearInterval(timeInterval);
-    timeInterval = setInterval(updateDisplay, 60_000);
 
     clearInterval(weatherInterval);
     weatherInterval = setInterval(refreshWeather, 10 * 60_000);

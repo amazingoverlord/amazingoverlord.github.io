@@ -1,0 +1,64 @@
+{
+  "latestWork": [
+    {
+      "label": "David Hockney's Final Lesson in Attention",
+      "url": "https://open.substack.com/pub/bc3000/p/david-hockneys-final-lesson-in-attention",
+      "type": "Writing",
+      "external": true
+    },
+    {
+      "label": "HALFTXT",
+      "url": "https://amazingoverlord.com/halftxt/",
+      "type": "Web Apps",
+      "external": true
+    }
+  ],
+  "currentForms": [
+    { "label": "Bookbinding", "url": "https://www.analogobject.studio/", "external": true },
+    { "label": "Creative Direction", "url": "https://www.b-cruz.com/", "external": true },
+    { "label": "Personal Projects", "url": "/projects.html", "external": false },
+    { "label": "Writing", "url": "https://bc3000.substack.com/", "external": true }
+  ],
+  "recommended": [
+    { "label": "Monocle", "url": "https://monocle.com/" },
+    { "label": "Wallpaper", "url": "https://www.wallpaper.com/" },
+    { "label": "The Nomad", "url": "https://www.the-nomad-magazine.com/" },
+    { "label": "Kinfolk", "url": "https://www.kinfolk.com/" },
+    { "label": "It's Nice That", "url": "https://www.itsnicethat.com/" },
+    { "label": "Games by Henry", "url": "https://henryfaber.itch.io/" },
+    { "label": "Photography by Fiona", "url": "https://www.fionagarden.com/" },
+    { "label": "Art by Ben", "url": "https://www.benashtonart.com/" },
+    { "label": "Music by Steven", "url": "https://www.stevenfairweather.com/" },
+    { "label": "Streaming Stranger Radio", "url": "https://www.strangerradio.com/" },
+    { "label": "Straight & Narrow Management", "url": "https://www.straightxnarrow.com/" },
+    { "label": "Styling by Juliann", "url": "https://www.juliannmccandless.com/" },
+    { "label": "Denim by Decade Studio", "url": "https://www.decadestudio.com/" },
+    { "label": "Creative by Taiyo", "url": "https://taiyokitagawa.com/" },
+    { "label": "Photo Diary by Coco", "url": "https://cocotardiff.com/photo-diary" },
+    { "label": "Music by Jody", "url": "https://jodyglenham.bandcamp.com/" },
+    { "label": "Fashion by LLOYD", "url": "https://www.lloydclothing.com/" },
+    { "label": "Styling by Toyo", "url": "https://www.toyotsuchiya.com/" },
+    { "label": "Pins by InnerDecay", "url": "https://innerdecay.com/" },
+    { "label": "Art by Johanna", "url": "https://johannastickland.bigcartel.com/" },
+    { "label": "Music by Tower", "url": "https://towernyc.bandcamp.com/" },
+    { "label": "Reading Lonesome", "url": "https://lonesomepress.com/" },
+    { "label": "Styling by Zu", "url": "https://zu-sb.com" },
+    { "label": "Music by Mirror of Venus", "url": "https://mirrorofvenus.bandcamp.com/" }
+  ],
+  "social": [
+    { "label": "Bandcamp", "url": "https://bandcamp.com/bcruz3000", "external": true },
+    { "label": "Behance", "url": "https://www.behance.net/bienvenido", "external": true },
+    { "label": "Dribbble", "url": "https://dribbble.com/bienvenidoc3", "external": true },
+    { "label": "GitHub", "url": "https://github.com/amazingoverlord", "external": true },
+    { "label": "IG: Amazingoverlord", "url": "https://www.instagram.com/amazingoverlord/", "external": true },
+    { "label": "IG: Onism and Sonder", "url": "https://www.instagram.com/onism_and_sonder/", "external": true },
+    { "label": "IG: AnalogObject.Studio", "url": "https://www.instagram.com/analogobject.studio/", "external": true },
+    { "label": "LinkedIn", "url": "https://www.linkedin.com/in/bcruz3/", "external": true },
+    { "label": "Substack", "url": "https://substack.com/@bc3000", "external": true },
+    { "label": "Vimeo", "url": "https://vimeo.com/bcruz3", "external": true },
+    { "label": "YouTube", "url": "https://www.youtube.com/BienvenidoCruz", "external": true }
+    
+  ]
+  
+
+}

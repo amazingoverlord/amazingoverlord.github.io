@@ -12,53 +12,59 @@
   <body>
     <div class="home"><a href="index.html">3000 bc</a></div>
     <h1>Projects</h1>
+    <div class="pillars-container" id="projects-container"></div>
 
-    <div class="pillars-container">
-      <div class="pillar">
-        <h2>Petit Plaisir</h2>
-        <p>A beautifully designed personal menu builder that helps you curate and remember the activities that make you feel alive.</p>
-        <p><a href="/petitplaisir/" target="_blank">→ Launch</a></p>
-      </div>
+    <script>
+      async function loadProjects() {
+        const res = await fetch('/projects_v2.json');
+        const data = await res.json();
+        const container = document.getElementById('projects-container');
 
-      <div class="pillar">
-        <h2>ASCII Studio Pro</h2>
-        <p>A browser-based tool that converts images, animated GIFs, and videos into live, customizable ASCII art with animation controls and export options.</p>
-        <p><a href="/asciistudiopro/" target="_blank">→ Launch</a></p>
-        <p><a href="https://amazingoverlord.com/asciistudiopro/converter" target="_blank">→ JS Converter</a></p>
-      </div>
+        data.projects.forEach(project => {
+          const pillar = document.createElement('div');
+          pillar.className = 'pillar';
 
-      <div class="pillar">
-        <h2>Clearing</h2>
-        <p>A minimal home screen dashboard. Live weather, the time, and a quiet way to launch any app, without distraction.</p>
-        <p><a href="clearing.html" target="_blank">→ Launch</a></p>
-        <p>
-          <a href="about_clearing.html" target="_blank">→ About Clearing</a><br>
-          <a href="clearing_debug.html" target="_blank">→ Debug / Data Panel</a>
-        </p>
-      </div>
+          const h2 = document.createElement('h2');
+          h2.textContent = project.title;
+          pillar.appendChild(h2);
 
-      <div class="pillar">
-        <h2>Feeed Studio</h2>
-        <p>Generate a fake Instagram feed: upload images, crop to IG ratios, auto-fill usernames, captions and likes, then download as PNG.</p>
-        <p><a href="https://feeedstudio.lovable.app" target="_blank">→ Launch</a></p>
-      </div>
+          if (project.description) {
+            const p = document.createElement('p');
+            p.textContent = project.description;
+            pillar.appendChild(p);
+          }
 
-      <div class="pillar">
-        <h2>Vibe Color</h2>
-        <p>Generate beautiful color palettes from your mood. Describe how you feel, get five colors that capture the vibe.</p>
-        <p><a href="https://vibe-color.lovable.app" target="_blank">→ Launch</a></p>
-      </div>
+          if (project.links) {
+            project.links.forEach(item => {
+              const p = document.createElement('p');
+              const a = document.createElement('a');
+              a.href = item.url;
+              a.textContent = item.label;
+              if (item.external) a.target = '_blank';
+              p.appendChild(a);
+              pillar.appendChild(p);
+            });
+          }
 
-      <div class="pillar">
-        <h2>Vibe Check</h2>
-        <p>Keep your brand visually consistent with AI-powered image analysis and scoring.</p>
-        <p><a href="https://vibe-fingerprint-forge.lovable.app" target="_blank">→ Launch</a></p>
-      </div>
+          if (project.guestbook) {
+            const iframe = document.createElement('iframe');
+            iframe.height = '220';
+            iframe.src = project.guestbook;
+            iframe.title = 'Guestbook';
+            pillar.appendChild(iframe);
+          }
 
-      <div class="pillar">
-        <h2>Guestbook</h2>
-        <iframe height="220" src="https://bc3000.atabook.org" title="Guestbook"></iframe>
-      </div>
-    </div>
+          if (project.footnote) {
+            const p = document.createElement('p');
+            p.innerHTML = project.footnote;
+            pillar.appendChild(p);
+          }
+
+          container.appendChild(pillar);
+        });
+      }
+
+      loadProjects();
+    </script>
   </body>
 </html>

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unstick</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #FFFFFF;
+    --text: #1A1A1A;
+    --hint: #888888;
+    --sym: #B0B0B0;
+    --track: #D1D1D1;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0F0F0F;
+      --text: #E8E8E8;
+      --hint: #555555;
+      --sym: #3A3A3A;
+      --track: #2A2A2A;
+    }
+  }
+
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  }
+
+  #main {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 48px;
+  }
+
+  #task-wrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  #task {
+    font-size: clamp(40px, 10vw, 96px);
+    font-weight: 400;
+    color: var(--text);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    max-width: 90%;
+  }
+
+  #hint {
+    font-size: 10px;
+    font-weight: 300;
+    color: var(--hint);
+    letter-spacing: 0.08em;
+    text-transform: lowercase;
+    margin-bottom: 10px;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    user-select: none;
+  }
+
+  #slider-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .sym {
+    font-size: 15px;
+    color: var(--sym);
+    user-select: none;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .sym.right { font-size: 17px; }
+
+  input[type=range] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 400px;
+    max-width: calc(100vw - 160px);
+    height: 2px;
+    background: var(--track);
+    border-radius: 1px;
+    outline: none;
+    cursor: pointer;
+  }
+
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background: var(--text);
+    border-radius: 2px;
+    cursor: pointer;
+  }
+
+  input[type=range]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: var(--text);
+    border-radius: 2px;
+    border: none;
+    cursor: pointer;
+  }
+
+  @media (max-width: 768px) {
+    #main { padding: 32px 24px; }
+    input[type=range] { width: calc(90vw - 80px); }
+  }
+
+  @media (max-width: 480px) {
+    #task { font-size: clamp(32px, 9vw, 56px); }
+    #main { padding: 24px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="main">
+  <div id="task-wrap">
+    <p id="task"></p>
+  </div>
+  <div id="controls">
+    <div id="hint"></div>
+    <div id="slider-row">
+      <span class="sym">○</span>
+      <input type="range" id="slider" min="0" max="100" value="20" step="1">
+      <span class="sym right">※</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  const actions = {
+    gentle: ["Contemplate","Think about","Scan","Skim","Stare at","Trace","Copy","Doodle","Draw","Touch","Meditate on","Listen to","Breathe on","Count","Measure","Name","Describe","Remember","Imagine","Notice","Watch","Revisit","Outline","Map","Label","Sit with","Return to","Observe","Read"],
+    mid:    ["Wrap","Rotate","Tilt","Fold","Unfold","Layer","Press","Drag","Invert","Erase"],
+    chaos:  ["Crumple","Dip","Smudge","Scratch","Blow on","Flick","Draw with your non-dominant hand","Chant at","Burn","Berate"]
+  };
+
+  const objects = {
+    gentle: ["3 identical lines","the back of an envelope","a shadow","a single breath","the negative space","a folded corner","a reflection","your last 3 brush strokes","random shapes","a random word","the nearest window","a word you like the sound of","the edge of something","your own handwriting","the space between two things","something you've been ignoring","the last thing you touched","a corner of the room","the light right now","a line you didn't mean to make","something smaller than your hand","something you walked past today","the shape of your hand","a colour you can see from here","whatever is directly in front of you"],
+    mid:    ["the first blue thing you see","the first red thing you see","something on your left","your coffee ring","a crumb","the 4th word you think of","the lightest thing nearby","a knot","a candle"],
+    chaos:  ["your non-dominant hand","some trash","nothing","the sound you just heard","the heaviest thing","the texture under your foot","the first word on the tenth page of a random book","a ghost","the last photo on your camera roll"]
+  };
+
+  const constraints = {
+    gentle: ["for 45 seconds","using only straight lines","in one continuous line","slowly","without lifting the tool","in a different style","with your finger","for 2 minutes","without rushing","from memory","using only curves","at arm's length","very lightly","on the smallest piece of paper you can find","in a single colour","without thinking too hard","while standing","from a different angle","in your head","as if no one will see it","as if it's the last time","as if it's the first time","while sitting on the floor","with your non-writing hand","in under a minute","without any tools","while holding your breath","at the same pace as your breathing","as small as possible","as large as the page allows"],
+    mid:    ["in 4 strokes or fewer","using only dots","as fast as possible","with your eyes closed for half the time","without looking","with one eye closed"],
+    chaos:  ["upside down","while humming one low note","on newsprint","using the opposite end of the pen","with coffee as paint"]
+  };
+
+  const modifiers = {
+    gentle: [
+      ", then add one dot",
+      ", then cross it out gently",
+      ", then do it backwards",
+      ", then do it again faster",
+      ", then draw an arrow pointing at it",
+      ", then blink 4 times",
+      ", then make a coffee",
+      ", then take a nap",
+      ", then move to a different spot",
+      ", then leave the room for 30 seconds"
+    ],
+    mid: [
+      ", then turn the page 90°",
+      ", then sign it with an X",
+      ", then ignore it completely",
+      ", then hide it for 1 hour",
+      ", then fold it into a square",
+      ", then repeat with your eyes closed",
+      ", then blow on it once",
+      ", then describe it out loud to no one",
+      ", then close your eyes and touch it"
+    ],
+    chaos: [
+      ", then photograph it with your eyes",
+      ", then apologize to it quietly",
+      ", then forget you made it",
+      ", then whisper your name to it",
+      ", then name it after a vegetable",
+      ", then tear off the corner",
+      ", then wet it slightly",
+      ", then scream into a pillow",
+      ", then touch it in a way that makes everyone uncomfortable",
+      ", then say fuck it and go surfing"
+    ]
+  };
+
+  // Bag shuffle — draws each item once before repeating
+  function makeBag(arr) {
+    let bag = [];
+    return function draw() {
+      if (bag.length === 0) bag = shuffle([...arr]);
+      return bag.pop();
+    };
+  }
+
+  function shuffle(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  // Bags for chaos-tier items only
+  const chaosBags = {
+    actions:     makeBag(actions.chaos),
+    objects:     makeBag(objects.chaos),
+    constraints: makeBag(constraints.chaos),
+    modifiers:   makeBag(modifiers.chaos)
+  };
+
+  function zone(val) {
+    if (val <= 30) return "gentle";
+    if (val <= 70) return "mid";
+    return "chaos";
+  }
+
+  function pick(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+  }
+
+  function gentleMidPool(obj, val) {
+    const z = zone(val);
+    if (z === "gentle") return [...obj.gentle];
+    return [...obj.gentle, ...obj.mid];
+  }
+
+  function generate(val) {
+    const z = zone(val);
+    const inChaos = z === "chaos";
+
+    const ap = inChaos ? null : gentleMidPool(actions, val);
+    const op = inChaos ? null : gentleMidPool(objects, val);
+    const cp = inChaos ? null : gentleMidPool(constraints, val);
+
+    let action     = inChaos ? chaosBags.actions()     : pick(ap);
+    let object     = inChaos ? chaosBags.objects()     : pick(op);
+    let constraint = inChaos ? chaosBags.constraints() : pick(cp);
+
+    if (action === "Draw with your non-dominant hand" && object === "your non-dominant hand") {
+      object = inChaos ? chaosBags.objects() : pick((op || []).filter(o => o !== "your non-dominant hand"));
+    }
+
+    let task = `${action} ${object} ${constraint}`;
+
+    const roll = Math.random() * 100;
+    if (val <= 30) {
+      if (roll < 10) task += pick(modifiers.gentle);
+    } else if (val <= 70) {
+      if (roll < 50) task += pick([...modifiers.gentle, ...modifiers.mid]);
+    } else {
+      if (roll < 90) {
+        task += chaosBags.modifiers();
+        if (Math.random() < 0.5) task += chaosBags.modifiers();
+      }
+    }
+
+    task = task.charAt(0).toUpperCase() + task.slice(1);
+    if (!task.endsWith(".")) task += ".";
+    return task;
+  }
+
+  function chaosLabel(val) {
+    if (val <= 30) return "gentle";
+    if (val <= 70) return "mid";
+    return "chaos";
+  }
+
+  const taskEl = document.getElementById("task");
+  const hintEl = document.getElementById("hint");
+  const slider = document.getElementById("slider");
+
+  taskEl.textContent = generate(20);
+
+  let hintTimer = null;
+
+  function showChaosHint(val) {
+    hintEl.textContent = chaosLabel(val);
+    hintEl.style.opacity = "1";
+    clearTimeout(hintTimer);
+    hintTimer = setTimeout(() => { hintEl.style.opacity = "0"; }, 1200);
+  }
+
+  slider.addEventListener("input", () => {
+    showChaosHint(parseInt(slider.value));
+  });
+
+  slider.addEventListener("change", () => {
+    const val = parseInt(slider.value);
+    taskEl.textContent = generate(val);
+    showChaosHint(val);
+  });
+</script>
+</body>
+</html>

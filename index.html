@@ -4,80 +4,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AO 3000 BC</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant&family=Sometype+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Ballet:opsz@16..72&family=Cormorant:ital,wght@0,300..700;1,300..700&family=Public+Sans:ital,wght@0,100..900;1,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Sometype+Mono:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
     <link href="/assets/style_v2.css" rel="stylesheet">
     <style>
-      .pillars-container { width: 51%; min-width: 180px; }
+      .pillars-container {
+        width: 55%;
+        min-width: 180px;
+      }
+
+      #ascii {
+        position: fixed;
+        top: 40px;
+        left: 60%;
+        transform: translateX(-50%);
+        z-index: 1;
+        overflow: hidden;
+      }
+
+      #ascii pre {
+        font-family: "Sometype Mono", "Courier New", monospace;
+        font-size: 0.7rem;
+        line-height: 0.7;
+        color: #7d7c7b;
+        white-space: pre;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
     </style>
   </head>
   <body>
-
     <h1>3000 bc</h1>
-
     <div class="pillars-container">
-
       <div class="content" id="weather-widget">Loading briefing...</div>
-
       <div class="content">
-        Current Forms:<br>
-        <a href="https://www.analogobject.studio/" target="_blank">Bookbinding</a><br>
-        <a href="https://www.b-cruz.com/" target="_blank">Creative Direction</a><br>
-        <a href="https://bc3000.substack.com/" target="_blank">Writing</a><br>
-        <a href="bed.html">Painting</a><br>
-        <a href="projects.html">Web Projects</a><br>
+        Latest Work:<br>
+        <span id="latest-work"></span>
         <br>
-        Archive: <a href="index_v1.html">v1</a>
+        Current Forms:<br>
+        <span id="current-forms"></span>
       </div>
-
       <div class="content">
         Recommended:
-        <div class="c1">
-          <a href="https://monocle.com/" target="_blank">Monocle</a><br>
-          <a href="https://www.wallpaper.com/" target="_blank">Wallpaper</a><br>
-          <a href="https://www.the-nomad-magazine.com/" target="_blank">The Nomad</a><br>
-          <a href="https://www.kinfolk.com/" target="_blank">Kinfolk</a><br>
-          <a href="https://www.itsnicethat.com/" target="_blank">It's Nice That</a><br>
-          <a href="https://henryfaber.itch.io/" target="_blank">Games by Henry</a><br>
-          <a href="https://www.fionagarden.com/" target="_blank">Photography by Fiona</a><br>
-          <a href="https://www.benashtonart.com/" target="_blank">Art by Ben</a><br>
-          <a href="https://www.stevenfairweather.com/" target="_blank">Music by Steven</a><br>
-          <a href="https://www.strangerradio.com/" target="_blank">Streaming Stranger Radio</a><br>
-          <a href="https://www.straightxnarrow.com/" target="_blank">Straight &amp; Narrow Management</a><br>
-          <a href="https://www.juliannmccandless.com/" target="_blank">Styling by Juliann</a><br>
-          <a href="https://www.decadestudio.com/" target="_blank">Denim by Decade Studio</a><br>
-          <a href="https://taiyokitagawa.com/" target="_blank">Creative by Taiyo</a><br>
-          <a href="https://cocotardiff.com/photo-diary" target="_blank">Photo Diary by Coco</a><br>
-          <a href="https://jodyglenham.bandcamp.com/" target="_blank">Music by Jody</a><br>
-          <a href="https://www.lloydclothing.com/" target="_blank">Toques by LLOYD</a><br>
-          <a href="https://www.toyotsuchiya.com/" target="_blank">Styling by Toyo</a><br>
-          <a href="https://innerdecay.com/" target="_blank">Pins by InnerDecay</a><br>
-          <a href="https://johannastickland.bigcartel.com/" target="_blank">Art by Johanna</a><br>
-          <a href="https://towernyc.bandcamp.com/" target="_blank">Music by Tower</a><br>
-          <a href="https://lonesomepress.com/" target="_blank">Reading Lonesome</a><br>
-          <a href="https://zu-sb.com" target="_blank">Styling by Zu</a><br>
-          <a href="https://mirrorofvenus.bandcamp.com/" target="_blank">Music by Mirror of Venus</a><br>
-        </div>
+        <div class="c1" id="recommended"></div>
       </div>
-
       <div class="footer">
-        <a href="/https://github.com/" target="_blank">Made by hand at github</a>.
+        <center><a href="https://neocities.org/" target="_blank" style="display: block;">Made by hand at Neocities</a></center>
       </div>
-
       <div class="orange"></div>
-
     </div>
-
     <div id="ascii">
       <pre id="walking">Loading animation...</pre>
     </div>
-
     <script src="briefing_minimal.js"></script>
+    <script src="content_loader_v2.js"></script>
     <script src="ascii_walking.js"></script>
     <script>
       window.WeatherMinimal?.init(document.getElementById('weather-widget'));
     </script>
-
   </body>
 </html>
