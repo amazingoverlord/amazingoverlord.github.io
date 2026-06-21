@@ -115,6 +115,18 @@ li {
 .c1::-webkit-scrollbar-thumb { background: #262b2e; border-radius: 4px; }
 .c1::-webkit-scrollbar-corner { background: transparent; }
 
+      .c2 {
+        flex: 1 1 10%;
+        padding: 10px;
+        margin: 2.5px;
+        min-width: 150px;
+        background-color: #262B2E;
+        color: #d8d2cc;
+        z-index: 990;
+        scrollbar-width: thin;
+        scrollbar-color: #d8d2cc transparent;
+      }
+
 .footer {
   padding: 4px;
   width: 180px;
@@ -304,22 +316,115 @@ iframe::-webkit-scrollbar-corner { background: transparent; }
 }
 
 /* ===============================
-   PROJECTS CONTAINER
+   Portfolio CONTAINER
    =============================== */
 
-#projects-container .pillar p {
-    margin: 4px 0;
-}
 
-#projects-container .pillar a {
-    color: #EAE3D6;
-    text-decoration: none;
-}
 
-#projects-container .pillar a:hover {
-    color: #262B2E;
-    background-color: #F9F4EB;
-}
+      .portfolio-container {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 0;
+        margin: 0 0 0 2.5px;
+      }
+
+      .portfolio-menu {
+        background-color: #262B2E;
+      }
+
+      .portfolio-show {
+        width: 59%;
+        margin: 2.5px;
+        padding: 10px;
+        background-color: #262B2E;
+        color: #EAE3D6;
+        display: flex;
+        flex-wrap: wrap;
+        z-index: 990;
+      }
+      
+
+      .project-close a {
+        font-size: 2rem;
+        line-height: 1rem;
+        cursor: pointer;
+        padding: 4px;
+        background-color: rgba(0,0,0,0);
+        color: #B7AAA1;
+      }
+
+      .project-close a:hover {
+        cursor: pointer;
+        background-color: rgba(0,0,0,0);
+        color: #F9F4EB;
+      }
+
+      .project-feature {
+        width: 100%;
+        min-height: 360px;
+        background-color: rgba(0,0,0,0.2);
+        padding: 10px;
+        flex: 1 1 100%;
+      }
+
+      .project-title {
+        font-family: Cormorant, Times, serif;
+        font-size: 2rem;
+        line-height: 2rem;
+        margin: 8px;
+        flex: 1 1 30%;
+      }
+
+      .project-type {
+        font-family: Cormorant, Times, serif;
+        font-style: italic;
+        font-size: 1.25rem;
+        line-height: 2rem;
+        color: #B7AAA1;
+      }
+
+      .project-about {
+        flex: 1 1 50%;
+        margin: 0 8px 0 0;
+      }
+
+      .project-roll {
+        font-family: "Sometype Mono", monospace;
+        font-weight: 400;
+        font-size: 1rem;
+        line-height: 2rem;
+      }
+
+      .project-link {
+        align-items: center;
+        text-align: center;
+        font-size: 1rem;
+        cursor: pointer;
+        margin: 5px 0 5px 0;
+        padding: 2px;
+        color: #262B2E;
+      }
+
+      .project-link a {
+        cursor: pointer;
+        background-color: #4C5154;
+        display: block;
+      }
+
+      .project-link a:hover {
+        cursor: pointer;
+        background-color: #F9F4EB;
+        color: #262B2E;
+      }
+      
+      .project-image {
+        width: 100%;
+        background-color: rgba(0,0,0,0.2);
+        flex: 1 1 100%;
+        margin: 2.5px 0 2.5px 0;
+        padding: 5px;
+        text-align: center;
+      }
 
 /* ===============================
    RESPONSIVE
