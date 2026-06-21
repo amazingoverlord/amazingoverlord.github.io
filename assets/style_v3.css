@@ -352,6 +352,12 @@ iframe::-webkit-scrollbar-corner { background: transparent; }
         margin: 0;
       }
 
+      #portfolio-pillars {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+      }
+
       .portfolio-pillar1 {
         flex: 1 1 10%;
         padding: 10px;
@@ -379,13 +385,31 @@ iframe::-webkit-scrollbar-corner { background: transparent; }
         width: 59%;
         margin: 2.5px;
         padding: 10px;
-        background-color: #262B2E;
+        background-color: transparent;
         color: #EAE3D6;
         display: flex;
         flex-wrap: wrap;
         z-index: 990;
       }
+
+      .portfolio-show.has-project {
+        background-color: #262B2E;
+      }
+
+      #portfolio-show-content {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+      }
       
+
+      .project-close {
+        display: none;
+      }
+
+      .portfolio-show.has-project .project-close {
+        display: block;
+      }
 
       .project-close a {
         font-size: 2rem;

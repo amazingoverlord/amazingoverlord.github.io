@@ -47,14 +47,18 @@
   // ---------- Portfolio: project display ----------
 
   function clearPortfolioShow() {
+    const showEl = document.getElementById('portfolio-show');
     const container = document.getElementById('portfolio-show-content');
     if (container) container.innerHTML = '';
+    showEl && showEl.classList.remove('has-project');
   }
 
   function renderProject(project) {
+    const showEl = document.getElementById('portfolio-show');
     const container = document.getElementById('portfolio-show-content');
     if (!container || !project) return;
 
+    showEl && showEl.classList.add('has-project');
     container.innerHTML = '';
 
     // 1. Hero image — renders FIRST, before the title (matches original placeholder)
@@ -112,23 +116,13 @@
     container.appendChild(aboutDiv);
 
     // 4. Embed — renders AFTER about (matches original placeholder).
-    // This is a generic iframe slot: sometimes a video embed (Vimeo/YouTube),
-    // sometimes an external webpage or interactive demo.
+    // This holds the FULL raw <iframe> markup as a string (copy/paste it straight
+    // from the source — Vimeo, YouTube, an external page, whatever), so it's
+    // injected as-is rather than rebuilt from a bare URL.
     if (project.embed) {
       const featureDiv = document.createElement('div');
       featureDiv.className = 'project-feature';
-      const iframe = document.createElement('iframe');
-      iframe.src = project.embed;
-      iframe.width = '100%';
-      iframe.height = '100%';
-      iframe.setAttribute('frameborder', '0');
-      iframe.setAttribute(
-        'allow',
-        'autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share'
-      );
-      iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
-      iframe.title = project.title;
-      featureDiv.appendChild(iframe);
+      featureDiv.innerHTML = project.embed;
       container.appendChild(featureDiv);
     }
 
@@ -144,6 +138,106 @@
     });
   }
 
+  // ---------- Portfolio: pillar lists (generated from JSON) ----------
+
+  function renderPortfolioPillars(data) {
+    const container = document.getElementById('portfolio-pillars');
+    if (!container || !data.categories || !data.projects) return;
+
+    container.innerHTML = '';
+
+    data.categories.forEach(function (category) {
+      const pillarDiv = document.createElement('div');
+      pillarDiv.className = 'portfolio-pillar2';
+
+      const h3 = document.createElement('h3');
+      h3.textContent = category.label;
+      pillarDiv.appendChild(h3);
+
+      if (category.description) {
+        const descSpan = document.createElement('span');
+        descSpan.className = 'small';
+        descSpan.textContent = category.description;
+        pillarDiv.appendChild(descSpan);
+        pillarDiv.appendChild(document.createElement('br'));
+        pillarDiv.appendChild(document.createElement('br'));
+      }
+
+      Object.keys(data.projects).forEach(function (id) {
+        const project = data.projects[id];
+        if (project.category !== category.id) return;
+
+        const a = document.createElement('a');
+        a.href = '#';
+        a.setAttribute('data-project', id);
+        a.appendChild(document.createTextNode(project.title + ' '));
+
+        const typeSpan = document.createElement('span');
+        typeSpan.className = 'small';
+        typeSpan.textContent = project.type || '';
+        a.appendChild(typeSpan);
+
+        a.addEventListener('click', handlePortfolioLinkClick);
+
+        pillarDiv.appendChild(a);
+        pillarDiv.appendChild(document.createElement('br'));
+      });
+
+      container.appendChild(pillarDiv);
+    });
+  }
+
+  // ---------- Portfolio: "Recently" updates (generated from JSON) ----------
+
+  function renderRecentUpdates(data) {
+    const container = document.getElementById('recent-updates');
+    if (!container || !data.recent) return;
+
+    container.innerHTML = '';
+
+    data.recent.forEach(function (item) {
+      const updateDiv = document.createElement('div');
+      updateDiv.className = 'update';
+
+      const a = document.createElement('a');
+      a.href = item.url;
+      if (item.external) a.target = '_blank';
+      a.appendChild(document.createTextNode(item.label + ' '));
+
+      const smallSpan = document.createElement('span');
+      smallSpan.className = 'small';
+      smallSpan.textContent = item.small + (item.external ? ' \u2192' : '');
+      a.appendChild(smallSpan);
+
+      updateDiv.appendChild(a);
+      container.appendChild(updateDiv);
+    });
+  }
+
+  // ---------- Portfolio: deep linking via ?project= query param ----------
+
+  function getProjectIdFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('project');
+  }
+
+  function setProjectInUrl(id) {
+    const url = new URL(window.location.href);
+    if (id) {
+      url.searchParams.set('project', id);
+    } else {
+      url.searchParams.delete('project');
+    }
+    history.pushState({ project: id || null }, '', url);
+  }
+
+  function handleDeepLink(data) {
+    const id = getProjectIdFromUrl();
+    if (id && data.projects && data.projects[id]) {
+      renderProject(data.projects[id]);
+    }
+  }
+
   function handlePortfolioLinkClick(e) {
     const id = e.currentTarget.getAttribute('data-project');
     if (!id) return;
@@ -153,33 +247,46 @@
       const project = data.projects && data.projects[id];
       if (project) {
         renderProject(project);
+        setProjectInUrl(id);
       } else {
         console.warn('No portfolio entry found for id:', id);
       }
     });
   }
 
-  function initPortfolioLinks() {
-    document.querySelectorAll('.portfolio-menu a[data-project]').forEach(function (a) {
-      a.addEventListener('click', handlePortfolioLinkClick);
-    });
-
+  function initCloseButton() {
     const closeLink = document.getElementById('portfolio-close');
     if (closeLink) {
       closeLink.addEventListener('click', function (e) {
         e.preventDefault();
         clearPortfolioShow();
+        setProjectInUrl(null);
       });
     }
   }
+
+  // Keep the displayed project in sync with browser back/forward navigation
+  window.addEventListener('popstate', function () {
+    loadContentData().then(function (data) {
+      const id = getProjectIdFromUrl();
+      if (id && data.projects && data.projects[id]) {
+        renderProject(data.projects[id]);
+      } else {
+        clearPortfolioShow();
+      }
+    });
+  });
 
   // ---------- Public init ----------
 
   function init() {
     loadContentData().then(function (data) {
       renderDashboardLists(data);
+      renderPortfolioPillars(data);
+      renderRecentUpdates(data);
+      handleDeepLink(data);
     });
-    initPortfolioLinks();
+    initCloseButton();
   }
 
   window.ContentLoader = { init: init };
