@@ -22,25 +22,29 @@ h1 {
   margin: 10px;
 }
 
-a {
-  color: #F9F4EB;
-}
+      a {
+        color: #ece7e1;
+        text-decoration: none;
+        transition: all 0.66s;
+        cursor: pointer;
+      }
 
-a:hover {
-  color: #262B2E;
-  background-color: #F9F4EB;
-}
+      a:hover {
+        color: #1d1d1d;
+        background-color: #ece7e1;
+        transition: all 0.1s;
+      }
 
 h2 {
   font-family: Cormorant, Times, serif;
   font-size: 1.5rem;
-  line-height: 1rem;
+  line-height: 1.25rem;
 }
 
 h3 {
   font-family: Cormorant, Times, serif;
   font-size: 1.25rem;
-  line-height: 0.5rem;
+  line-height: 1rem;
   margin-top: 6px;
   margin-bottom: 8px;
 }
@@ -70,6 +74,7 @@ li {
 .home a {
   text-decoration: none;
   z-index: 1000;
+  cursor: pointer;
 }
 
 .home a:hover {
@@ -77,6 +82,28 @@ li {
   background-color: #cc6600;
 }
 
+      .update {
+        margin: 0px 0 6px 0;
+      }
+
+      .small {
+        font-size: 0.6rem;
+        color: #D8D2CC;
+        font-style: italic;
+      }
+
+      a .small {
+        font-size: 0.6rem;
+        color: #D8D2CC;
+        transition: all 0.66s;
+        cursor: pointer;
+        
+      }
+      a:hover .small {
+        color: #262B2E;
+        transition: all 0.1s;
+      }
+      
 .pillars-container {
   display: flex;
   flex-wrap: wrap;
@@ -88,7 +115,7 @@ li {
         flex: 1 1 10%;
         padding: 10px;
         margin: 2.5px;
-        min-width: 150px;
+        min-width: 180px;
         background-color: #262B2E;
         color: #d8d2cc;
         z-index: 990;
@@ -115,18 +142,6 @@ li {
 .c1::-webkit-scrollbar-track { background: transparent; }
 .c1::-webkit-scrollbar-thumb { background: #262b2e; border-radius: 4px; }
 .c1::-webkit-scrollbar-corner { background: transparent; }
-
-      .c2 {
-        flex: 1 1 10%;
-        padding: 10px;
-        margin: 2.5px;
-        min-width: 150px;
-        background-color: #262B2E;
-        color: #d8d2cc;
-        z-index: 990;
-        scrollbar-width: thin;
-        scrollbar-color: #d8d2cc transparent;
-      }
 
 .footer {
   padding: 4px;
@@ -330,10 +345,34 @@ iframe::-webkit-scrollbar-corner { background: transparent; }
       }
 
       .portfolio-menu {
+        display: flex;
+        flex-wrap: wrap;
         width: 37%;
         min-width: 240px;
         margin: 0;
       }
+
+      .portfolio-pillar1 {
+        flex: 1 1 10%;
+        padding: 10px;
+        margin: 2.5px;
+        min-width: 140px;
+        background-color: #262B2E;
+        color: #d8d2cc;
+        z-index: 990;
+        min-height: 66%;
+      }
+      
+      .portfolio-pillar2 {
+        flex: 1 1 10%;
+        padding: 10px;
+        margin: 2.5px;
+        min-width: 180px;
+        background-color: #262B2E;
+        color: #d8d2cc;
+        z-index: 990;
+        scrollbar-width: thin;
+        scrollbar-color: #d8d2cc transparent;
       }
 
       .portfolio-show {
@@ -366,7 +405,7 @@ iframe::-webkit-scrollbar-corner { background: transparent; }
       .project-feature {
         width: 100%;
         min-height: 360px;
-        background-color: rgba(0,0,0,0.2);
+        background-color: rgba(0,0,0,0.75);
         padding: 10px;
         flex: 1 1 100%;
       }
@@ -413,6 +452,7 @@ iframe::-webkit-scrollbar-corner { background: transparent; }
         cursor: pointer;
         background-color: #4C5154;
         display: block;
+        border-radius: 4px;
       }
 
       .project-link a:hover {
