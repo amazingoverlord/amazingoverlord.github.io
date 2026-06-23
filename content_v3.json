@@ -1,47 +1,54 @@
 {
+  "categories": [
+    {
+      "id": "frameworks",
+      "label": "Frameworks:",
+      "description": "Scalable brand systems and tools."
+    },
+    {
+      "id": "editorial",
+      "label": "Editorial:",
+      "description": "Content and design."
+    },
+    {
+      "id": "experiential",
+      "label": "Experiential:",
+      "description": "Activations and interactions."
+    }
+  ],
   "projects": {
     "outfront-gfx-kit": {
       "title": "OUTFRONT GFX Kit",
       "type": "Creative Toolkit",
       "roll": "Director, Designer",
+      "category": "frameworks",
       "heroImage": "/assets/portfolio/tmp/ballet_1.jpg",
       "about": [
-        "Sunt deleniti hic illo labore aperiam repellat repellat nihil. A labore veritatis non totam perspiciatis distinctio veritatis voluptatem.",
-        "Fugiat nam saepe iusto quibusdam cum. Libero rem iure sit debitis. Quasi harum laboriosam dicta dolorem et praesentium distinctio dolore."
+        "A centralized, cloud-hosted library of After Effects brand templates built so OUTFRONT's creative and sales teams could generate on-brand motion content without starting from scratch.",
+        "Each template is structured for fast turnaround \u2014 swap in new copy, imagery, or data and export broadcast-ready assets in minutes. The kit scales a single creative system across dozens of teams and campaigns."
       ],
-      "embed": "https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479",
+      "embeds": [
+        "<iframe src='https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479' width='100%' height='100%' frameborder='0' allow='autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share' referrerpolicy='strict-origin-when-cross-origin' title='Martens Offset'></iframe>"
+      ],
       "images": [
         "/assets/portfolio/tmp/ballet_2.jpg",
         "/assets/portfolio/tmp/ballet_3.jpg"
       ],
       "link": "#"
     },
-    "sat-terminal-gfx": {
-      "title": "Sat Terminal GFX",
-      "type": "On-Set Interactive UI",
-      "roll": "Designer",
-      "heroImage": "/assets/portfolio/tmp/ballet_2.jpg",
-      "about": [
-        "Sequi voluptatem eaque voluptatum quam illo ut nihil. Ea dolore ab natus omnis. Nihil harum occaecati non eaque ipsum debitis ad praesentium.",
-        "Nulla sint sed sed eum eveniet minima assumenda id. Tempore sint cupiditate ad ut et."
-      ],
-      "embed": "https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479",
-      "images": [
-        "/assets/portfolio/tmp/ballet_3.jpg",
-        "/assets/portfolio/tmp/ballet_4.jpg"
-      ],
-      "link": "/gfx/scifi_keyboard"
-    },
     "halftxt": {
       "title": "HALFTXT",
       "type": "ASCII Art App Suite",
       "roll": "Director, Developer",
+      "category": "frameworks",
       "heroImage": "/assets/portfolio/tmp/ballet_3.jpg",
       "about": [
-        "Temporibus quisquam esse nulla ut praesentium quia et. Aliquid labore quia rerum eius quo aut. Culpa vel voluptas suscipit laborum.",
-        "Repellat sit deleniti quae qui et voluptatum. Velit quis et enim."
+        "A suite of client-side tools for converting images, GIFs, and video into ASCII art \u2014 built entirely in the browser, with no backend and no dependencies.",
+        "Includes a media converter and a frame-by-frame animator with export to WebM, MP4, HTML, and plain text, demonstrating end-to-end product design and front-end development outside the constraints of client work."
       ],
-      "embed": "https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479",
+      "embeds": [
+        "<iframe src='https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479' width='100%' height='100%' frameborder='0' allow='autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share' referrerpolicy='strict-origin-when-cross-origin' title='Martens Offset'></iframe>"
+      ],
       "images": [
         "/assets/portfolio/tmp/ballet_4.jpg",
         "/assets/portfolio/tmp/ballet_1.jpg"
@@ -49,47 +56,81 @@
       "link": "/HALFTXT"
     },
     "google-imagine-if": {
-      "title": "Google: Imagine If",
+      "title": "Imagine If",
       "type": "AI Post Engine",
-      "roll": "Creative Director",
-      "heroImage": "/assets/portfolio/tmp/ballet_4.jpg",
+      "roll": "Production Lead",
+      "category": "frameworks",
+      "heroImage": "/assets/portfolio/imagine_if/imagineif_01.jpg",
       "about": [
-        "Sunt deleniti hic illo labore aperiam repellat repellat nihil. A labore veritatis non totam perspiciatis distinctio veritatis voluptatem.",
-        "Sequi voluptatem eaque voluptatum quam illo ut nihil. Ea dolore ab natus omnis."
+        "Google DeepMind and XLabs turned NYC's transit system into a user-generated art exhibit. Five local artists used AI to transform hundreds of New Yorkers' ideas into video artworks for thousands of MTA screens.",
+        "The challenge: every video needed to run on both vertical and horizontal DOOH screens. Manual processing would have taken 12 hours per hundred videos.",
+        "I built an AI-powered solution from scratch. I created separate horizontal and vertical After Effects templates, then used JSON files to dynamically populate each video with the correct borough, artist credit, and submission prompttext. To scale the work, I used AI to write custom Mac shell scripts, After Effects extensions, and plugins that automated the entire pipeline \u2014 feeding every raw video into both templates simultaneously.",
+        "The result: processing a hundred videos in about one hour instead of one day, with each delivered in both formats. The campaign ran across all five boroughs and culminated in a Times Square finale."
       ],
-      "embed": "https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479",
+      "embeds": [
+        "<center><video width='100%' controls><source src='/assets/portfolio/imagine_if/imagine_if_pipeline_3.mp4' type='video/mp4'></video></center>"
+      ],
       "images": [
-        "/assets/portfolio/tmp/ballet_1.jpg",
-        "/assets/portfolio/tmp/ballet_2.jpg"
+        "/assets/portfolio/imagine_if/imagineif_02a.jpg",
+        "/assets/portfolio/imagine_if/imagineif_02b.jpg",
+        "/assets/portfolio/imagine_if/imagineif_02c.jpg",
+        "/assets/portfolio/imagine_if/imagineif_03.jpg"
+      ],
+      "link": "#"
+    },
+    "frontiers": {
+      "title": "Frontiers",
+      "type": "Creative Strategy",
+      "roll": "Creative Director",
+      "category": "frameworks",
+      "heroImage": "/assets/portfolio/frontiers/frontiers_stills_00007.jpg",
+      "about": [
+        "Frontiers is an unproduced documentary series I developed and pitched on advertising and technology, featuring interviews with leading designers, technologists, and academics.",
+        "The identity is anchored in the concept of 'breakthrough', visually protrayed with translucent glass blocks. Low-key cinematography creates intimacy and gravitas."
+      ],
+      "embeds": [
+        "<iframe src='https://player.vimeo.com/video/1104237305?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479' style='width:100%;height:100%;' frameborder='0' allow='autoplay; fullscreen; picture-in-picture' allowfullscreen></iframe>"
+      ],
+      "images": [
+        "/assets/portfolio/frontiers/deck2_(0-00-00-02).jpg",
+        "/assets/portfolio/frontiers/deck2_(0-00-00-04).jpg",
+        "/assets/portfolio/frontiers/lower3rd.jpg"
       ],
       "link": "#"
     },
     "excursions": {
       "title": "Excursions",
-      "type": "Brand Package",
-      "roll": "Director, Designer",
-      "heroImage": "/assets/portfolio/tmp/ballet_1.jpg",
+      "type": "Creative Strategy",
+      "roll": "Creative Director",
+      "category": "frameworks",
+      "heroImage": "/assets/portfolio/excursions/exc_map.jpg",
       "about": [
-        "Fugiat nam saepe iusto quibusdam cum. Libero rem iure sit debitis. Quasi harum laboriosam dicta dolorem et praesentium distinctio dolore.",
-        "Temporibus quisquam esse nulla ut praesentium quia et. Aliquid labore quia rerum eius quo aut."
+        "Excursions was a pandemic-era content series designed to give prospective advertisers a guided tour of specific markets served by OUTFRONT Media, from local transit routes to neighborhood-level audience insights.",
+        "As Creative Director, I led a full rebrand and graphics package for the series, drawing inspiration from the nostalgic artifacts of classic road trips: paper maps, handwritten notes, highway signage, and worn gas station receipts. This visual language extended from the logo down to every graphic element within each episode, creating a cohesive, warm, and tactile identity that felt like discovery rather than a sales pitch. Although the branding was never implemented, the work demonstrates my ability to build a complete, insight-driven visual system that transforms dry market data into a storytelling vehicle."
       ],
-      "embed": "https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479",
+      "embeds": [
+        "<center><video width='100%' controls><source src='/assets/portfolio/excursions/exc_demo.mp4' type='video/mp4'></video></center>"
+      ],
       "images": [
-        "/assets/portfolio/tmp/ballet_2.jpg",
-        "/assets/portfolio/tmp/ballet_3.jpg"
+        "/assets/portfolio/excursions/exc_logo.jpg",
+        "/assets/portfolio/excursions/exc_mood.jpg",
+        "/assets/portfolio/excursions/exc_mockup.jpg"
       ],
       "link": "#"
     },
     "verizon-pipeline": {
       "title": "Verizon",
-      "type": "Pipeline and Guidelines",
+      "type": "Motion Guidelines",
       "roll": "Pipeline Lead",
+      "category": "frameworks",
       "heroImage": "/assets/portfolio/tmp/ballet_2.jpg",
       "about": [
-        "Culpa vel voluptas suscipit laborum. Repellat sit deleniti quae qui et voluptatum. Velit quis et enim.",
-        "Nulla sint sed sed eum eveniet minima assumenda id. Tempore sint cupiditate ad ut et."
+        "From 2012 to 2016, I led a team of three motion designers and editors producing content for nearly every screen across Verizon's flagship destination stores and over 5,000 retail locations nationwide.",
+        "To meet weekly deliverables of 50 to 100 videos across multiple formats and sizes, I built new scripts, expressions, and workflows in After Effects \u2014 then extended that system into a unified set of motion guidelines for Verizon's brand-wide rebrand."
       ],
-      "embed": "https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479",
+      "embeds": [
+        "<iframe src='https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479' width='100%' height='100%' frameborder='0' allow='autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share' referrerpolicy='strict-origin-when-cross-origin' title='Martens Offset'></iframe>"
+      ],
       "images": [
         "/assets/portfolio/tmp/ballet_3.jpg",
         "/assets/portfolio/tmp/ballet_4.jpg"
@@ -100,31 +141,18 @@
       "title": "All Night Wrong",
       "type": "Title Design",
       "roll": "Director, Designer",
+      "category": "editorial",
       "heroImage": "/assets/portfolio/tmp/ballet_3.jpg",
       "about": [
-        "Sunt deleniti hic illo labore aperiam repellat repellat nihil. A labore veritatis non totam perspiciatis distinctio veritatis voluptatem.",
-        "Fugiat nam saepe iusto quibusdam cum. Libero rem iure sit debitis."
+        "All Night Wrong is an upcoming comedy directed by Jason James, premiering at South by Southwest London on June 2, 2026. The film follows Gary and Ell, who meet on a blind date and end up stealing a killer's car \u2014 along with a dead body and $40,000.",
+        "It stars Maria Bakalova (Borat Subsequent Moviefilm) and Zach Cherry (Severance), alongside Emily Hampshire, Tyler Labine, and Ryan Beil. I designed the film's main title sequence, setting the tone before the story even starts."
       ],
-      "embed": "https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479",
+      "embeds": [
+        "<iframe src='https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479' width='100%' height='100%' frameborder='0' allow='autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share' referrerpolicy='strict-origin-when-cross-origin' title='Martens Offset'></iframe>"
+      ],
       "images": [
         "/assets/portfolio/tmp/ballet_4.jpg",
         "/assets/portfolio/tmp/ballet_1.jpg"
-      ],
-      "link": "#"
-    },
-    "property-of-a-lady": {
-      "title": "Property of a Lady",
-      "type": "Title Design",
-      "roll": "Director, Designer",
-      "heroImage": "/assets/portfolio/tmp/ballet_4.jpg",
-      "about": [
-        "Sequi voluptatem eaque voluptatum quam illo ut nihil. Ea dolore ab natus omnis. Nihil harum occaecati non eaque ipsum debitis ad praesentium.",
-        "Quasi harum laboriosam dicta dolorem et praesentium distinctio dolore."
-      ],
-      "embed": "https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479",
-      "images": [
-        "/assets/portfolio/tmp/ballet_1.jpg",
-        "/assets/portfolio/tmp/ballet_2.jpg"
       ],
       "link": "#"
     },
@@ -132,30 +160,18 @@
       "title": "OUTFRONT Brand Film",
       "type": "Event Film",
       "roll": "Director, Writer",
+      "category": "editorial",
       "heroImage": "",
       "about": [
-        "Temporibus quisquam esse nulla ut praesentium quia et. Aliquid labore quia rerum eius quo aut. Culpa vel voluptas suscipit laborum.",
-        "Repellat sit deleniti quae qui et voluptatum. Velit quis et enim."
+        "What began as a request for a high-energy hype film to build excitement at Cannes evolved into something more significant \u2014 a film that helped shape a new brand identity for OUTFRONT.",
+        "Rather than the typical montage of billboards and screens common to OOH media, I introduced double exposures as a visual through-line, and integrated AI-generated NeRF and Gaussian splatting to reframe existing footage in unexpected ways.",
+        "The result became a centerpiece of OUTFRONT's CEO's presentation at Cannes, and established a unified creative direction that continues to influence the company's brand communications today."
       ],
-      "embed": "https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479",
+      "embeds": [
+        "<iframe src='https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479' width='100%' height='100%' frameborder='0' allow='autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share' referrerpolicy='strict-origin-when-cross-origin' title='Martens Offset'></iframe>"
+      ],
       "images": [
         "/assets/portfolio/tmp/ballet_2.jpg",
-        "/assets/portfolio/tmp/ballet_3.jpg"
-      ],
-      "link": "#"
-    },
-    "frontiers": {
-      "title": "Frontiers",
-      "type": "Title Design",
-      "roll": "Director, Designer",
-      "heroImage": "/assets/portfolio/tmp/ballet_1.jpg",
-      "about": [
-        "Sunt deleniti hic illo labore aperiam repellat repellat nihil. A labore veritatis non totam perspiciatis distinctio veritatis voluptatem.",
-        "Sequi voluptatem eaque voluptatum quam illo ut nihil."
-      ],
-      "embed": "https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479",
-      "images": [
-        "/assets/portfolio/tmp/ballet_4.jpg",
         "/assets/portfolio/tmp/ballet_3.jpg"
       ],
       "link": "#"
@@ -163,48 +179,58 @@
     "city-in-motion": {
       "title": "City in Motion",
       "type": "Content Series",
-      "roll": "Director, Editor",
-      "heroImage": "/assets/portfolio/tmp/ballet_2.jpg",
+      "roll": "Creative Direction, Concept, Creative Strategy, Branding",
+      "category": "editorial",
+      "heroImage": "/assets/portfolio/cityinmotion/cait-visual-creative.jpg",
       "about": [
-        "Fugiat nam saepe iusto quibusdam cum. Libero rem iure sit debitis. Quasi harum laboriosam dicta dolorem et praesentium distinctio dolore.",
-        "Nulla sint sed sed eum eveniet minima assumenda id."
+        "The goal of City in Motion was to shift advertiser perception from transit as mass impressions to transit as a portfolio of diverse, desirable audiences. We started from the insight that a rider's choice of transit mode reveals their identity, lifestyle stage, and daily priorities\u2014not just their commute. That insight led to the big idea: Every commuter has a different city in motion.",
+        "Under my direction, our internal team shot documentary-style profiles of real NYC commuters, including Cait, a subway-dependent creative juggling multiple gigs per day, and Vanessa, a Long Island parent who uses the LIRR for both work and weekend family trips into the city. I set the handheld, rhythmically edited visual language to match each mode's energy and art-directed the motion graphics to amplify each persona without distracting from their story.",
+        "The series gave advertisers emotional segmentation they could see and feel\u2014proving not just how many people ride, but who rides, when, and why their brand belongs there."
       ],
-      "embed": "https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479",
+      "embeds": [
+        "<center><video width='100%' controls><source src='/assets/portfolio/cityinmotion/CityInMotion01_Cait_BC3_FINAL_1080WEB.mp4' type='video/mp4'></video><br><video width='100%' controls><source src='/assets/portfolio/cityinmotion/CityInMotion02_Vanessa_BC_FINAL_WEB.mp4' type='video/mp4'></video></center>"
+      ],
       "images": [
-        "/assets/portfolio/tmp/ballet_3.jpg",
-        "/assets/portfolio/tmp/ballet_1.jpg"
+        "/assets/portfolio/cityinmotion/cim_title.gif",
+        "/assets/portfolio/cityinmotion/cim_medium.jpg",
+        "/assets/portfolio/cityinmotion/vanessa-working-parent.jpg"
       ],
       "link": "#"
     },
-    "sisene-g": {
-      "title": "siseneG",
-      "type": "Short",
-      "roll": "Director, Writer",
-      "heroImage": "/assets/portfolio/tmp/ballet_3.jpg",
+    "converse-forever-chuck": {
+      "title": "Converse: Forever Chuck",
+      "type": "Campaign",
+      "roll": "Post Supervision",
+      "category": "editorial",
+      "heroImage": "/assets/portfolio/foreverchuck/1_feature.jpg",
       "about": [
-        "Temporibus quisquam esse nulla ut praesentium quia et. Aliquid labore quia rerum eius quo aut. Culpa vel voluptas suscipit laborum.",
-        "Velit quis et enim."
+        "Forever Chuck reintroduced the Chuck Taylor All Star to a new generation, fronted by a Gen Z roster including Sabrina Carpenter, Cole Sprouse, Taylor Hill, Alton Mason, Alisha Boe, Selah Marley, and Rowan Blanchard.",
+        "As Associate Director of Film + Motion at AKQA, I supervised post-production, including editorial and color, and managed the campaign's rollout, launching the spots first on YouTube and Instagram, then extending into Instagram ads, and finally into out-of-home, translating the campaign across each format and platform."
       ],
-      "embed": "https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479",
+      "embeds": [
+        "<center><video width='100%' controls><source src='/assets/portfolio/foreverchuck/converse-forever_chuck_forever_you.mp4' type='video/mp4'></video></center>"
+      ],
       "images": [
-        "/assets/portfolio/tmp/ballet_4.jpg",
-        "/assets/portfolio/tmp/ballet_2.jpg"
+        "/assets/portfolio/foreverchuck/2_insta.jpg",
+        "/assets/portfolio/foreverchuck/3_ooh.jpg"
       ],
       "link": "#"
     },
     "maserati": {
       "title": "Maserati",
-      "type": "Social",
+      "type": "Social Program",
       "roll": "Creative Director",
-      "heroImage": "/assets/portfolio/tmp/ballet_4.jpg",
+      "category": "editorial",
+      "heroImage": "/assets/portfolio/maserati/maserati_feature.webp",
       "about": [
-        "Sequi voluptatem eaque voluptatum quam illo ut nihil. Ea dolore ab natus omnis. Nihil harum occaecati non eaque ipsum debitis ad praesentium.",
-        "Tempore sint cupiditate ad ut et."
+        "At AKQA, I led the launch and ongoing content for Maserati's US social media program.",
+        "Partnering with Rally & Co., I helped create the films that introduced the Maserati Levante, the brand's first SUV, to the North American market."
       ],
-      "embed": "https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479",
+      "embeds": [
+        "<center><video width='100%' controls><source src='/assets/portfolio/maserati/msrt_launch05c_001_1.mp4' type='video/mp4'></video><br><<video width='100%' controls><source src='/assets/portfolio/maserati/fall_edit01_lo.mp4' type='video/mp4'></video><br><video width='100%' controls><source src='assets/portfolio/maserati/aspen_main_04wide_cc3_bc_1.mp4'></video><br><video width='100%' controls><source src='/assets/portfolio/maserati/2017autoshowrecap.mp4' type='video/mp4'></video></center><br>"
+      ],
       "images": [
-        "/assets/portfolio/tmp/ballet_1.jpg",
-        "/assets/portfolio/tmp/ballet_3.jpg"
+        "/assets/portfolio/maserati/maseratisocial.webp"
       ],
       "link": "#"
     },
@@ -212,12 +238,15 @@
       "title": "Creative Commons Remix",
       "type": "Event Film",
       "roll": "Director, Editor",
+      "category": "editorial",
       "heroImage": "/assets/portfolio/tmp/ballet_1.jpg",
       "about": [
-        "Sunt deleniti hic illo labore aperiam repellat repellat nihil. A labore veritatis non totam perspiciatis distinctio veritatis voluptatem.",
-        "Fugiat nam saepe iusto quibusdam cum."
+        "Art direction and motion graphic design for the launch video introducing Creative Commons' 2016\u20132020 Organizational Strategy, debuted at an event at MoMA.",
+        "Released under a Creative Commons Attribution-ShareAlike license, the project was produced in direct collaboration with Creative Commons' CEO to define the visual language for the organization's new strategic direction."
       ],
-      "embed": "https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479",
+      "embeds": [
+        "<iframe src='https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479' width='100%' height='100%' frameborder='0' allow='autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share' referrerpolicy='strict-origin-when-cross-origin' title='Martens Offset'></iframe>"
+      ],
       "images": [
         "/assets/portfolio/tmp/ballet_2.jpg",
         "/assets/portfolio/tmp/ballet_4.jpg"
@@ -228,12 +257,15 @@
       "title": "Olympus",
       "type": "Campaign",
       "roll": "Creative Director",
+      "category": "editorial",
       "heroImage": "/assets/portfolio/tmp/ballet_2.jpg",
       "about": [
-        "Libero rem iure sit debitis. Quasi harum laboriosam dicta dolorem et praesentium distinctio dolore. Alias consequatur culpa quia quia.",
-        "Nihil harum occaecati non eaque ipsum debitis ad praesentium."
+        "Motion Graphics Director across multiple global launch campaigns for Olympus at AKQA, including the brand's global website relaunch and several flagship product debuts.",
+        "\"Never Stop\" became the basis for a global ad spot; \"Share Beautifully\" was translated into 18 languages and drove the highest-performing PEN camera launch to date; and the OM-D E-M10 spot introduced the brand's latest mirrorless model worldwide."
       ],
-      "embed": "https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479",
+      "embeds": [
+        "<iframe src='https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479' width='100%' height='100%' frameborder='0' allow='autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share' referrerpolicy='strict-origin-when-cross-origin' title='Martens Offset'></iframe>"
+      ],
       "images": [
         "/assets/portfolio/tmp/ballet_3.jpg",
         "/assets/portfolio/tmp/ballet_1.jpg"
@@ -242,62 +274,31 @@
     },
     "must-have-squared": {
       "title": "#MustHaveSquared",
-      "type": "Social Content",
-      "roll": "Creative Director",
-      "heroImage": "/assets/portfolio/tmp/ballet_3.jpg",
+      "type": "Digital Spots",
+      "roll": "Director",
+      "category": "editorial",
+      "heroImage": "/assets/portfolio/musthave2/wt_musthave2.jpg",
       "about": [
-        "Nulla sint sed sed eum eveniet minima assumenda id. Tempore sint cupiditate ad ut et.",
-        "Culpa vel voluptas suscipit laborum. Repellat sit deleniti quae qui et voluptatum."
+        "Wheat Thins makes the things you love better. For this social campaign with AKQA, we shot and directed a series of spots celebrating the snack's role in the audience's favorite activities.",
+        "The creative approach was simple and surreal: static blender shots combined Wheat Thins with activities pulled directly from the #MustHaveSquared hashtag, creating whimsical, snack-based objects that enhance beloved pastimes. The visual language was clean, product-forward, and playful, elevating the brand's warm, approachable tone while feeling native to social."
       ],
-      "embed": "https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479",
-      "images": [
-        "/assets/portfolio/tmp/ballet_4.jpg",
-        "/assets/portfolio/tmp/ballet_2.jpg"
-      ],
-      "link": "#"
-    },
-    "verizon-retail": {
-      "title": "Verizon Retail",
-      "type": "Digital Signage",
-      "roll": "Pipeline Lead",
-      "heroImage": "/assets/portfolio/tmp/ballet_4.jpg",
-      "about": [
-        "Sunt deleniti hic illo labore aperiam repellat repellat nihil. A labore veritatis non totam perspiciatis distinctio veritatis voluptatem.",
-        "Quasi harum laboriosam dicta dolorem et praesentium distinctio dolore."
-      ],
-      "embed": "https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479",
-      "images": [
-        "/assets/portfolio/tmp/ballet_1.jpg",
-        "/assets/portfolio/tmp/ballet_3.jpg"
-      ],
-      "link": "#"
-    },
-    "converse-forever-chuck": {
-      "title": "Converse: Forever Chuck",
-      "type": "Campaign",
-      "roll": "Creative Director",
-      "heroImage": "/assets/portfolio/tmp/ballet_1.jpg",
-      "about": [
-        "Sequi voluptatem eaque voluptatum quam illo ut nihil. Ea dolore ab natus omnis. Nihil harum occaecati non eaque ipsum debitis ad praesentium.",
-        "Velit quis et enim."
-      ],
-      "embed": "https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479",
-      "images": [
-        "/assets/portfolio/tmp/ballet_2.jpg",
-        "/assets/portfolio/tmp/ballet_4.jpg"
-      ],
-      "link": "#"
+      "embeds": [
+        "<center><video width='100%' controls><source src='/assets/portfolio/musthave2/wt_mh2_a_lo.mp4' type='video/mp4'></video><br><video width='100%' controls><source src='/assets/portfolio/musthave2/wt_mh2_b_lo.mp4' type='video/mp4'></video></center>"
+      ]
     },
     "clearing": {
       "title": "Clearing",
       "type": "Mobile App",
       "roll": "Director, Designer",
+      "category": "experiential",
       "heroImage": "/assets/portfolio/tmp/ballet_2.jpg",
       "about": [
-        "Temporibus quisquam esse nulla ut praesentium quia et. Aliquid labore quia rerum eius quo aut. Culpa vel voluptas suscipit laborum.",
-        "Repellat sit deleniti quae qui et voluptatum."
+        "Clearing is a web app and minimal iOS dashboard concept built around a single idea: every time you check the weather, your phone pulls you somewhere else. Clearing gives you what you came for, and nothing more.",
+        "Concepted and executed in roughly two days, the project is an exercise in product design, branding, storytelling, and positioning \u2014 end to end, solo."
       ],
-      "embed": "https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479",
+      "embeds": [
+        "<iframe src='https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479' width='100%' height='100%' frameborder='0' allow='autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share' referrerpolicy='strict-origin-when-cross-origin' title='Martens Offset'></iframe>"
+      ],
       "images": [
         "/assets/portfolio/tmp/ballet_3.jpg",
         "/assets/portfolio/tmp/ballet_1.jpg"
@@ -308,12 +309,15 @@
       "title": "The Aruba Effect",
       "type": "Activation",
       "roll": "Creative Director",
+      "category": "experiential",
       "heroImage": "/assets/portfolio/tmp/ballet_3.jpg",
       "about": [
-        "Sunt deleniti hic illo labore aperiam repellat repellat nihil. A labore veritatis non totam perspiciatis distinctio veritatis voluptatem.",
-        "Fugiat nam saepe iusto quibusdam cum. Libero rem iure sit debitis."
+        "For Aruba Tourism, working with OUTFRONT XLabs, I helped develop QRad \u2014 a proprietary technology letting audiences interact with a massive Times Square billboard through a simple QR scan.",
+        "Passersby could scan the billboard and instantly take control of the screen based on their own vacation vibe, turning a passive impression into a live, participatory brand moment \u2014 proving DOOH could be both contextual and interactive at city scale."
       ],
-      "embed": "https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479",
+      "embeds": [
+        "<iframe src='https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479' width='100%' height='100%' frameborder='0' allow='autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share' referrerpolicy='strict-origin-when-cross-origin' title='Martens Offset'></iframe>"
+      ],
       "images": [
         "/assets/portfolio/tmp/ballet_4.jpg",
         "/assets/portfolio/tmp/ballet_2.jpg"
@@ -324,31 +328,19 @@
       "title": "Space Invaders: World Defense",
       "type": "Event Activation",
       "roll": "Director, Designer",
+      "category": "experiential",
       "heroImage": "/assets/portfolio/tmp/ballet_4.jpg",
       "about": [
-        "Sequi voluptatem eaque voluptatum quam illo ut nihil. Ea dolore ab natus omnis. Nihil harum occaecati non eaque ipsum debitis ad praesentium.",
-        "Nulla sint sed sed eum eveniet minima assumenda id."
+        "For the 45th anniversary of Space Invaders, XLabs partnered with Google and Unit9 to launch a mobile game powered by ARCore and Google's geospatial API, anchored by a citywide Times Square activation.",
+        "The campaign unfolded in three phases \u2014 anticipation billboards, a live launch event, and neighborhood leaderboards fueled by real user data \u2014 turning New York City into a living game board.",
+        "Space Invaders: World Defense won Platinum at the Out of Home Advertising Association of America's 82nd OBIE Awards \u2014 the first Platinum win in OUTFRONT's 86-year history."
       ],
-      "embed": "https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479",
+      "embeds": [
+        "<iframe src='https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479' width='100%' height='100%' frameborder='0' allow='autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share' referrerpolicy='strict-origin-when-cross-origin' title='Martens Offset'></iframe>"
+      ],
       "images": [
         "/assets/portfolio/tmp/ballet_1.jpg",
         "/assets/portfolio/tmp/ballet_3.jpg"
-      ],
-      "link": "#"
-    },
-    "spirits-on-the-moove": {
-      "title": "Spirits on the Moove",
-      "type": "Photography",
-      "roll": "Photographer",
-      "heroImage": "/assets/portfolio/tmp/ballet_1.jpg",
-      "about": [
-        "Temporibus quisquam esse nulla ut praesentium quia et. Aliquid labore quia rerum eius quo aut.",
-        "Culpa vel voluptas suscipit laborum. Repellat sit deleniti quae qui et voluptatum. Velit quis et enim."
-      ],
-      "embed": "https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479",
-      "images": [
-        "/assets/portfolio/tmp/ballet_2.jpg",
-        "/assets/portfolio/tmp/ballet_4.jpg"
       ],
       "link": "#"
     },
@@ -356,12 +348,15 @@
       "title": "The Snowfox",
       "type": "Mobile App",
       "roll": "Director, Designer",
+      "category": "experiential",
       "heroImage": "/assets/portfolio/tmp/ballet_2.jpg",
       "about": [
-        "Sunt deleniti hic illo labore aperiam repellat repellat nihil. A labore veritatis non totam perspiciatis distinctio veritatis voluptatem.",
-        "Sequi voluptatem eaque voluptatum quam illo ut nihil."
+        "The Snow Fox is a customizable digital storybook app that uses Siri to animate the story to a child's voice \u2014 featured by Apple as one of its \"New Apps We Love\" in the UK App Store.",
+        "I led the scenic animation, visual effects compositing for the launch film, and full production of the case study film, on a project that won a Cannes Lions Bronze Lion, a One Show Bronze Pencil, and two ADC Bronze Cubes."
       ],
-      "embed": "https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479",
+      "embeds": [
+        "<iframe src='https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479' width='100%' height='100%' frameborder='0' allow='autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share' referrerpolicy='strict-origin-when-cross-origin' title='Martens Offset'></iframe>"
+      ],
       "images": [
         "/assets/portfolio/tmp/ballet_3.jpg",
         "/assets/portfolio/tmp/ballet_1.jpg"
@@ -372,12 +367,16 @@
       "title": "Written in the Stars",
       "type": "Web App",
       "roll": "Director, Developer",
+      "category": "experiential",
       "heroImage": "/assets/portfolio/tmp/ballet_3.jpg",
       "about": [
-        "Fugiat nam saepe iusto quibusdam cum. Libero rem iure sit debitis. Quasi harum laboriosam dicta dolorem et praesentium distinctio dolore.",
-        "Alias consequatur culpa quia quia."
+        "Written in the Stars is a holiday digital experience that let users send and receive messages in the heavens, set to a soundtrack composed by 3D of Massive Attack.",
+        "I directed the motion graphics team behind the typographic animations and promotional films \u2014 and watched two real proposals get revealed live in the stars.",
+        "The project won a Cannes Lions Silver Lion in Mobile and a One Show Silver Pencil in Interactive."
       ],
-      "embed": "https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479",
+      "embeds": [
+        "<iframe src='https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479' width='100%' height='100%' frameborder='0' allow='autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share' referrerpolicy='strict-origin-when-cross-origin' title='Martens Offset'></iframe>"
+      ],
       "images": [
         "/assets/portfolio/tmp/ballet_4.jpg",
         "/assets/portfolio/tmp/ballet_2.jpg"
@@ -388,12 +387,15 @@
       "title": "Verizon: Pulse",
       "type": "Video Installation",
       "roll": "Director, Designer",
+      "category": "experiential",
       "heroImage": "/assets/portfolio/tmp/ballet_4.jpg",
       "about": [
-        "Nulla sint sed sed eum eveniet minima assumenda id. Tempore sint cupiditate ad ut et.",
-        "Culpa vel voluptas suscipit laborum. Repellat sit deleniti quae qui et voluptatum."
+        "For Verizon's flagship Chicago store, I partnered with Moment Factory to create Pulse, the main film for a 40-foot LED wall spanning the store's atrium.",
+        "The work extended into Stories of Innovation, a companion series produced with the Chicago History Museum and Shotopop, each featurette exploring a different facet of the city's history of innovation."
       ],
-      "embed": "https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479",
+      "embeds": [
+        "<iframe src='https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479' width='100%' height='100%' frameborder='0' allow='autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share' referrerpolicy='strict-origin-when-cross-origin' title='Martens Offset'></iframe>"
+      ],
       "images": [
         "/assets/portfolio/tmp/ballet_1.jpg",
         "/assets/portfolio/tmp/ballet_3.jpg"
@@ -401,6 +403,26 @@
       "link": "#"
     }
   },
+  "recent": [
+    {
+      "label": "David Hockney's Final Lesson in Attention",
+      "small": "2026.06.13 Substack",
+      "url": "https://open.substack.com/pub/bc3000/p/david-hockneys-final-lesson-in-attention",
+      "external": true
+    },
+    {
+      "label": "Sat Terminal GFX (for iPad)",
+      "small": "2026.06.13",
+      "url": "/gfx/scifi_keyboard",
+      "external": false
+    },
+    {
+      "label": "HALFTXT",
+      "small": "2026.06.1",
+      "url": "/HALFTXT",
+      "external": false
+    }
+  ],
   "social": [
     {
       "label": "Bandcamp",

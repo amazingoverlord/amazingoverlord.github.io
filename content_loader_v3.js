@@ -102,7 +102,10 @@
       aboutDiv.appendChild(p);
     });
 
-    if (project.link) {
+    // Launch Project link is optional: skip it entirely if there's no real
+    // link, treating missing/empty/"#" all as "no link". When a real link
+    // exists, it opens in a new tab.
+    if (project.link && project.link !== '#') {
       const linkDiv = document.createElement('div');
       linkDiv.className = 'project-link';
       const a = document.createElement('a');
@@ -115,16 +118,17 @@
     }
     container.appendChild(aboutDiv);
 
-    // 4. Embed — renders AFTER about (matches original placeholder).
-    // This holds the FULL raw <iframe> markup as a string (copy/paste it straight
-    // from the source — Vimeo, YouTube, an external page, whatever), so it's
-    // injected as-is rather than rebuilt from a bare URL.
-    if (project.embed) {
+    // 4. Embeds — render AFTER about (matches original placeholder).
+    // "embeds" is an array of FULL raw <iframe> markup strings (copy/paste
+    // straight from the source — Vimeo, YouTube, an external page, whatever),
+    // injected as-is. Supports zero, one, or multiple embeds per project.
+    (project.embeds || []).forEach(function (embedHtml) {
+      if (!embedHtml) return;
       const featureDiv = document.createElement('div');
       featureDiv.className = 'project-feature';
-      featureDiv.innerHTML = project.embed;
+      featureDiv.innerHTML = embedHtml;
       container.appendChild(featureDiv);
-    }
+    });
 
     // 5. Gallery images
     (project.images || []).forEach(function (src) {

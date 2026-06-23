@@ -38,7 +38,7 @@ h1 {
 h2 {
   font-family: Cormorant, Times, serif;
   font-size: 1.5rem;
-  line-height: 1.25rem;
+  line-height: 1.5rem;
 }
 
 h3 {
@@ -360,13 +360,13 @@ iframe::-webkit-scrollbar-corner { background: transparent; }
 
       .portfolio-pillar1 {
         flex: 1 1 10%;
+        min-height: 66%;
         padding: 10px;
         margin: 2.5px;
         min-width: 140px;
         background-color: #262B2E;
         color: #d8d2cc;
         z-index: 990;
-        min-height: 66%;
       }
       
       .portfolio-pillar2 {
@@ -377,6 +377,7 @@ iframe::-webkit-scrollbar-corner { background: transparent; }
         background-color: #262B2E;
         color: #d8d2cc;
         z-index: 990;
+        overflow: scroll;
         scrollbar-width: thin;
         scrollbar-color: #d8d2cc transparent;
       }
@@ -429,9 +430,25 @@ iframe::-webkit-scrollbar-corner { background: transparent; }
       .project-feature {
         width: 100%;
         min-height: 360px;
-        background-color: rgba(0,0,0,0.75);
+        height: auto;
+        background-color: rgba(0,0,0,0.5);
         padding: 10px;
         flex: 1 1 100%;
+      }
+      
+      .project-image {
+        width: 100%;
+        background-color: rgba(0,0,0,0.5);
+        flex: 1 1 100%;
+        margin: 2.5px 0 2.5px 0;
+        padding: 5px;
+        text-align: center;
+      }
+      
+      video {
+        max-width: 100%;
+        height: auto;
+        display: block;
       }
 
       .project-title {
@@ -483,15 +500,6 @@ iframe::-webkit-scrollbar-corner { background: transparent; }
         cursor: pointer;
         background-color: #F9F4EB;
         color: #262B2E;
-      }
-      
-      .project-image {
-        width: 100%;
-        background-color: rgba(0,0,0,0.2);
-        flex: 1 1 100%;
-        margin: 2.5px 0 2.5px 0;
-        padding: 5px;
-        text-align: center;
       }
 
 /* ===============================
