@@ -20,19 +20,21 @@
     "outfront-gfx-kit": {
       "title": "OUTFRONT GFX Kit",
       "type": "Creative Toolkit",
-      "roll": "Director, Designer",
+      "roll": "Creative Director, Technologist",
       "category": "frameworks",
-      "heroImage": "/assets/portfolio/tmp/ballet_1.jpg",
+      "heroImage": "/assets/portfolio/outgfxkit/outgfx.jpg",
       "about": [
-        "A centralized, cloud-hosted library of After Effects brand templates built so OUTFRONT's creative and sales teams could generate on-brand motion content without starting from scratch.",
-        "Each template is structured for fast turnaround \u2014 swap in new copy, imagery, or data and export broadcast-ready assets in minutes. The kit scales a single creative system across dozens of teams and campaigns."
+        "OUTFRONT's video production teams were rebuilding the same motion graphics from scratch on every project. I designed a centralized, cloud-hosted library of branded motion elements they could pull directly into Premiere, turning repetitive build time into fast, consistent, on-brand assembly.",
+        "Built in After Effects with AI-assisted expression coding, each element was engineered to stay flexible without breaking brand: teams could drop in new copy, imagery, or data and export broadcast-ready output in minutes.",
+        "I paired the library with a set of brand motion guidelines, giving teams not just the tools but the direction to use them with intention, establishing a shared creative standard that kept work consistent and purposeful across the organization."
       ],
       "embeds": [
-        "<iframe src='https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479' width='100%' height='100%' frameborder='0' allow='autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share' referrerpolicy='strict-origin-when-cross-origin' title='Martens Offset'></iframe>"
+        "<center><video width='100%' controls><source src='/assets/portfolio/outgfxkit/outgfxitdemo10_lo.mp4' type='video/mp4'></video></center>"
       ],
       "images": [
-        "/assets/portfolio/tmp/ballet_2.jpg",
-        "/assets/portfolio/tmp/ballet_3.jpg"
+        "/assets/portfolio/outgfxkit/expressions_2large.jpg",
+        "/assets/portfolio/outgfxkit/outgfxkit_library.jpg",
+        "/assets/portfolio/outgfxkit/outgfxkit_deck.jpg"
       ],
       "link": "#"
     },
@@ -43,7 +45,7 @@
       "category": "frameworks",
       "heroImage": "/assets/portfolio/tmp/ballet_3.jpg",
       "about": [
-        "A suite of client-side tools for converting images, GIFs, and video into ASCII art \u2014 built entirely in the browser, with no backend and no dependencies.",
+        "A suite of client-side tools for converting images, GIFs, and video into ASCII art — built entirely in the browser, with no backend and no dependencies.",
         "Includes a media converter and a frame-by-frame animator with export to WebM, MP4, HTML, and plain text, demonstrating end-to-end product design and front-end development outside the constraints of client work."
       ],
       "embeds": [
@@ -58,13 +60,13 @@
     "google-imagine-if": {
       "title": "Imagine If",
       "type": "AI Post Engine",
-      "roll": "Production Lead",
+      "roll": "Production Lead, AI Technologist",
       "category": "frameworks",
       "heroImage": "/assets/portfolio/imagine_if/imagineif_01.jpg",
       "about": [
         "Google DeepMind and XLabs turned NYC's transit system into a user-generated art exhibit. Five local artists used AI to transform hundreds of New Yorkers' ideas into video artworks for thousands of MTA screens.",
         "The challenge: every video needed to run on both vertical and horizontal DOOH screens. Manual processing would have taken 12 hours per hundred videos.",
-        "I built an AI-powered solution from scratch. I created separate horizontal and vertical After Effects templates, then used JSON files to dynamically populate each video with the correct borough, artist credit, and submission prompttext. To scale the work, I used AI to write custom Mac shell scripts, After Effects extensions, and plugins that automated the entire pipeline \u2014 feeding every raw video into both templates simultaneously.",
+        "I built an AI-powered solution from scratch. I created separate horizontal and vertical After Effects templates, then used JSON files to dynamically populate each video with the correct borough, artist credit, and submission prompttext. To scale the work, I used AI to write custom Mac shell scripts, After Effects extensions, and plugins that automated the entire pipeline — feeding every raw video into both templates simultaneously.",
         "The result: processing a hundred videos in about one hour instead of one day, with each delivered in both formats. The campaign ran across all five boroughs and culminated in a Times Square finale."
       ],
       "embeds": [
@@ -126,7 +128,7 @@
       "heroImage": "/assets/portfolio/tmp/ballet_2.jpg",
       "about": [
         "From 2012 to 2016, I led a team of three motion designers and editors producing content for nearly every screen across Verizon's flagship destination stores and over 5,000 retail locations nationwide.",
-        "To meet weekly deliverables of 50 to 100 videos across multiple formats and sizes, I built new scripts, expressions, and workflows in After Effects \u2014 then extended that system into a unified set of motion guidelines for Verizon's brand-wide rebrand."
+        "To meet weekly deliverables of 50 to 100 videos across multiple formats and sizes, I built new scripts, expressions, and workflows in After Effects — then extended that system into a unified set of motion guidelines for Verizon's brand-wide rebrand."
       ],
       "embeds": [
         "<iframe src='https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479' width='100%' height='100%' frameborder='0' allow='autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share' referrerpolicy='strict-origin-when-cross-origin' title='Martens Offset'></iframe>"
@@ -144,7 +146,7 @@
       "category": "editorial",
       "heroImage": "/assets/portfolio/tmp/ballet_3.jpg",
       "about": [
-        "All Night Wrong is an upcoming comedy directed by Jason James, premiering at South by Southwest London on June 2, 2026. The film follows Gary and Ell, who meet on a blind date and end up stealing a killer's car \u2014 along with a dead body and $40,000.",
+        "All Night Wrong is an upcoming comedy directed by Jason James, premiering at South by Southwest London on June 2, 2026. The film follows Gary and Ell, who meet on a blind date and end up stealing a killer's car — along with a dead body and $40,000.",
         "It stars Maria Bakalova (Borat Subsequent Moviefilm) and Zach Cherry (Severance), alongside Emily Hampshire, Tyler Labine, and Ryan Beil. I designed the film's main title sequence, setting the tone before the story even starts."
       ],
       "embeds": [
@@ -163,7 +165,7 @@
       "category": "editorial",
       "heroImage": "",
       "about": [
-        "What began as a request for a high-energy hype film to build excitement at Cannes evolved into something more significant \u2014 a film that helped shape a new brand identity for OUTFRONT.",
+        "What began as a request for a high-energy hype film to build excitement at Cannes evolved into something more significant — a film that helped shape a new brand identity for OUTFRONT.",
         "Rather than the typical montage of billboards and screens common to OOH media, I introduced double exposures as a visual through-line, and integrated AI-generated NeRF and Gaussian splatting to reframe existing footage in unexpected ways.",
         "The result became a centerpiece of OUTFRONT's CEO's presentation at Cannes, and established a unified creative direction that continues to influence the company's brand communications today."
       ],
@@ -183,9 +185,9 @@
       "category": "editorial",
       "heroImage": "/assets/portfolio/cityinmotion/cait-visual-creative.jpg",
       "about": [
-        "The goal of City in Motion was to shift advertiser perception from transit as mass impressions to transit as a portfolio of diverse, desirable audiences. We started from the insight that a rider's choice of transit mode reveals their identity, lifestyle stage, and daily priorities\u2014not just their commute. That insight led to the big idea: Every commuter has a different city in motion.",
+        "The goal of City in Motion was to shift advertiser perception from transit as mass impressions to transit as a portfolio of diverse, desirable audiences. We started from the insight that a rider's choice of transit mode reveals their identity, lifestyle stage, and daily priorities—not just their commute. That insight led to the big idea: Every commuter has a different city in motion.",
         "Under my direction, our internal team shot documentary-style profiles of real NYC commuters, including Cait, a subway-dependent creative juggling multiple gigs per day, and Vanessa, a Long Island parent who uses the LIRR for both work and weekend family trips into the city. I set the handheld, rhythmically edited visual language to match each mode's energy and art-directed the motion graphics to amplify each persona without distracting from their story.",
-        "The series gave advertisers emotional segmentation they could see and feel\u2014proving not just how many people ride, but who rides, when, and why their brand belongs there."
+        "The series gave advertisers emotional segmentation they could see and feel—proving not just how many people ride, but who rides, when, and why their brand belongs there."
       ],
       "embeds": [
         "<center><video width='100%' controls><source src='/assets/portfolio/cityinmotion/CityInMotion01_Cait_BC3_FINAL_1080WEB.mp4' type='video/mp4'></video><br><video width='100%' controls><source src='/assets/portfolio/cityinmotion/CityInMotion02_Vanessa_BC_FINAL_WEB.mp4' type='video/mp4'></video></center>"
@@ -219,12 +221,12 @@
     "maserati": {
       "title": "Maserati",
       "type": "Social Program",
-      "roll": "Creative Director",
+      "roll": "Associate Director Film + Video",
       "category": "editorial",
       "heroImage": "/assets/portfolio/maserati/maserati_feature.webp",
       "about": [
         "At AKQA, I led the launch and ongoing content for Maserati's US social media program.",
-        "Partnering with Rally & Co., I helped create the films that introduced the Maserati Levante, the brand's first SUV, to the North American market."
+        "Partnering with Rally & Co., I supervised the films that introduced the Maserati Levante, the brand's first SUV, to the North American market."
       ],
       "embeds": [
         "<center><video width='100%' controls><source src='/assets/portfolio/maserati/msrt_launch05c_001_1.mp4' type='video/mp4'></video><br><video width='100%' controls><source src='/assets/portfolio/maserati/fall_edit01_lo.mp4' type='video/mp4'></video><br><video width='100%' controls><source src='assets/portfolio/maserati/aspen_main_04wide_cc3_bc_1.mp4'></video><br><video width='100%' controls><source src='/assets/portfolio/maserati/2017autoshowrecap.mp4' type='video/mp4'></video></center><br>"
@@ -241,7 +243,7 @@
       "category": "editorial",
       "heroImage": "/assets/portfolio/tmp/ballet_1.jpg",
       "about": [
-        "Art direction and motion graphic design for the launch video introducing Creative Commons' 2016\u20132020 Organizational Strategy, debuted at an event at MoMA.",
+        "Art direction and motion graphic design for the launch video introducing Creative Commons' 2016–2020 Organizational Strategy, debuted at an event at MoMA.",
         "Released under a Creative Commons Attribution-ShareAlike license, the project was produced in direct collaboration with Creative Commons' CEO to define the visual language for the organization's new strategic direction."
       ],
       "embeds": [
@@ -294,7 +296,7 @@
       "heroImage": "/assets/portfolio/tmp/ballet_2.jpg",
       "about": [
         "Clearing is a web app and minimal iOS dashboard concept built around a single idea: every time you check the weather, your phone pulls you somewhere else. Clearing gives you what you came for, and nothing more.",
-        "Concepted and executed in roughly two days, the project is an exercise in product design, branding, storytelling, and positioning \u2014 end to end, solo."
+        "Concepted and executed in roughly two days, the project is an exercise in product design, branding, storytelling, and positioning — end to end, solo."
       ],
       "embeds": [
         "<iframe src='https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479' width='100%' height='100%' frameborder='0' allow='autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share' referrerpolicy='strict-origin-when-cross-origin' title='Martens Offset'></iframe>"
@@ -312,8 +314,8 @@
       "category": "experiential",
       "heroImage": "/assets/portfolio/tmp/ballet_3.jpg",
       "about": [
-        "For Aruba Tourism, working with OUTFRONT XLabs, I helped develop QRad \u2014 a proprietary technology letting audiences interact with a massive Times Square billboard through a simple QR scan.",
-        "Passersby could scan the billboard and instantly take control of the screen based on their own vacation vibe, turning a passive impression into a live, participatory brand moment \u2014 proving DOOH could be both contextual and interactive at city scale."
+        "For Aruba Tourism, working with OUTFRONT XLabs, I helped develop QRad — a proprietary technology letting audiences interact with a massive Times Square billboard through a simple QR scan.",
+        "Passersby could scan the billboard and instantly take control of the screen based on their own vacation vibe, turning a passive impression into a live, participatory brand moment — proving DOOH could be both contextual and interactive at city scale."
       ],
       "embeds": [
         "<iframe src='https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479' width='100%' height='100%' frameborder='0' allow='autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share' referrerpolicy='strict-origin-when-cross-origin' title='Martens Offset'></iframe>"
@@ -332,8 +334,8 @@
       "heroImage": "/assets/portfolio/tmp/ballet_4.jpg",
       "about": [
         "For the 45th anniversary of Space Invaders, XLabs partnered with Google and Unit9 to launch a mobile game powered by ARCore and Google's geospatial API, anchored by a citywide Times Square activation.",
-        "The campaign unfolded in three phases \u2014 anticipation billboards, a live launch event, and neighborhood leaderboards fueled by real user data \u2014 turning New York City into a living game board.",
-        "Space Invaders: World Defense won Platinum at the Out of Home Advertising Association of America's 82nd OBIE Awards \u2014 the first Platinum win in OUTFRONT's 86-year history."
+        "The campaign unfolded in three phases — anticipation billboards, a live launch event, and neighborhood leaderboards fueled by real user data — turning New York City into a living game board.",
+        "Space Invaders: World Defense won Platinum at the Out of Home Advertising Association of America's 82nd OBIE Awards — the first Platinum win in OUTFRONT's 86-year history."
       ],
       "embeds": [
         "<iframe src='https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479' width='100%' height='100%' frameborder='0' allow='autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share' referrerpolicy='strict-origin-when-cross-origin' title='Martens Offset'></iframe>"
@@ -351,7 +353,7 @@
       "category": "experiential",
       "heroImage": "/assets/portfolio/tmp/ballet_2.jpg",
       "about": [
-        "The Snow Fox is a customizable digital storybook app that uses Siri to animate the story to a child's voice \u2014 featured by Apple as one of its \"New Apps We Love\" in the UK App Store.",
+        "The Snow Fox is a customizable digital storybook app that uses Siri to animate the story to a child's voice — featured by Apple as one of its \"New Apps We Love\" in the UK App Store.",
         "I led the scenic animation, visual effects compositing for the launch film, and full production of the case study film, on a project that won a Cannes Lions Bronze Lion, a One Show Bronze Pencil, and two ADC Bronze Cubes."
       ],
       "embeds": [
@@ -371,7 +373,7 @@
       "heroImage": "/assets/portfolio/tmp/ballet_3.jpg",
       "about": [
         "Written in the Stars is a holiday digital experience that let users send and receive messages in the heavens, set to a soundtrack composed by 3D of Massive Attack.",
-        "I directed the motion graphics team behind the typographic animations and promotional films \u2014 and watched two real proposals get revealed live in the stars.",
+        "I directed the motion graphics team behind the typographic animations and promotional films — and watched two real proposals get revealed live in the stars.",
         "The project won a Cannes Lions Silver Lion in Mobile and a One Show Silver Pencil in Interactive."
       ],
       "embeds": [
