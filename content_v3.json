@@ -91,7 +91,7 @@
         "The identity is anchored in the concept of 'breakthrough', visually protrayed with translucent glass blocks. Low-key cinematography creates intimacy and gravitas."
       ],
       "embeds": [
-        "<center><video width='100%' controls><source src='/assets/portfolio/frontiers/frontier_pitch_low.mp4' type='video/mp4'></video>"
+        "<center><video width='100%' controls><source src='/assets/portfolio/frontiers/frontier_pitch_low.mp4' type='video/mp4'></video></center> "
       ],
       "images": [
         "/assets/portfolio/frontiers/deck2_(0-00-00-00).jpg",
@@ -230,7 +230,7 @@
         "Partnering with Rally & Co., I supervised the films that introduced the Maserati Levante, the brand's first SUV, to the North American market."
       ],
       "embeds": [
-        "<center><video width='100%' controls><source src='/assets/portfolio/maserati/msrt_launch05c_001_1.mp4' type='video/mp4'></video><br><video width='100%' controls><source src='/assets/portfolio/maserati/fall_edit01_lo.mp4' type='video/mp4'></video><br><video width='100%' controls><source src='assets/portfolio/maserati/aspen_main_04wide_cc3_bc_1.mp4'></video><br><video width='100%' controls><source src='/assets/portfolio/maserati/2017autoshowrecap.mp4' type='video/mp4'></video></center><br>"
+        "<center><video width='100%' controls><source src='/assets/portfolio/maserati/msrt_launch05c_001_1.mp4' type='video/mp4'></video><br><video width='100%' controls><source src='/assets/portfolio/maserati/fall_edit01_lo.mp4' type='video/mp4'></video><br><video width='100%' controls><source src='/assets/portfolio/maserati/aspen_main_04wide_cc3_bc_1.mp4'></video><br><video width='100%' controls><source src='/assets/portfolio/maserati/2017autoshowrecap.mp4' type='video/mp4'></video></center><br>"
       ],
       "images": [
         "/assets/portfolio/maserati/maseratisocial.webp"
