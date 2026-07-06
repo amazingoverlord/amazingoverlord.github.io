@@ -3,27 +3,39 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin</title>
+    <title>Bienvenido Cruz — Portfolio</title>
     <link href="/assets/style_v3.css" rel="stylesheet" type="text/css" media="all">
-    <link href='https://fonts.googleapis.com/css?family=Cormorant' rel='stylesheet'>
-    <link href='https://fonts.googleapis.com/css?family=Sometype Mono' rel='stylesheet'>
-    <link href='https://fonts.googleapis.com/css?family=Public Sans' rel='stylesheet'>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ballet:opsz@16..72&family=Cormorant:ital,wght@0,300..700;1,300..700&family=Sometype+Mono:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
     <style>
-    
-
-      .orange {
-        width: 40px;
-        height: 40px;
-        background-color: #cc6600;
+      #ascii {
         position: fixed;
-        right: 0;
-        top: 80%;
-        z-index: 999;
+        top: 20px;
+        left: 33%;
+        transform: translateX(-50%);
+        z-index: 1;
+        overflow: hidden;
+      }
+
+      #ascii pre {
+        font-family: "Sometype Mono", monospace;
+        color: #4C5154;
+        font-size: 1vw;
+        line-height: 0.69;
+        white-space: pre;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
       }
     </style>
 </head>
 <body>
 
+<!-- AMBIENT BACKGROUND (always visible, sits behind all content) -->
+<div id="ascii">
+    <pre id="walking">Loading animation...</pre>
+</div>
 
 <!-- LOGIN FORM -->
 <div id="loginContainer" style="text-align: center; margin-top: 100px;">
@@ -32,164 +44,37 @@
     <div id="errorMsg" style="color: red; margin-top: 10px; display: none;">Wrong password</div>
 </div>
 
-<!-- DASHBOARD CONTENT (protected) -->
-<div id="dashboardContent" style="display: none;">
+<!-- PORTFOLIO CONTENT (protected) -->
+<div id="portfolioContent" style="display: none;">
 
-    <div class="home"><a href="/index.html">3000 bc</a></div>
-    <h1>Dashboard</h1>
-<div class="pillars-container">
-    
-    
-    <div class="pillar">
-      <h2>Upcoming AOS Content</h2>
-      <iframe height="360" src="/ao/ao_upcoming_posts.html" title="Upcoming"></iframe>
-    </div>
-    
-    <div class="pillar">
-      <h2>Briefing</h2>
-      <div id="briefing"></div>
-      <h2>Social</h2>
-      <div id="social"></div>
-    </div>
-    
-    <div class="pillar">
-      <h2>Recommended</h2>
-      <div id="recommended"></div>
-    </div>
-    
-    <div class="pillar">
-      <h2>AOS Resources</h2>
-      <a target="_blank" href="https://analogobject.studio">Website</a><br>
-      <a target="_blank" href="https://analogobject.squarespace.com/config/">Squarespace</a><br>
-      <a target="_blank" href="https://maps.app.goo.gl/xZgbW5Nksd3jKbTP7">AO Locations</a><br>
-      <a target="_blank" href="https://docs.proton.me/u/0/recents">Proton Docs</a><br>
-      <br>
-      <h2>Tools</h2>
-      <a target="_blank" href="https://aereference.com/">AE Expressions Reference</a><br>
-      <a target="_blank" href="https://claude.ai/new">Claude</a><br>
-      <a target="_blank" href="https://chat.deepseek.com/">Deepseek</a><br>
-      <a target="_blank" href="https://www.figma.com/files/team/1643341974778137328/recents-and-sharing?fuid=1643341971886767310">Figma</a><br>
-      <a target="_blank" href="https://jitter.video/files/">Jitter</a><br>
-      <a target="_blank" href="https://lovable.dev/dashboard">Lovable</a><br>
-      <a target="_blank" href="https://hailuoai.video/create/image-to-video">Minimax</a><br>
-      <a target="_blank" href="https://neocities.org/dashboard">Neocities</a><br>
-      <a target="_blank" href="https://editor.rive.app/">Rive</a><br>
-      <a target="_blank" href="https://app.spline.design/files">Spline</a><br>
-    </div>
-    
-    <div class="pillar">
-      <h2>Sitemap</h2>
-      <div id="jsonSitemapContainer">
-        <ul class="sitemap-tree" id="sitemapTree"></ul>
-      </div>
-    </div>
-    
-    <div class="pillar">
-      <h2>AOS Maps by Location</h2>
-      <iframe height="400" src="/ao/maps.html" title="Maps"></iframe>
-    </div>
-    
-    <div class="pillar">
-      <h2>AOS Maps by Pillar</h2>
-      <iframe height="400" src="/ao/pillar.html" title="Pillars"></iframe>
-    </div>
-    
-</div>
+    <div><h1>Bienvenido Cruz</h1></div>
 
-    <h1>Projects</h1>
-    <div class="pillars-container" id="projects-container"></div>
-
-
-    <h1>Portfolio</h1>
-
+    
     <div class="portfolio-container">
 
-      
-      <div class="portfolio-show">
-        
-        <div class="project-close"><a href="#">&#10005;</a></div>
-        
-        
-        <div class="project-image" id="feature-image"><img src="/assets/portfolio/tmp/ballet_1.jpg" width="100%"></div>
-          
-        <div class="project-title">Placeholder 1 <span class="project-type">Short Film</span>
-        
-        <div class="project-roll">Roll: <em>Director, Writer</em></div>
-        </div>
+      <div class="portfolio-show" id="portfolio-show">
 
-        <div class="project-about">
-          <p>Sunt deleniti hic illo labore aperiam repellat repellat nihil. A labore veritatis non totam perspiciatis distinctio veritatis voluptatem. Fugiat nam saepe iusto quibusdam cum. Libero rem iure sit debitis. Quasi harum laboriosam dicta dolorem et praesentium distinctio dolore. Alias consequatur culpa quia quia.</p>
-          <p>Sequi voluptatem eaque voluptatum quam illo ut nihil. Ea dolore ab natus omnis. Nihil harum occaecati non eaque ipsum debitis ad praesentium. Nulla sint sed sed eum eveniet minima assumenda id. Tempore sint cupiditate ad ut et.</p>
-          <p>Temporibus quisquam esse nulla ut praesentium quia et. Aliquid labore quia rerum eius quo aut. Culpa vel voluptas suscipit laborum. Repellat sit deleniti quae qui et voluptatum. Velit quis et enim.</p>
-          <div class="project-link"><a hre="#" target="_blank">Launch Project &rarr;</a></div>
-          <br>
-        </div>
-        
-        <div class="project-feature">
-          <iframe src="https://player.vimeo.com/video/1177170199?title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" width="100%" height="100%" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" title="Martens Offset"></iframe>
-        </div>
-        
-        <div class="project-image"><img src="/assets/portfolio/tmp/ballet_2.jpg" width="100%"></div>
-        <div class="project-image"><img src="/assets/portfolio/tmp/ballet_3.jpg" width="100%"></div>
-        <div class="project-image"><img src="/assets/portfolio/tmp/ballet_4.jpg" width="100%"></div>
+        <div class="project-close"><a href="#" id="portfolio-close">&#10005;</a></div>
+
+        <div id="portfolio-show-content"></div>
 
       </div>
 
       <div class="portfolio-menu">
 
-        <div class="portfolio-pillar2">
-          <h3>Frameworks:</h3>
-          <span class="small">Scalable brand systems and tools.</span><br><br>
-          <a href="#">OUTFRONT GFX Kit <span class="small">Creative Toolkit</span></a><br>
-          <a href="#">Sat Terminal GFX <span class="small">On-Set Interactive UI</span></a><br>
-          <a href="#">HALFTXT <span class="small">ASCII Art App Suite</span></a><br>
-          <a href="#">Google: Imagine If <span class="small">AI Post Engine</span></a><br>
-          <a href="#">Excursions <span class="small">Brand Package</span></a><br>
-          <a href="#">Verizon <span class="small">Pipeline and Guidelines</span></a><br>
-        </div>
-
-        <div class="portfolio-pillar2">
-          <h3>Editorial:</h3>
-          <span class="small">Content and design.</span><br><br>
-            <a href="#">All Night Wrong <span class="small">Title Design</span></a><br>
-            <a href="#">Property of a Lady <span class="small">Title Design</span></a><br>
-            <a href="#">OUTFRONT Brand Film <span class="small">Event Film</span></a><br>
-            <a href="#">Frontiers <span class="small">Title Design</span></a><br>
-            <a href="#">City in Motion <span class="small">Content Series</span></a><br>
-            <a href="#">siseneG <span class="small">Short</span></a><br>
-            <a href="#">Maserati <span class="small">Social</span></a><br>
-            <a href="#">Creative Commons Remix <span class="small">Event Film</span></a><br>
-            <a href="#">Olympus <span class="small">Campaign</span></a><br>
-            <a href="#">#MustHaveSquared <span class="small">Social Content</span></a><br>
-            <a href="#">Verizon Retail <span class="small">Digital Signage</span></a><br>
-            <a href="#">Converse: Forever Chuck <span class="small">Campaign</span></a><br>
-        </div>
-
-        <div class="portfolio-pillar2">
-          <h3>Experiential:</h3>
-          <span class="small">Activations and interactions.</span><br><br>
-          <a href="#">Clearing <span class="small">Mobile App</span></a><br>
-          <a href="#">The Aruba Effect <span class="small">Activation</span></a><br>
-          <a href="#">Space Invaders: World Defense <span class="small">Event Activation</span></a><br>
-          <a href="#">Spirits on the Moove <span class="small">Photography</span></a><br>
-          <a href="#">The Snowfox <span class="small">Mobile App</span></a><br>
-          <a href="#">Written in the Stars <span class="small">Web App</span></a><br>
-          <a href="#">Verizon: Pulse <span class="small">Video Installation</span></a><br>
-        </div>
+        <div id="portfolio-pillars"></div>
 
         <div class="portfolio-pillar2">
           <h3>Recently:</h3>
-          <div class="c1">
-            <div class="update"><a href="https://open.substack.com/pub/bc3000/p/david-hockneys-final-lesson-in-attention" target="_blank">David Hockney's Final Lesson in Attention <span class="small">2026.06.13 Substack &rarr;</span></a></div>
-            <div class="update"><a href="/gfx/scifi_keyboard" target="_blank">Sat Terminal GFX (for iPad) <span class="small">2026.06.13 &rarr;</span></a></div>
-            <div class="update"><a href="/HALFTXT" target="_blank">HALFTXT <span class="small">2026.06.1 &rarr;</span></a></div>
-          </div>
+          <div class="c1" id="recent-updates"></div>
         </div>
 
         <div class="portfolio-pillar1">
           <h3>About</h3>
-          Bienvenido Cruz is a New York-based director and designer from Canada.<br>
-          <a hre="about.html" target="_blank">More &rarr;</a><br>
+          Bienvenido Cruz is a New York-based director and designer from Canada. He builds brand systems, content, and interactive work — from AI-driven production pipelines to motion systems and live activations.<br>
+          <em><a href="about.html">Learn More</a></em><br>
+          <br>
+          This site is hand-coded, no frameworks, no templates.<br>
           <br>
           Current Forms:<br>
           <a href="https://analogobject.studio" target="_blank">Bookbinding</a><br>
@@ -202,39 +87,33 @@
 
     </div>
 
-</div> 
-<!-- END OF PROTECTED DASHBOARD CONTENT -->
+<div class="orange"></div>
+</div>
+<!-- END OF PROTECTED PORTFOLIO CONTENT -->
 
 <!-- External JavaScript files -->
-<script src="/sitemap/sitemap.js"></script>
-<script src="/content_loader_v2.js"></script>
-<script src="/briefing_minimal.js"></script>
+<script src="/content_loader_v3.js"></script>
+<script src="/ascii_walking.js"></script>
 
 <script>
-    const CORRECT_PASSWORD = "freepalestine";
+    const CORRECT_PASSWORD = "dreamless";
 
-    function unlockDashboard() {
+    function unlockPortfolio() {
         document.getElementById("loginContainer").style.display = "none";
-        document.getElementById("dashboardContent").style.display = "block";
-        loadProjects();
-        if (window.WeatherMinimal) {
-            WeatherMinimal.init(document.getElementById("briefing"));
-        }
-        // buildSitemapTree() is now called from sitemap.js
-        // Make sure it's defined before calling
-        if (typeof buildSitemapTree === 'function') {
-            buildSitemapTree();
+        document.getElementById("portfolioContent").style.display = "block";
+        if (window.ContentLoader) {
+            ContentLoader.init();
         }
     }
 
     function checkPassword() {
         const input = document.getElementById("passwordInput").value;
         const errorMsg = document.getElementById("errorMsg");
-        
+
         if (input === CORRECT_PASSWORD) {
             sessionStorage.setItem("dashboardUnlocked", "true");
             errorMsg.style.display = "none";
-            unlockDashboard();
+            unlockPortfolio();
         } else {
             errorMsg.style.display = "block";
             document.getElementById("passwordInput").value = "";
@@ -243,7 +122,7 @@
 
     // Check if already unlocked this session
     if (sessionStorage.getItem("dashboardUnlocked") === "true") {
-        unlockDashboard();
+        unlockPortfolio();
     }
 
     // Allow Enter key to submit
@@ -252,55 +131,6 @@
             checkPassword();
         }
     });
-
-    async function loadProjects() {
-        const res = await fetch('/projects_v2.json');
-        const data = await res.json();
-        const container = document.getElementById('projects-container');
-
-        data.projects.forEach(project => {
-          const pillar = document.createElement('div');
-          pillar.className = 'pillar';
-
-          const h2 = document.createElement('h2');
-          h2.textContent = project.title;
-          pillar.appendChild(h2);
-
-          if (project.description) {
-            const p = document.createElement('p');
-            p.textContent = project.description;
-            pillar.appendChild(p);
-          }
-
-          if (project.links) {
-            project.links.forEach(item => {
-              const p = document.createElement('p');
-              const a = document.createElement('a');
-              a.href = item.url;
-              a.textContent = item.label;
-              if (item.external) a.target = '_blank';
-              p.appendChild(a);
-              pillar.appendChild(p);
-            });
-          }
-
-          if (project.guestbook) {
-            const iframe = document.createElement('iframe');
-            iframe.height = '220';
-            iframe.src = project.guestbook;
-            iframe.title = 'Guestbook';
-            pillar.appendChild(iframe);
-          }
-
-          if (project.footnote) {
-            const p = document.createElement('p');
-            p.innerHTML = project.footnote;
-            pillar.appendChild(p);
-          }
-
-          container.appendChild(pillar);
-        });
-    }
 </script>
 
 </body>

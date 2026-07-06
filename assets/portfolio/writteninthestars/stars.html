@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Constellation Type</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #05050A;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        .widget {
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(180deg, #05050A 0%, #0C0E1A 40%, #1A1C2E 70%, #313647 100%);
+            position: relative;
+            overflow: hidden;
+            cursor: text;
+        }
+
+        .bg-stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-stars canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .constellation-canvas {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .hidden-input {
+            position: absolute;
+            opacity: 0;
+            width: 1px;
+            height: 1px;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .placeholder-hint {
+            position: absolute;
+            bottom: 48px;
+            right: 56px;
+            z-index: 1;
+            color: rgba(200, 180, 130, 0.10);
+            font-size: 16px;
+            letter-spacing: 0.08em;
+            font-weight: 300;
+            pointer-events: none;
+            font-family: 'SF Mono', 'Menlo', monospace;
+            text-transform: uppercase;
+            transition: opacity 0.6s ease;
+        }
+
+        .placeholder-hint.hidden {
+            opacity: 0;
+        }
+
+        .status-tip {
+            position: absolute;
+            bottom: 48px;
+            left: 56px;
+            z-index: 1;
+            color: rgba(200, 180, 130, 0.06);
+            font-size: 14px;
+            letter-spacing: 0.06em;
+            font-weight: 300;
+            pointer-events: none;
+            font-family: 'SF Mono', 'Menlo', monospace;
+            transition: opacity 0.4s, color 0.4s;
+        }
+
+        .status-tip.active {
+            color: rgba(247, 231, 180, 0.20);
+        }
+
+        .char-counter {
+            position: absolute;
+            bottom: 48px;
+            right: 56px;
+            z-index: 1;
+            color: rgba(200, 180, 130, 0.08);
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            font-weight: 300;
+            pointer-events: none;
+            font-family: 'SF Mono', 'Menlo', monospace;
+            transition: color 0.4s;
+        }
+
+        .char-counter.warning {
+            color: rgba(247, 200, 100, 0.30);
+        }
+
+        .char-counter.danger {
+            color: rgba(255, 150, 100, 0.50);
+        }
+
+        @media (max-width: 600px) {
+            .placeholder-hint {
+                bottom: 28px;
+                right: 28px;
+                font-size: 12px;
+            }
+            .status-tip {
+                bottom: 28px;
+                left: 28px;
+                font-size: 11px;
+            }
+            .char-counter {
+                bottom: 28px;
+                right: 28px;
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="widget" id="widget">
+        <div class="bg-stars" id="bgStars"></div>
+        <canvas class="constellation-canvas" id="mainCanvas"></canvas>
+        <input class="hidden-input" id="hiddenInput" type="text" autofocus />
+        <div class="placeholder-hint" id="placeholderHint">✦ type something</div>
+        <div class="status-tip" id="statusTip">⏎ send</div>
+        <div class="char-counter" id="charCounter">0 / 280</div>
+    </div>
+
+    <script>
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  1.  LETTER DEFINITIONS
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+        const LETTERS = {};
+        const MAX_CHARS = 280;
+        const MAX_LINES = 3;
+
+        function p(x, y) { return [x, y]; }
+
+        function e(a, b) { return [a, b]; }
+
+        function defLetter(name, pts, edges) {
+            LETTERS[name] = { points: pts, edges: edges };
+        }
+
+        // --- A ---
+        defLetter('A', [
+            [0, 8],
+            [1, 2],
+            [3, 0],
+            [5, 2],
+            [6, 8],
+            [3, 4]
+        ], [
+            [0, 1],
+            [1, 2],
+            [2, 3],
+            [3, 4],
+            [1, 5],
+            [5, 3]
+        ]);
+
+        // --- B ---
+        defLetter('B', [
+            [0, 0],
+            [0, 8],
+            [4, 0],
+            [4, 3],
+            [3, 4],
+            [4, 5],
+            [4, 8]
+        ], [
+            [0, 1],
+            [0, 2],
+            [2, 3],
+            [3, 4],
+            [4, 5],
+            [5, 6],
+            [6, 1]
+        ]);
+
+        // --- C ---
+        defLetter('C', [
+            [5, 0],
+            [1, 1],
+            [0, 4],
+            [1, 7],
+            [5, 8]
+        ], [
+            [0, 1],
+            [1, 2],
+            [2, 3],
+            [3, 4]
+        ]);
+
+        // --- D ---
+        defLetter('D', [
+            [0, 0],
+            [0, 8],
+            [4, 6],
+            [4, 2],
+            [0, 0]
+        ], [
+            [0, 1],
+            [1, 2],
+            [2, 3],
+            [3, 0]
+        ]);
+
+        // --- E ---
+        defLetter('E', [
+            [5, 0],
+            [0, 0],
+            [0, 8],
+            [5, 8],
+            [0, 4],
+            [4, 4]
+        ], [
+            [0, 1],
+            [1, 2],
+            [2, 3],
+            [1, 4],
+            [4, 5]
+        ]);
+
+        // --- F ---
+        defLetter('F', [
+            [5, 0],
+            [0, 0],
+            [0, 8],
+            [0, 4],
+            [4, 4]
+        ], [
+            [0, 1],
+            [1, 2],
+            [1, 3],
+            [3, 4]
+        ]);
+
+        // --- G ---
+        defLetter('G', [
+            [5, 0],
+            [1, 1],
+            [0, 4],
+            [1, 7],
+            [5, 8],
+            [5, 4],
+            [3, 4]
+        ], [
+            [0, 1],
+            [1, 2],
+            [2, 3],
+            [3, 4],
+            [4, 5],
+            [5, 6],
+            [6, 2]
+        ]);
+
+        // --- H ---
+        defLetter('H', [
+            [0, 0],
+            [0, 8],
+            [6, 0],
+            [6, 8],
+            [0, 4],
+            [6, 4]
+        ], [
+            [0, 1],
+            [2, 3],
+            [0, 4],
+            [4, 5],
+            [5, 3]
+        ]);
+
+        // --- I ---
+        defLetter('I', [
+            [3, 0],
+            [3, 8],
+            [1, 0],
+            [5, 0],
+            [1, 8],
+            [5, 8]
+        ], [
+            [0, 1],
+            [2, 3],
+            [4, 5]
+        ]);
+
+        // --- J ---
+        defLetter('J', [
+            [5, 0],
+            [3, 0],
+            [3, 6],
+            [2, 8],
+            [0, 7]
+        ], [
+            [0, 1],
+            [1, 2],
+            [2, 3],
+            [3, 4]
+        ]);
+
+        // --- K ---
+        defLetter('K', [
+            [0, 0],
+            [0, 4],
+            [0, 8],
+            [5, 0],
+            [5, 8]
+        ], [
+            [0, 1],
+            [1, 2],
+            [1, 3],
+            [1, 4]
+        ]);
+
+        // --- L ---
+        defLetter('L', [
+            [0, 0],
+            [0, 8],
+            [6, 8]
+        ], [
+            [0, 1],
+            [1, 2]
+        ]);
+
+        // --- M ---
+        defLetter('M', [
+            [0, 8],
+            [0, 0],
+            [3, 3],
+            [6, 0],
+            [6, 8]
+        ], [
+            [0, 1],
+            [1, 2],
+            [2, 3],
+            [3, 4]
+        ]);
+
+        // --- N ---
+        defLetter('N', [
+            [0, 8],
+            [0, 0],
+            [6, 8],
+            [6, 0]
+        ], [
+            [0, 1],
+            [1, 2],
+            [2, 3]
+        ]);
+
+        // --- O ---
+        defLetter('O', [
+            [3, 0],
+            [0, 3],
+            [0, 5],
+            [3, 8],
+            [6, 5],
+            [6, 3],
+            [3, 0]
+        ], [
+            [0, 1],
+            [1, 2],
+            [2, 3],
+            [3, 4],
+            [4, 5],
+            [5, 0]
+        ]);
+
+        // --- P ---
+        defLetter('P', [
+            [0, 0],
+            [0, 8],
+            [4, 0],
+            [4, 3],
+            [3, 4],
+            [0, 4]
+        ], [
+            [0, 1],
+            [0, 2],
+            [2, 3],
+            [3, 4],
+            [4, 5],
+            [5, 0]
+        ]);
+
+        // --- Q ---
+        defLetter('Q', [
+            [3, 0],
+            [0, 3],
+            [0, 5],
+            [3, 8],
+            [6, 5],
+            [6, 3],
+            [3, 0],
+            [4, 6],
+            [6, 8]
+        ], [
+            [0, 1],
+            [1, 2],
+            [2, 3],
+            [3, 4],
+            [4, 5],
+            [5, 0],
+            [3, 7],
+            [7, 8]
+        ]);
+
+        // --- R ---
+        defLetter('R', [
+            [0, 0],
+            [0, 8],
+            [4, 0],
+            [4, 3],
+            [3, 4],
+            [0, 4],
+            [3, 7],
+            [5, 8]
+        ], [
+            [0, 1],
+            [0, 2],
+            [2, 3],
+            [3, 4],
+            [4, 5],
+            [5, 0],
+            [4, 6],
+            [6, 7]
+        ]);
+
+        // --- S ---
+        defLetter('S', [
+            [5, 0],
+            [2, 0],
+            [0, 1],
+            [0, 3],
+            [2, 4],
+            [4, 4],
+            [6, 5],
+            [6, 7],
+            [4, 8],
+            [1, 8]
+        ], [
+            [0, 1],
+            [1, 2],
+            [2, 3],
+            [3, 4],
+            [4, 5],
+            [5, 6],
+            [6, 7],
+            [7, 8],
+            [8, 9]
+        ]);
+
+        // --- T ---
+        defLetter('T', [
+            [3, 0],
+            [3, 8],
+            [0, 0],
+            [6, 0]
+        ], [
+            [0, 1],
+            [2, 0],
+            [0, 3]
+        ]);
+
+        // --- U ---
+        defLetter('U', [
+            [0, 0],
+            [0, 6],
+            [1, 8],
+            [5, 8],
+            [6, 6],
+            [6, 0]
+        ], [
+            [0, 1],
+            [1, 2],
+            [2, 3],
+            [3, 4],
+            [4, 5]
+        ]);
+
+        // --- V ---
+        defLetter('V', [
+            [0, 0],
+            [3, 8],
+            [6, 0]
+        ], [
+            [0, 1],
+            [1, 2]
+        ]);
+
+        // --- W ---
+        defLetter('W', [
+            [0, 0],
+            [1, 8],
+            [3, 5],
+            [5, 8],
+            [6, 0]
+        ], [
+            [0, 1],
+            [1, 2],
+            [2, 3],
+            [3, 4]
+        ]);
+
+        // --- X ---
+        defLetter('X', [
+            [0, 0],
+            [6, 8],
+            [3, 4],
+            [6, 0],
+            [0, 8]
+        ], [
+            [0, 1],
+            [0, 3],
+            [3, 4],
+            [4, 1],
+            [0, 2],
+            [2, 4]
+        ]);
+
+        // --- Y ---
+        defLetter('Y', [
+            [0, 0],
+            [3, 4],
+            [6, 0],
+            [3, 4],
+            [3, 8]
+        ], [
+            [0, 1],
+            [1, 2],
+            [1, 3],
+            [3, 4]
+        ]);
+
+        // --- Z ---
+        defLetter('Z', [
+            [0, 0],
+            [6, 0],
+            [0, 8],
+            [6, 8]
+        ], [
+            [0, 1],
+            [1, 2],
+            [2, 3]
+        ]);
+
+        // --- 0 ---
+        defLetter('0', [
+            [3, 0],
+            [0, 3],
+            [0, 5],
+            [3, 8],
+            [6, 5],
+            [6, 3],
+            [3, 0],
+            [2, 3],
+            [4, 5]
+        ], [
+            [0, 1],
+            [1, 2],
+            [2, 3],
+            [3, 4],
+            [4, 5],
+            [5, 0],
+            [1, 7],
+            [7, 8],
+            [8, 4]
+        ]);
+
+        // --- 1 ---
+        defLetter('1', [
+            [3, 0],
+            [3, 8],
+            [1, 6]
+        ], [
+            [0, 1],
+            [1, 2]
+        ]);
+
+        // --- 2 ---
+        defLetter('2', [
+            [0, 0],
+            [6, 0],
+            [6, 3],
+            [0, 5],
+            [0, 8],
+            [6, 8]
+        ], [
+            [0, 1],
+            [1, 2],
+            [2, 3],
+            [3, 4],
+            [4, 5]
+        ]);
+
+        // --- 3 ---
+        defLetter('3', [
+            [0, 0],
+            [6, 0],
+            [6, 3],
+            [0, 4],
+            [6, 5],
+            [6, 8],
+            [0, 8]
+        ], [
+            [0, 1],
+            [1, 2],
+            [2, 3],
+            [3, 4],
+            [4, 5],
+            [5, 6]
+        ]);
+
+        // --- 4 ---
+        defLetter('4', [
+            [0, 3],
+            [6, 3],
+            [3, 0],
+            [3, 8]
+        ], [
+            [0, 1],
+            [0, 2],
+            [2, 3]
+        ]);
+
+        // --- 5 ---
+        defLetter('5', [
+            [6, 0],
+            [0, 0],
+            [0, 4],
+            [6, 4],
+            [6, 8],
+            [0, 8]
+        ], [
+            [0, 1],
+            [1, 2],
+            [2, 3],
+            [3, 4],
+            [4, 5]
+        ]);
+
+        // --- 6 ---
+        defLetter('6', [
+            [6, 0],
+            [0, 1],
+            [0, 4],
+            [3, 5],
+            [6, 4],
+            [6, 8],
+            [0, 8]
+        ], [
+            [0, 1],
+            [1, 2],
+            [2, 3],
+            [3, 4],
+            [4, 5],
+            [5, 6],
+            [6, 2]
+        ]);
+
+        // --- 7 ---
+        defLetter('7', [
+            [0, 0],
+            [6, 0],
+            [3, 8]
+        ], [
+            [0, 1],
+            [1, 2]
+        ]);
+
+        // --- 8 ---
+        defLetter('8', [
+            [3, 0],
+            [0, 2],
+            [0, 4],
+            [3, 6],
+            [6, 4],
+            [6, 2],
+            [3, 0],
+            [3, 4],
+            [0, 7],
+            [3, 8],
+            [6, 7]
+        ], [
+            [0, 1],
+            [1, 2],
+            [2, 3],
+            [3, 4],
+            [4, 5],
+            [5, 0],
+            [2, 7],
+            [7, 4],
+            [7, 8],
+            [8, 9],
+            [9, 10],
+            [10, 7],
+            [8, 6]
+        ]);
+
+        // --- 9 ---
+        defLetter('9', [
+            [0, 8],
+            [6, 7],
+            [6, 4],
+            [3, 3],
+            [0, 4],
+            [0, 0],
+            [6, 0]
+        ], [
+            [0, 1],
+            [1, 2],
+            [2, 3],
+            [3, 4],
+            [4, 5],
+            [5, 6],
+            [6, 2]
+        ]);
+
+        // --- space (invisible) ---
+        defLetter(' ', [
+            [0, 4],
+            [1, 4]
+        ], [
+            [0, 1]
+        ]);
+
+        // --- . ---
+        defLetter('.', [
+            [3, 7],
+            [3, 8]
+        ], [
+            [0, 1]
+        ]);
+
+        // --- , ---
+        defLetter(',', [
+            [3, 7],
+            [2, 8]
+        ], [
+            [0, 1]
+        ]);
+
+        // --- ! ---
+        defLetter('!', [
+            [3, 0],
+            [3, 5],
+            [3, 7],
+            [3, 8]
+        ], [
+            [0, 1],
+            [2, 3]
+        ]);
+
+        // --- ? ---
+        defLetter('?', [
+            [2, 0],
+            [5, 0],
+            [5, 3],
+            [3, 4],
+            [3, 6],
+            [3, 7],
+            [3, 8]
+        ], [
+            [0, 1],
+            [1, 2],
+            [2, 3],
+            [3, 4],
+            [5, 6],
+            [6, 7]
+        ]);
+
+        // --- - ---
+        defLetter('-', [
+            [0, 4],
+            [6, 4]
+        ], [
+            [0, 1]
+        ]);
+
+        // --- ' ---
+        defLetter("'", [
+            [3, 0],
+            [3, 2]
+        ], [
+            [0, 1]
+        ]);
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  2.  PHYSICS
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+        class Dot {
+            constructor(x, y, startX, startY) {
+                this.x = startX || x;
+                this.y = startY || y;
+                this.vx = 0;
+                this.vy = 0;
+                this.tx = x;
+                this.ty = y;
+                this.k = 0.045;
+                this.damping = 0.94;
+                this.phase = Math.random() * Math.PI * 2;
+                this.wobbleX = (Math.random() - 0.5) * 0.4;
+                this.wobbleY = (Math.random() - 0.5) * 0.4;
+                this.wobbleSpeed = 0.001 + Math.random() * 0.002;
+            }
+
+            setTarget(x, y) {
+                this.tx = x;
+                this.ty = y;
+            }
+
+            update(time) {
+                let dx = this.tx - this.x;
+                let dy = this.ty - this.y;
+
+                const wobbleOffsetX = Math.sin(time * this.wobbleSpeed + this.phase) * this.wobbleX;
+                const wobbleOffsetY = Math.cos(time * this.wobbleSpeed * 0.7 + this.phase) * this.wobbleY;
+
+                const springK = this.k * (1 + 0.1 * Math.sin(time * 0.001 + this.phase));
+                this.vx += (dx + wobbleOffsetX) * springK;
+                this.vy += (dy + wobbleOffsetY) * springK;
+
+                this.vx *= this.damping;
+                this.vy *= this.damping;
+
+                this.x += this.vx;
+                this.y += this.vy;
+            }
+
+            impulse(vx, vy) {
+                this.vx += vx;
+                this.vy += vy;
+            }
+        }
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  3.  LETTER INSTANCE
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+        class LetterInstance {
+            constructor(char, x, y, scale, color, birthTime) {
+                this.char = char;
+                this.def = LETTERS[char] || LETTERS['?'];
+                this.scale = scale;
+                this.color = color || '#F7E7B4';
+                this.dots = [];
+                this.edges = this.def.edges || [];
+                this.alpha = 1;
+                this.birthTime = birthTime || 0;
+                this.settled = false;
+                this.isSpace = (char === ' ');
+
+                const pts = this.def.points || [
+                    [0, 0],
+                    [1, 0]
+                ];
+                const cx = 3.5,
+                    cy = 4.5;
+
+                this.offsets = [];
+                this.randomStarts = [];
+
+                for (const [px, py] of pts) {
+                    const dx = (px - cx) * scale;
+                    const dy = (py - cy) * scale;
+                    this.offsets.push({ dx, dy });
+
+                    const startX = x + dx + (Math.random() - 0.5) * scale * 4 + scale * 2;
+                    const startY = y + dy + (Math.random() - 0.5) * scale * 3 + scale * 3;
+                    this.randomStarts.push({ startX, startY });
+                }
+
+                for (let i = 0; i < this.offsets.length; i++) {
+                    const off = this.offsets[i];
+                    const start = this.randomStarts[i];
+                    const dot = new Dot(
+                        x + off.dx,
+                        y + off.dy,
+                        start.startX,
+                        start.startY
+                    );
+                    this.dots.push(dot);
+                }
+
+                this.updateTargets(x, y);
+
+                for (const dot of this.dots) {
+                    const angle = -Math.PI / 4 + (Math.random() - 0.5) * 0.8;
+                    const strength = (0.8 + Math.random() * 0.6) * scale * 0.8;
+                    dot.impulse(
+                        Math.cos(angle) * strength,
+                        Math.sin(angle) * strength + 0.3 * scale
+                    );
+                    dot.impulse(
+                        (Math.random() - 0.5) * 0.5 * scale,
+                        (Math.random() - 0.5) * 0.5 * scale
+                    );
+                }
+            }
+
+            updateTargets(x, y) {
+                for (let i = 0; i < this.dots.length; i++) {
+                    const off = this.offsets[i];
+                    if (off) {
+                        this.dots[i].setTarget(x + off.dx, y + off.dy);
+                    }
+                }
+            }
+
+            setPosition(x, y) {
+                this.updateTargets(x, y);
+            }
+
+            update(time) {
+                let totalDist = 0;
+                for (const dot of this.dots) {
+                    dot.update(time);
+                    const dx = dot.x - dot.tx;
+                    const dy = dot.y - dot.ty;
+                    totalDist += Math.sqrt(dx * dx + dy * dy);
+                }
+                this.settled = totalDist < 0.08 * this.dots.length;
+                return this.settled;
+            }
+
+            draw(ctx, time) {
+                if (this.isSpace) return;
+                if (this.dots.length < 2) return;
+
+                const alpha = Math.min(1, this.alpha);
+                const twinkle = 0.85 + 0.15 * Math.sin(time * 0.0025 + this.birthTime);
+
+                // Lines
+                ctx.beginPath();
+                for (const [i, j] of this.edges) {
+                    if (i < this.dots.length && j < this.dots.length) {
+                        const a = this.dots[i];
+                        const b = this.dots[j];
+                        ctx.moveTo(a.x, a.y);
+                        ctx.lineTo(b.x, b.y);
+                    }
+                }
+                ctx.strokeStyle = this.color;
+                ctx.globalAlpha = alpha * 0.55 * twinkle;
+                ctx.lineWidth = 1.8;
+                ctx.shadowColor = this.color;
+                ctx.shadowBlur = 18;
+                ctx.stroke();
+
+                // Glow lines
+                ctx.beginPath();
+                for (const [i, j] of this.edges) {
+                    if (i < this.dots.length && j < this.dots.length) {
+                        const a = this.dots[i];
+                        const b = this.dots[j];
+                        ctx.moveTo(a.x, a.y);
+                        ctx.lineTo(b.x, b.y);
+                    }
+                }
+                ctx.strokeStyle = this.color;
+                ctx.globalAlpha = alpha * 0.08 * twinkle;
+                ctx.lineWidth = 16;
+                ctx.shadowColor = this.color;
+                ctx.shadowBlur = 45;
+                ctx.stroke();
+                ctx.shadowBlur = 0;
+
+                // Dots
+                for (const dot of this.dots) {
+                    const rad = 2.4 + 0.5 * Math.sin(time * 0.004 + dot.phase);
+
+                    // Outer glow
+                    const grad = ctx.createRadialGradient(dot.x, dot.y, 0, dot.x, dot.y, rad * 8);
+                    grad.addColorStop(0, this.color);
+                    grad.addColorStop(0.15, this.color);
+                    grad.addColorStop(1, 'transparent');
+                    ctx.globalAlpha = alpha * 0.15 * twinkle;
+                    ctx.fillStyle = grad;
+                    ctx.beginPath();
+                    ctx.arc(dot.x, dot.y, rad * 8, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    // Core
+                    ctx.globalAlpha = alpha * 0.95 * twinkle;
+                    ctx.fillStyle = '#FFF8E7';
+                    ctx.shadowColor = this.color;
+                    ctx.shadowBlur = 22;
+                    ctx.beginPath();
+                    ctx.arc(dot.x, dot.y, rad * 0.6, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    // Color center
+                    ctx.globalAlpha = alpha * 0.6 * twinkle;
+                    ctx.fillStyle = this.color;
+                    ctx.shadowBlur = 12;
+                    ctx.beginPath();
+                    ctx.arc(dot.x, dot.y, rad * 0.35, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                }
+                ctx.globalAlpha = 1;
+            }
+        }
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  4.  MAIN APP
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+        class ConstellationApp {
+            constructor() {
+                this.canvas = document.getElementById('mainCanvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.widget = document.getElementById('widget');
+                this.hiddenInput = document.getElementById('hiddenInput');
+                this.placeholderHint = document.getElementById('placeholderHint');
+                this.statusTip = document.getElementById('statusTip');
+                this.charCounter = document.getElementById('charCounter');
+
+                this.letters = [];
+                this.text = '';
+                this.lines = [];
+                this.baseFontSize = 42;
+                this.startX = 0;
+                this.startY = 0;
+                this.width = 0;
+                this.height = 0;
+                this.time = 0;
+                this.padding = 60;
+                this.lineHeight = 1.6;
+                this.maxLines = MAX_LINES;
+
+                this.resize();
+                this.setupBackground();
+
+                // Click to focus
+                this.widget.addEventListener('click', (e) => {
+                    if (e.target === this.canvas || e.target === this.widget) {
+                        this.hiddenInput.focus();
+                    }
+                });
+
+                // Focus events
+                this.hiddenInput.addEventListener('focus', () => {
+                    this.placeholderHint.classList.add('hidden');
+                });
+
+                this.hiddenInput.addEventListener('blur', () => {
+                    if (this.text.replace(/ /g, '').length === 0) {
+                        this.placeholderHint.classList.remove('hidden');
+                    }
+                });
+
+                // Input handling
+                this.hiddenInput.addEventListener('input', () => {
+                    const val = this.hiddenInput.value;
+                    let processed = '';
+                    let charCount = 0;
+                    for (const ch of val) {
+                        if (charCount >= MAX_CHARS) break;
+                        if (ch === ' ') {
+                            processed += ' ';
+                            charCount++;
+                        } else {
+                            const upper = ch.toUpperCase();
+                            if (LETTERS[upper] !== undefined) {
+                                processed += upper;
+                                charCount++;
+                            }
+                        }
+                    }
+                    if (processed !== this.text) {
+                        this.updateText(processed);
+                    }
+                    if (this.hiddenInput.value !== processed) {
+                        this.hiddenInput.value = processed;
+                    }
+                    this.updateCharCounter();
+                });
+
+                // Keyboard
+                this.hiddenInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        this.sendText();
+                    }
+                    if (e.key === 'Backspace' && this.text.length === 0) {
+                        e.preventDefault();
+                    }
+                });
+
+                // Resize
+                window.addEventListener('resize', () => this.resize());
+
+                // Start animation
+                this.animate();
+
+                // Initial focus
+                setTimeout(() => {
+                    this.hiddenInput.focus();
+                }, 100);
+
+                this.updateCharCounter();
+            }
+
+            resize() {
+                const rect = this.widget.getBoundingClientRect();
+                const w = rect.width;
+                const h = rect.height;
+                const dpr = window.devicePixelRatio || 1;
+
+                this.canvas.width = w * dpr;
+                this.canvas.height = h * dpr;
+                this.canvas.style.width = w + 'px';
+                this.canvas.style.height = h + 'px';
+                this.ctx.scale(dpr, dpr);
+
+                this.width = w;
+                this.height = h;
+
+                // Calculate base font size based on screen dimensions
+                this.baseFontSize = Math.min(w * 0.08, h * 0.12);
+                this.baseFontSize = Math.max(18, Math.min(50, this.baseFontSize));
+
+                this.layoutText();
+            }
+
+            getStartY() {
+                const totalHeight = this.lines.length * this.baseFontSize * this.lineHeight;
+                const centerY = this.height / 2;
+                if (totalHeight > this.height * 0.6) {
+                    return this.padding + this.baseFontSize * 0.5;
+                }
+                return centerY - totalHeight / 2 + this.baseFontSize * 0.5;
+            }
+
+            layoutText() {
+                const text = this.text || '';
+                const w = this.width;
+
+                const scale = this.baseFontSize / 9;
+                const spacing = this.baseFontSize * 0.7;
+                const maxWidth = w - this.padding * 2;
+
+                // Split into lines at spaces
+                const words = text.split(' ');
+                const lines = [];
+                let currentLine = '';
+
+                for (const word of words) {
+                    // Calculate width of current line + this word
+                    const testLine = currentLine ? currentLine + ' ' + word : word;
+                    let testWidth = 0;
+                    for (const ch of testLine) {
+                        testWidth += this.getCharWidth(ch) * scale * 1.2 + spacing * 0.3;
+                    }
+
+                    if (testWidth > maxWidth && currentLine.length > 0) {
+                        // Current line would overflow, start new line
+                        lines.push(currentLine);
+                        currentLine = word;
+                    } else {
+                        currentLine = testLine;
+                    }
+                }
+                if (currentLine.length > 0) {
+                    lines.push(currentLine);
+                }
+
+                // Limit to max lines
+                let truncated = false;
+                if (lines.length > this.maxLines) {
+                    // Keep only the first maxLines lines
+                    const keptLines = lines.slice(0, this.maxLines);
+                    // Check if we need to truncate the last line
+                    const lastLine = keptLines[keptLines.length - 1];
+                    let lastLineWidth = 0;
+                    for (const ch of lastLine) {
+                        lastLineWidth += this.getCharWidth(ch) * scale * 1.2 + spacing * 0.3;
+                    }
+                    // If the last line still fits, we're good
+                    if (lastLineWidth <= maxWidth) {
+                        this.lines = keptLines;
+                    } else {
+                        // Need to truncate the last line
+                        let truncatedLine = '';
+                        let width = 0;
+                        for (const ch of lastLine) {
+                            const chWidth = this.getCharWidth(ch) * scale * 1.2 + spacing * 0.3;
+                            if (width + chWidth > maxWidth - spacing * 0.5) break;
+                            truncatedLine += ch;
+                            width += chWidth;
+                        }
+                        keptLines[keptLines.length - 1] = truncatedLine + '…';
+                        this.lines = keptLines;
+                        truncated = true;
+                    }
+                } else {
+                    this.lines = lines;
+                }
+
+                // Update the text to match displayed lines (for character counter)
+                const displayedText = this.lines.join(' ');
+                if (displayedText !== this.text) {
+                    this.text = displayedText;
+                    this.hiddenInput.value = displayedText;
+                }
+
+                this.startX = this.padding;
+                this.startY = this.getStartY();
+
+                // Rebuild letters
+                this.letters = [];
+                const newScale = this.baseFontSize / 9;
+                const newSpacing = this.baseFontSize * 0.7;
+                const now = this.time;
+
+                const goldColors = [
+                    '#F7E7B4', '#F5E0A8', '#F3D99C', '#F1D290', '#EFCB84',
+                    '#EDC478', '#EBBD6C', '#E9B660', '#E7AF54', '#E5A848',
+                    '#F8E8C0', '#F6E4B8', '#F4E0B0', '#F2DCA8', '#F0D8A0'
+                ];
+
+                let charIndex = 0;
+                for (let lineIdx = 0; lineIdx < this.lines.length; lineIdx++) {
+                    const line = this.lines[lineIdx];
+                    const y = this.startY + lineIdx * this.baseFontSize * this.lineHeight;
+                    let x = this.startX;
+
+                    for (const ch of line) {
+                        const w2 = this.getCharWidth(ch) * newScale * 1.2 + newSpacing * 0.4;
+                        const colorIndex = (ch.charCodeAt(0) * 3 + charIndex * 2) % goldColors.length;
+                        const color = goldColors[colorIndex];
+                        const letter = new LetterInstance(
+                            ch,
+                            x + w2 / 2,
+                            y,
+                            newScale * 0.9,
+                            color,
+                            now + charIndex * 80
+                        );
+                        this.letters.push(letter);
+                        x += w2 + newSpacing * 0.3;
+                        charIndex++;
+                    }
+                }
+
+                // Update character counter
+                this.updateCharCounter();
+            }
+
+            getCharWidth(char) {
+                const def = LETTERS[char] || LETTERS['?'];
+                const pts = def.points || [
+                    [0, 0],
+                    [1, 0]
+                ];
+                let minX = Infinity,
+                    maxX = -Infinity;
+                for (const [px] of pts) {
+                    if (px < minX) minX = px;
+                    if (px > maxX) maxX = px;
+                }
+                return (maxX - minX) || 1;
+            }
+
+            updateText(newText) {
+                if (newText === this.text) return;
+
+                this.text = newText;
+                this.hiddenInput.value = newText;
+
+                this.layoutText();
+
+                const hasVisibleChars = this.text.replace(/ /g, '').length > 0;
+                if (hasVisibleChars) {
+                    this.placeholderHint.classList.add('hidden');
+                    this.statusTip.textContent = '⏎ send';
+                    this.statusTip.classList.add('active');
+                } else {
+                    this.placeholderHint.classList.remove('hidden');
+                    this.statusTip.textContent = '';
+                    this.statusTip.classList.remove('active');
+                }
+            }
+
+            updateCharCounter() {
+                const count = this.text.length;
+                this.charCounter.textContent = `${count} / ${MAX_CHARS}`;
+                this.charCounter.classList.remove('warning', 'danger');
+                if (count > MAX_CHARS * 0.8) {
+                    this.charCounter.classList.add('warning');
+                }
+                if (count > MAX_CHARS * 0.95) {
+                    this.charCounter.classList.add('danger');
+                }
+            }
+
+            sendText() {
+                if (this.text.replace(/ /g, '').length === 0) return;
+
+                this.statusTip.textContent = '✦ sent!';
+                this.statusTip.style.color = 'rgba(247, 231, 180, 0.5)';
+
+                for (const letter of this.letters) {
+                    for (const dot of letter.dots) {
+                        const angle = -Math.PI / 4 + (Math.random() - 0.5) * 1.2;
+                        const strength = 1.5 + Math.random() * 4;
+                        dot.impulse(
+                            Math.cos(angle) * strength,
+                            Math.sin(angle) * strength - 1 - Math.random() * 3
+                        );
+                        dot.impulse(
+                            (Math.random() - 0.5) * 2,
+                            (Math.random() - 0.5) * 2
+                        );
+                    }
+                }
+
+                setTimeout(() => {
+                    this.statusTip.textContent = '';
+                    this.statusTip.style.color = '';
+                    this.statusTip.classList.remove('active');
+                    this.clearText();
+                }, 600);
+            }
+
+            clearText() {
+                this.text = '';
+                this.hiddenInput.value = '';
+                this.letters = [];
+                this.lines = [];
+                this.placeholderHint.classList.remove('hidden');
+                this.statusTip.textContent = '';
+                this.statusTip.classList.remove('active');
+                this.updateCharCounter();
+                this.layoutText();
+            }
+
+            setupBackground() {
+                const container = document.getElementById('bgStars');
+                const canvas = document.createElement('canvas');
+                const rect = this.widget.getBoundingClientRect();
+                canvas.width = rect.width;
+                canvas.height = rect.height;
+                const ctx = canvas.getContext('2d');
+
+                const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+                grad.addColorStop(0, '#05050A');
+                grad.addColorStop(0.35, '#0C0E1A');
+                grad.addColorStop(0.7, '#1A1C2E');
+                grad.addColorStop(1, '#313647');
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                const starCount = Math.floor((canvas.width * canvas.height) / 1200);
+                for (let i = 0; i < starCount; i++) {
+                    const x = Math.random() * canvas.width;
+                    const y = Math.random() * canvas.height;
+                    const r = Math.random() * 1.2 + 0.2;
+                    const alpha = Math.random() * 0.3 + 0.04;
+                    ctx.globalAlpha = alpha;
+                    ctx.fillStyle = '#C8B88A';
+                    ctx.beginPath();
+                    ctx.arc(x, y, r, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                const brightCount = Math.floor((canvas.width * canvas.height) / 12000);
+                for (let i = 0; i < brightCount; i++) {
+                    const x = Math.random() * canvas.width;
+                    const y = Math.random() * canvas.height;
+                    const r = Math.random() * 0.7 + 0.4;
+                    const alpha = Math.random() * 0.2 + 0.08;
+                    ctx.globalAlpha = alpha;
+                    ctx.fillStyle = '#F7E7B4';
+                    ctx.shadowColor = '#F7E7B4';
+                    ctx.shadowBlur = 4;
+                    ctx.beginPath();
+                    ctx.arc(x, y, r, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                ctx.shadowBlur = 0;
+                ctx.globalAlpha = 1;
+
+                canvas.style.width = '100%';
+                canvas.style.height = '100%';
+                container.appendChild(canvas);
+            }
+
+            animate() {
+                this.time += 1;
+
+                for (const letter of this.letters) {
+                    letter.update(this.time);
+                }
+
+                this.render();
+                requestAnimationFrame(() => this.animate());
+            }
+
+            render() {
+                const ctx = this.ctx;
+                ctx.clearRect(0, 0, this.width, this.height);
+                for (const letter of this.letters) {
+                    letter.draw(ctx, this.time);
+                }
+            }
+        }
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        //  5.  START
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+        document.addEventListener('DOMContentLoaded', () => {
+            new ConstellationApp();
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vacation Splitter</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{background:#262B2E;min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:16px}
+        .c{max-width:700px;width:100%;background:#262B2E;padding:24px 20px 28px;border:1px solid #4C5154}
+        h1{font-size:20px;font-weight:600;color:#EAE3D6;display:flex;align-items:center;gap:8px;margin-bottom:2px;letter-spacing:-.02em}
+        h1 span{background:#4C5154;color:#EAE3D6;font-size:13px;padding:0 10px;font-weight:500}
+        .sub{color:#B7AAA1;font-size:13px;margin-bottom:20px;padding-left:10px;border-left:2px solid #4C5154}
+        
+        .input-section{background:#262B2E;padding:6px 14px 6px 16px;margin-bottom:12px;border:1px solid #4C5154;display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center}
+        .input-section label{font-weight:500;color:#B7AAA1;font-size:13px}
+        .input-section input{flex:1;min-width:80px;background:0 0;border:none;font-size:16px;padding:6px 0;outline:0;color:#EAE3D6;font-family:"SF Mono",monospace}
+        .input-section input::placeholder{color:#4C5154;font-size:13px}
+        .input-section input[type="number"]{max-width:120px}
+        
+        .btn{background:#262B2E;border:1px solid #4C5154;padding:6px 16px;font-weight:500;color:#B7AAA1;font-size:12px;cursor:pointer;transition:.1s;font-family:inherit}
+        .btn:active{transform:scale(.97)}
+        .btn-p{background:#4C5154;color:#EAE3D6;border-color:#B7AAA1}
+        .btn-p:hover{background:#4C5154}
+        .btn:hover{color:#EAE3D6;border-color:#B7AAA1}
+        .btn-danger{background:#4C5154;color:#EAE3D6;border-color:#B7AAA1}
+        .btn-danger:hover{background:#4C5154;color:#EAE3D6}
+        .btn-success{background:#4C5154;color:#EAE3D6;border-color:#B7AAA1}
+        .btn-success:hover{background:#4C5154;color:#EAE3D6}
+
+        .bar{display:flex;gap:6px;margin:12px 0 10px;flex-wrap:wrap}
+
+        .person-list{background:#262B2E;padding:6px 0;margin:10px 0;border:1px solid #4C5154;max-height:260px;overflow-y:auto}
+        .empty-state{color:#4C5154;font-size:13px;text-align:center;padding:20px 0}
+        .person-item{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;border-bottom:1px solid #4C5154;transition:background .1s}
+        .person-item:last-child{border-bottom:none}
+        .person-item:hover{background:#2D3236}
+        .person-info{display:flex;align-items:center;gap:16px;color:#EAE3D6;font-size:14px}
+        .person-info .name{font-weight:500;color:#EAE3D6}
+        .person-info .amount{color:#B7AAA1;font-family:"SF Mono",monospace;font-size:13px}
+        .remove-btn{background:0 0;border:none;color:#4C5154;font-size:18px;cursor:pointer;transition:color .1s;font-family:inherit;padding:0 4px}
+        .remove-btn:hover{color:#EAE3D6}
+
+        .rc{background:#262B2E;padding:10px 14px 8px;border:1px solid #4C5154}
+        .rc .lbl{font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:#B7AAA1;font-weight:600;display:flex;justify-content:space-between}
+        .rc .lbl span{background:#262B2E;padding:0 8px;color:#EAE3D6;font-weight:500;border:1px solid #4C5154}
+        .rc .val{font-size:22px;font-weight:500;color:#EAE3D6;margin-top:2px;font-feature-settings:"tnum";font-family:"SF Mono",monospace}
+        .rc.highlight{border-color:#B7AAA1}
+        .rc.sum{display:flex;justify-content:space-between;align-items:center;padding:8px 14px}
+        .rc.sum .val{font-size:22px}
+
+        .results{background:#262B2E;padding:12px 0;border:1px solid #4C5154;margin-top:14px}
+        .results .rc{margin:6px 14px;border-color:#4C5154}
+        .results .rc:last-child{margin-bottom:0}
+        .results .rc.highlight{border-color:#B7AAA1}
+        .result-positive{color:#8BBF8B}
+        .result-negative{color:#D48383}
+        .result-zero{color:#4C5154}
+        .transaction-item{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #3A3F42;color:#EAE3D6;font-size:13px}
+        .transaction-item:last-child{border-bottom:none}
+        .transaction-item .arrow{color:#B7AAA1;margin:0 6px}
+        .transaction-item .amount{color:#EAE3D6;font-family:"SF Mono",monospace}
+        .settled{color:#8BBF8B;font-weight:500;text-align:center;padding:10px 0}
+
+        .ft{margin-top:14px;font-size:10px;color:#4C5154;text-align:center;border-top:1px solid #4C5154;padding-top:12px;letter-spacing:.02em}
+        
+        ::-webkit-scrollbar{width:4px}
+        ::-webkit-scrollbar-track{background:#262B2E}
+        ::-webkit-scrollbar-thumb{background:#4C5154}
+        ::-webkit-scrollbar-thumb:hover{background:#B7AAA1}
+        
+        @media(max-width:500px){.c{padding:16px 12px}h1{font-size:17px}.input-section{padding:4px 10px 4px 12px}.input-section input{font-size:14px}.input-section input[type="number"]{max-width:90px}}
+    </style>
+</head>
+<body>
+<div class="c">
+    <h1>◆ VACATION <span>SPLIT</span></h1>
+    <div class="sub">enter each person's spending — get settlement</div>
+
+    <div class="input-section">
+        <label>name</label>
+        <input type="text" id="personName" placeholder="e.g. Alex" />
+        <label style="margin-left:4px">$</label>
+        <input type="number" id="personAmount" placeholder="0.00" step="0.01" />
+        <button class="btn btn-p" onclick="addPerson()">+ ADD</button>
+    </div>
+
+    <div id="personList" class="person-list">
+        <div class="empty-state">no expenses added yet — add your friends</div>
+    </div>
+
+    <div class="bar">
+        <button class="btn btn-p" onclick="calculateSplit()">◆ CALCULATE</button>
+        <button class="btn" onclick="clearAll()">↺ CLEAR</button>
+    </div>
+
+    <div id="resultsContainer"></div>
+
+    <div class="ft">split fairly — each person pays their share</div>
+</div>
+
+<script>
+let people = [];
+
+function addPerson() {
+    const nameInput = document.getElementById('personName');
+    const amountInput = document.getElementById('personAmount');
+    const name = nameInput.value.trim();
+    const amount = parseFloat(amountInput.value);
+
+    if (!name) { alert('enter a name'); return; }
+    if (isNaN(amount) || amount <= 0) { alert('enter a valid amount'); return; }
+
+    people.push({ name, amount });
+    nameInput.value = '';
+    amountInput.value = '';
+    renderPeople();
+    document.getElementById('resultsContainer').innerHTML = '';
+}
+
+function removePerson(index) {
+    people.splice(index, 1);
+    renderPeople();
+    document.getElementById('resultsContainer').innerHTML = '';
+}
+
+function renderPeople() {
+    const list = document.getElementById('personList');
+    if (people.length === 0) {
+        list.innerHTML = '<div class="empty-state">no expenses added yet — add your friends</div>';
+        return;
+    }
+    list.innerHTML = people.map((p, i) => `
+        <div class="person-item">
+            <div class="person-info">
+                <span class="name">${p.name}</span>
+                <span class="amount">$${p.amount.toFixed(2)}</span>
+            </div>
+            <button class="remove-btn" onclick="removePerson(${i})">✕</button>
+        </div>
+    `).join('');
+}
+
+function calculateSplit() {
+    if (people.length < 2) {
+        alert('add at least 2 people to split costs');
+        return;
+    }
+
+    const total = people.reduce((sum, p) => sum + p.amount, 0);
+    const average = total / people.length;
+
+    const balances = people.map(p => ({
+        name: p.name,
+        balance: p.amount - average
+    }));
+
+    const sorted = [...balances].sort((a, b) => b.balance - a.balance);
+    const transactions = [];
+    let i = 0, j = sorted.length - 1;
+
+    while (i < j) {
+        const receiver = sorted[i];
+        const payer = sorted[j];
+        if (receiver.balance <= 0.001) break;
+        if (payer.balance >= -0.001) break;
+        const amount = Math.min(receiver.balance, -payer.balance);
+        if (amount > 0.01) {
+            transactions.push({ from: payer.name, to: receiver.name, amount });
+        }
+        receiver.balance -= amount;
+        payer.balance += amount;
+        if (receiver.balance < 0.001) i++;
+        if (payer.balance > -0.001) j--;
+    }
+
+    const container = document.getElementById('resultsContainer');
+    let html = `<div class="results">`;
+    html += `<div class="rc sum"><span style="font-weight:500;color:#B7AAA1">total spent</span><span class="val">$${total.toFixed(2)}</span></div>`;
+    html += `<div class="rc sum"><span style="font-weight:500;color:#B7AAA1">per person</span><span class="val">$${average.toFixed(2)}</span></div>`;
+    
+    html += `<div style="padding:4px 14px 0;font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:#B7AAA1;font-weight:600;border-top:1px solid #4C5154;margin-top:6px;padding-top:10px">balances</div>`;
+    balances.forEach(p => {
+        const diff = p.balance;
+        let cls = 'result-zero', label = 'even';
+        if (diff > 0.01) { cls = 'result-positive'; label = `receives $${diff.toFixed(2)}`; }
+        else if (diff < -0.01) { cls = 'result-negative'; label = `owes $${(-diff).toFixed(2)}`; }
+        html += `<div class="rc sum" style="border-top:none;padding:4px 14px"><span style="color:#EAE3D6;font-size:13px">${p.name}</span><span class="val" style="font-size:14px;font-weight:400" class="${cls}">${label}</span></div>`;
+    });
+
+    if (transactions.length > 0) {
+        html += `<div style="padding:4px 14px 0;font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:#B7AAA1;font-weight:600;border-top:1px solid #4C5154;margin-top:6px;padding-top:10px">settlement</div>`;
+        transactions.forEach(t => {
+            html += `<div class="rc sum" style="border-top:none;padding:4px 14px"><span style="color:#EAE3D6;font-size:13px">${t.from} <span style="color:#4C5154">→</span> ${t.to}</span><span class="val" style="font-size:14px;font-weight:400;color:#EAE3D6">$${t.amount.toFixed(2)}</span></div>`;
+        });
+    } else {
+        html += `<div class="rc sum" style="border-top:none;padding:8px 14px"><span class="settled">◆ all settled — no payments needed</span></div>`;
+    }
+
+    html += `</div>`;
+    container.innerHTML = html;
+    container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function clearAll() {
+    if (people.length === 0) return;
+    if (confirm('clear all expenses?')) {
+        people = [];
+        renderPeople();
+        document.getElementById('resultsContainer').innerHTML = '';
+    }
+}
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        const active = document.activeElement;
+        if (active.id === 'personName' || active.id === 'personAmount') {
+            addPerson();
+        }
+    }
+});
+</script>
+</body>
+</html>

@@ -29,7 +29,7 @@
         "I paired the library with a set of brand motion guidelines, giving teams not just the tools but the direction to use them with intention, establishing a shared creative standard that kept work consistent and purposeful across the organization."
       ],
       "embeds": [
-        "<center><video width='100%' controls><source src='/assets/portfolio/outgfxkit/outgfxitdemo10_lo.mp4' type='video/mp4'></video></center>"
+        "<center><video width='100%' controls autoplay loop muted><source src='/assets/portfolio/outgfxkit/outgfxitdemo10_lo.mp4' type='video/mp4'></video></center>"
       ],
       "images": [
         "/assets/portfolio/outgfxkit/expressions_2large.jpg",
@@ -55,7 +55,7 @@
         "/assets/portfolio/tmp/ballet_4.jpg",
         "/assets/portfolio/tmp/ballet_1.jpg"
       ],
-      "link": "/HALFTXT"
+      "link": "/halftxt/"
     },
     "google-imagine-if": {
       "title": "Imagine If",
@@ -121,22 +121,22 @@
       ],
       "link": "#"
     },
-    "verizon-pipeline": {
+    "verizon-brand": {
       "title": "Verizon",
       "type": "Motion Guidelines",
-      "roll": "Pipeline Lead",
+      "roll": "Associate Director of Film + Motion, Writer",
       "category": "frameworks",
-      "heroImage": "/assets/portfolio/tmp/ballet_2.jpg",
+      "heroImage": "/assets/portfolio/verizonbrand/vz_rgb.jpg",
       "about": [
-        "From 2012 to 2016, I led a team of three motion designers and editors producing content for nearly every screen across Verizon's flagship destination stores and over 5,000 retail locations nationwide.",
-        "To meet weekly deliverables of 50 to 100 videos across multiple formats and sizes, I built new scripts, expressions, and workflows in After Effects — then extended that system into a unified set of motion guidelines for Verizon's brand-wide rebrand."
+        "Verizon asked AKQA to develop brand guidelines for motion and interactive. I established a unified motion direction across the entire identity, defining how the brand moves as a single, coherent system rather than a set of one-off effects.",
+        "That motion direction went on to shape the interactive guidelines as well, and was carried through into the UI of AKQA's new Verizon app, translating brand-level principles into the moment-to-moment feel of the product itself."
       ],
       "embeds": [
-        "<iframe src='https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479' width='100%' height='100%' frameborder='0' allow='autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share' referrerpolicy='strict-origin-when-cross-origin' title='Martens Offset'></iframe>"
+        "<center><video width='100%' autoplay loop muted playsinline><source src='/assets/portfolio/verizonbrand/verizon_app_edit.mp4' type='video/mp4'></video></center>"
       ],
       "images": [
-        "/assets/portfolio/tmp/ballet_3.jpg",
-        "/assets/portfolio/tmp/ballet_4.jpg"
+        "/assets/portfolio/verizonbrand/verizon_motion_guidelines.gif",
+        "/assets/portfolio/verizonbrand/motion_deck_contact.jpg"
       ],
       "link": "#"
     },
@@ -164,18 +164,22 @@
       "type": "Event Film",
       "roll": "Director, Writer",
       "category": "editorial",
-      "heroImage": "",
+      "heroImage": "/assets/portfolio/outbydesign/asset1-80.webp",
       "about": [
         "What began as a request for a high-energy hype film to build excitement at Cannes evolved into something more significant — a film that helped shape a new brand identity for OUTFRONT.",
         "Rather than the typical montage of billboards and screens common to OOH media, I introduced double exposures as a visual through-line, and integrated AI-generated NeRF and Gaussian splatting to reframe existing footage in unexpected ways.",
         "The result became a centerpiece of OUTFRONT's CEO's presentation at Cannes, and established a unified creative direction that continues to influence the company's brand communications today."
       ],
       "embeds": [
-        "<iframe src='https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479' width='100%' height='100%' frameborder='0' allow='autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share' referrerpolicy='strict-origin-when-cross-origin' title='Martens Offset'></iframe>"
+        "<center><video width='100%' controls><source src='/assets/portfolio/outbydesign/OUT_Outfront by Design_OAAA_2025_0504_v25_1mbps.mp4' type='video/mp4'></video><br><video width='100%' controls autoplay loop muted playsinline><source src='/assets/portfolio/outbydesign/nerf_gaussian_splatting_sm.mp4' type='video/mp4'></video></center>"
       ],
       "images": [
-        "/assets/portfolio/tmp/ballet_2.jpg",
-        "/assets/portfolio/tmp/ballet_3.jpg"
+        "/assets/portfolio/outbydesign/screenshot.webp",
+        "/assets/portfolio/outbydesign/0.webp",
+        "/assets/portfolio/outbydesign/19.webp",
+        "/assets/portfolio/outbydesign/32.webp",
+        "/assets/portfolio/outbydesign/90.webp",
+        "/assets/portfolio/outbydesign/91.webp"
       ],
       "link": "#"
     },
@@ -222,7 +226,7 @@
     "maserati": {
       "title": "Maserati",
       "type": "Social Program",
-      "roll": "Associate Director Film + Video",
+      "roll": "Associate Director of Film + Motion",
       "category": "editorial",
       "heroImage": "/assets/portfolio/maserati/maserati_feature.webp",
       "about": [
@@ -230,7 +234,7 @@
         "Partnering with Rally & Co., I supervised the films that introduced the Maserati Levante, the brand's first SUV, to the North American market."
       ],
       "embeds": [
-        "<center><video width='100%' controls><source src='/assets/portfolio/maserati/msrt_launch05c_001_1.mp4' type='video/mp4'></video><br><video width='100%' controls><source src='/assets/portfolio/maserati/fall_edit01_lo.mp4' type='video/mp4'></video><br><video width='100%' controls><source src='/assets/portfolio/maserati/aspen_main_04wide_cc3_bc_1.mp4'></video><br><video width='100%' controls><source src='/assets/portfolio/maserati/2017autoshowrecap.mp4' type='video/mp4'></video></center><br>"
+        "<center><video width='100%' controls><source src='/assets/portfolio/maserati/msrt_launch05c_001_1.mp4' type='video/mp4'></video><br><video width='100%' controls><source src='/assets/portfolio/maserati/fall_edit01_lo.mp4' type='video/mp4'></video><br><video width='100%' controls><source src='/assets/portfolio/maserati/aspen_main_04wide_cc3_bc_1.mp4' type='video/mp4'></video><br><video width='100%' controls><source src='/assets/portfolio/maserati/2017autoshowrecap.mp4' type='video/mp4'></video></center>"
       ],
       "images": [
         "/assets/portfolio/maserati/maseratisocial.webp"
@@ -240,26 +244,26 @@
     "creative-commons-remix": {
       "title": "Creative Commons Remix",
       "type": "Event Film",
-      "roll": "Director, Editor",
+      "roll": "Director, Designer",
       "category": "editorial",
-      "heroImage": "/assets/portfolio/tmp/ballet_1.jpg",
+      "heroImage": "/assets/portfolio/cc_remix/cc_remix_1.jpg",
       "about": [
         "Art direction and motion graphic design for the launch video introducing Creative Commons' 2016–2020 Organizational Strategy, debuted at an event at MoMA.",
         "Released under a Creative Commons Attribution-ShareAlike license, the project was produced in direct collaboration with Creative Commons' CEO to define the visual language for the organization's new strategic direction."
       ],
       "embeds": [
-        "<iframe src='https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479' width='100%' height='100%' frameborder='0' allow='autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share' referrerpolicy='strict-origin-when-cross-origin' title='Martens Offset'></iframe>"
+        "<center><video width='100%' controls><source src='/assets/portfolio/cc_remix/cc_remix_075.mp4' type='video/mp4'></video></center>"
       ],
       "images": [
-        "/assets/portfolio/tmp/ballet_2.jpg",
-        "/assets/portfolio/tmp/ballet_4.jpg"
+        "/assets/portfolio/cc_remix/cc_remix_2.jpg",
+        "/assets/portfolio/cc_remix/cc_remix_3.jpg"
       ],
       "link": "#"
     },
     "olympus": {
       "title": "Olympus",
       "type": "Campaign",
-      "roll": "Creative Director",
+      "roll": "Motion Graphics Director",
       "category": "editorial",
       "heroImage": "/assets/portfolio/tmp/ballet_2.jpg",
       "about": [
@@ -292,7 +296,7 @@
     "clearing": {
       "title": "Clearing",
       "type": "Mobile App",
-      "roll": "Director, Designer",
+      "roll": "Creator",
       "category": "experiential",
       "heroImage": "/assets/portfolio/tmp/ballet_2.jpg",
       "about": [
@@ -330,255 +334,145 @@
     "space-invaders-world-defense": {
       "title": "Space Invaders: World Defense",
       "type": "Event Activation",
-      "roll": "Director, Designer",
+      "roll": "Creative Director",
       "category": "experiential",
-      "heroImage": "/assets/portfolio/tmp/ballet_4.jpg",
+      "heroImage": "/assets/portfolio/spaceinvaders/si_img-f.jpg",
       "about": [
         "For the 45th anniversary of Space Invaders, XLabs partnered with Google and Unit9 to launch a mobile game powered by ARCore and Google's geospatial API, anchored by a citywide Times Square activation.",
         "The campaign unfolded in three phases — anticipation billboards, a live launch event, and neighborhood leaderboards fueled by real user data — turning New York City into a living game board.",
         "Space Invaders: World Defense won Platinum at the Out of Home Advertising Association of America's 82nd OBIE Awards — the first Platinum win in OUTFRONT's 86-year history."
       ],
       "embeds": [
-        "<iframe src='https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479' width='100%' height='100%' frameborder='0' allow='autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share' referrerpolicy='strict-origin-when-cross-origin' title='Martens Offset'></iframe>"
+        "<center><video width='100%' autoplay loop muted playsinline><source src='/assets/portfolio/spaceinvaders/SI_KeyDemo_03_1.mp4' type='video/mp4'></video><br><video width='100%' controls><source src='/assets/portfolio/spaceinvaders/Space_Invaders_Google_NoBlur_0116_1.mp4' type='video/mp4'></video></center>"
       ],
       "images": [
-        "/assets/portfolio/tmp/ballet_1.jpg",
-        "/assets/portfolio/tmp/ballet_3.jpg"
+        "/assets/portfolio/spaceinvaders/si_img-1.jpg",
+        "/assets/portfolio/spaceinvaders/si_img-2.jpg"
       ],
       "link": "#"
     },
     "snowfox": {
       "title": "The Snowfox",
       "type": "Mobile App",
-      "roll": "Director, Designer",
+      "roll": "Associate Director of Film + Motion",
       "category": "experiential",
-      "heroImage": "/assets/portfolio/tmp/ballet_2.jpg",
+      "heroImage": "/assets/portfolio/snowfox/AKQA-Snowfox-02.webp",
       "about": [
         "The Snow Fox is a customizable digital storybook app that uses Siri to animate the story to a child's voice — featured by Apple as one of its \"New Apps We Love\" in the UK App Store.",
         "I led the scenic animation, visual effects compositing for the launch film, and full production of the case study film, on a project that won a Cannes Lions Bronze Lion, a One Show Bronze Pencil, and two ADC Bronze Cubes."
       ],
       "embeds": [
-        "<iframe src='https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479' width='100%' height='100%' frameborder='0' allow='autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share' referrerpolicy='strict-origin-when-cross-origin' title='Martens Offset'></iframe>"
+        "<center><video width='100%' controls><source src='/assets/portfolio/snowfox/00_sf_cs_master_3_12_mastered_broadcast_15.mp4' type='video/mp4'></video></center>"
       ],
       "images": [
-        "/assets/portfolio/tmp/ballet_3.jpg",
-        "/assets/portfolio/tmp/ballet_1.jpg"
+        "/assets/portfolio/snowfox/snowfox1.jpg",
+        "/assets/portfolio/snowfox/snowfox2.jpg"
       ],
       "link": "#"
     },
     "written-in-the-stars": {
       "title": "Written in the Stars",
       "type": "Web App",
-      "roll": "Director, Developer",
+      "roll": "Associate Director of Film + Motion",
       "category": "experiential",
-      "heroImage": "/assets/portfolio/tmp/ballet_3.jpg",
+      "heroImage": "/assets/portfolio/writteninthestars/wits_phones.jpg",
       "about": [
         "Written in the Stars is a holiday digital experience that let users send and receive messages in the heavens, set to a soundtrack composed by 3D of Massive Attack.",
         "I directed the motion graphics team behind the typographic animations and promotional films — and watched two real proposals get revealed live in the stars.",
         "The project won a Cannes Lions Silver Lion in Mobile and a One Show Silver Pencil in Interactive."
       ],
       "embeds": [
-        "<iframe src='https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479' width='100%' height='100%' frameborder='0' allow='autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share' referrerpolicy='strict-origin-when-cross-origin' title='Martens Offset'></iframe>"
+        "<center><video width='100%' controls><source src='/assets/portfolio/writteninthestars/AKQA_holidaycard_final_1.mp4' type='video/mp4'></video><br><video width='100%' controls><source src='/assets/portfolio/writteninthestars/WITS_CannesLions_2014_1.mp4' type='video/mp4'></video></center>"
       ],
       "images": [
-        "/assets/portfolio/tmp/ballet_4.jpg",
-        "/assets/portfolio/tmp/ballet_2.jpg"
+        "/assets/portfolio/writteninthestars/wits_1.jpg",
+        "/assets/portfolio/writteninthestars/wits_2.jpg"
       ],
       "link": "#"
     },
     "verizon-pulse": {
       "title": "Verizon: Pulse",
       "type": "Video Installation",
-      "roll": "Director, Designer",
+      "roll": "Associate Director of Film + Motion",
       "category": "experiential",
-      "heroImage": "/assets/portfolio/tmp/ballet_4.jpg",
+      "heroImage": "/assets/portfolio/verizonpulse/IMG_8983.jpg",
       "about": [
-        "For Verizon's flagship Chicago store, I partnered with Moment Factory to create Pulse, the main film for a 40-foot LED wall spanning the store's atrium.",
+        "For Verizon's flagship Chicago store, AKQA partnered with Moment Factory to create Pulse, the main film for a 40-foot LED wall spanning the store's atrium.",
         "The work extended into Stories of Innovation, a companion series produced with the Chicago History Museum and Shotopop, each featurette exploring a different facet of the city's history of innovation."
       ],
       "embeds": [
-        "<iframe src='https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479' width='100%' height='100%' frameborder='0' allow='autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share' referrerpolicy='strict-origin-when-cross-origin' title='Martens Offset'></iframe>"
+        "<center><video width='100%' controls autoplay loop muted playsinline><source src='/assets/portfolio/verizonpulse/pulse_insitu_casestudy_075.mp4' type='video/mp4'></video><br><video width='100%' controls><source src='/assets/portfolio/verizonpulse/timeline_compilation_edit.mp4' type='video/mp4'></video></center>"
       ],
       "images": [
-        "/assets/portfolio/tmp/ballet_1.jpg",
-        "/assets/portfolio/tmp/ballet_3.jpg"
+        "/assets/portfolio/verizonpulse/destination_store_final_2.jpg",
+        "/assets/portfolio/verizonpulse/atrium_wall_in-situ_640.gif"
       ],
       "link": "#"
     }
   },
   "recent": [
     {
+      "label": "You Can't Bully Yourself Into Brilliance",
+      "small": "2026.06.29 Substack",
+      "url": "https://bc3000.substack.com/p/you-cant-bully-yourself-into-brilliance",
+      "external": true
+    },
+    {
       "label": "David Hockney's Final Lesson in Attention",
-      "small": "2026.06.13 Substack",
-      "url": "https://open.substack.com/pub/bc3000/p/david-hockneys-final-lesson-in-attention",
+      "small": "2026.06.14 Substack",
+      "url": "https://bc3000.substack.com/p/david-hockneys-final-lesson-in-attention",
       "external": true
     },
     {
       "label": "Sat Terminal GFX (for iPad)",
       "small": "2026.06.13",
       "url": "/gfx/scifi_keyboard",
-      "external": false
+      "external": true
     },
     {
       "label": "HALFTXT",
       "small": "2026.06.1",
-      "url": "/HALFTXT",
-      "external": false
+      "url": "/halftxt/",
+      "external": true
     }
   ],
   "social": [
-    {
-      "label": "Bandcamp",
-      "url": "https://bandcamp.com/bcruz3000",
-      "external": true
-    },
-    {
-      "label": "Behance",
-      "url": "https://www.behance.net/bienvenido",
-      "external": true
-    },
-    {
-      "label": "Dribbble",
-      "url": "https://dribbble.com/bienvenidoc3",
-      "external": true
-    },
-    {
-      "label": "GitHub",
-      "url": "https://github.com/amazingoverlord",
-      "external": true
-    },
-    {
-      "label": "IG: Amazingoverlord",
-      "url": "https://www.instagram.com/amazingoverlord/",
-      "external": true
-    },
-    {
-      "label": "IG: Onism and Sonder",
-      "url": "https://www.instagram.com/onism_and_sonder/",
-      "external": true
-    },
-    {
-      "label": "IG: AnalogObject.Studio",
-      "url": "https://www.instagram.com/analogobject.studio/",
-      "external": true
-    },
-    {
-      "label": "LinkedIn",
-      "url": "https://www.linkedin.com/in/bcruz3/",
-      "external": true
-    },
-    {
-      "label": "Substack",
-      "url": "https://substack.com/@bc3000",
-      "external": true
-    },
-    {
-      "label": "Vimeo",
-      "url": "https://vimeo.com/bcruz3",
-      "external": true
-    },
-    {
-      "label": "YouTube",
-      "url": "https://www.youtube.com/BienvenidoCruz",
-      "external": true
-    }
+    { "label": "Bandcamp", "url": "https://bandcamp.com/bcruz3000", "external": true },
+    { "label": "Behance", "url": "https://www.behance.net/bienvenido", "external": true },
+    { "label": "Dribbble", "url": "https://dribbble.com/bienvenidoc3", "external": true },
+    { "label": "GitHub", "url": "https://github.com/amazingoverlord", "external": true },
+    { "label": "IG: Amazingoverlord", "url": "https://www.instagram.com/amazingoverlord/", "external": true },
+    { "label": "IG: Onism and Sonder", "url": "https://www.instagram.com/onism_and_sonder/", "external": true },
+    { "label": "IG: AnalogObject.Studio", "url": "https://www.instagram.com/analogobject.studio/", "external": true },
+    { "label": "LinkedIn", "url": "https://www.linkedin.com/in/bcruz3/", "external": true },
+    { "label": "Substack", "url": "https://substack.com/@bc3000", "external": true },
+    { "label": "Vimeo", "url": "https://vimeo.com/bcruz3", "external": true },
+    { "label": "YouTube", "url": "https://www.youtube.com/BienvenidoCruz", "external": true }
   ],
   "recommended": [
-    {
-      "label": "Monocle",
-      "url": "https://monocle.com/"
-    },
-    {
-      "label": "Wallpaper",
-      "url": "https://www.wallpaper.com/"
-    },
-    {
-      "label": "The Nomad",
-      "url": "https://www.the-nomad-magazine.com/"
-    },
-    {
-      "label": "Kinfolk",
-      "url": "https://www.kinfolk.com/"
-    },
-    {
-      "label": "It's Nice That",
-      "url": "https://www.itsnicethat.com/"
-    },
-    {
-      "label": "Games by Henry",
-      "url": "https://henryfaber.itch.io/"
-    },
-    {
-      "label": "Photography by Fiona",
-      "url": "https://www.fionagarden.com/"
-    },
-    {
-      "label": "Art by Ben",
-      "url": "https://www.benashtonart.com/"
-    },
-    {
-      "label": "Music by Steven",
-      "url": "https://www.stevenfairweather.com/"
-    },
-    {
-      "label": "Streaming Stranger Radio",
-      "url": "https://www.strangerradio.com/"
-    },
-    {
-      "label": "Straight & Narrow Management",
-      "url": "https://www.straightxnarrow.com/"
-    },
-    {
-      "label": "Styling by Juliann",
-      "url": "https://www.juliannmccandless.com/"
-    },
-    {
-      "label": "Denim by Decade Studio",
-      "url": "https://www.decadestudio.com/"
-    },
-    {
-      "label": "Creative by Taiyo",
-      "url": "https://taiyokitagawa.com/"
-    },
-    {
-      "label": "Photo Diary by Coco",
-      "url": "https://cocotardiff.com/photo-diary"
-    },
-    {
-      "label": "Music by Jody",
-      "url": "https://jodyglenham.bandcamp.com/"
-    },
-    {
-      "label": "Fashion by LLOYD",
-      "url": "https://www.lloydclothing.com/"
-    },
-    {
-      "label": "Styling by Toyo",
-      "url": "https://www.toyotsuchiya.com/"
-    },
-    {
-      "label": "Pins by InnerDecay",
-      "url": "https://innerdecay.com/"
-    },
-    {
-      "label": "Art by Johanna",
-      "url": "https://johannastickland.bigcartel.com/"
-    },
-    {
-      "label": "Music by Tower",
-      "url": "https://towernyc.bandcamp.com/"
-    },
-    {
-      "label": "Reading Lonesome",
-      "url": "https://lonesomepress.com/"
-    },
-    {
-      "label": "Styling by Zu",
-      "url": "https://zu-sb.com"
-    },
-    {
-      "label": "Music by Mirror of Venus",
-      "url": "https://mirrorofvenus.bandcamp.com/"
-    }
+    { "label": "Monocle", "url": "https://monocle.com/" },
+    { "label": "Wallpaper", "url": "https://www.wallpaper.com/" },
+    { "label": "The Nomad", "url": "https://www.the-nomad-magazine.com/" },
+    { "label": "Kinfolk", "url": "https://www.kinfolk.com/" },
+    { "label": "It's Nice That", "url": "https://www.itsnicethat.com/" },
+    { "label": "Games by Henry", "url": "https://henryfaber.itch.io/" },
+    { "label": "Photography by Fiona", "url": "https://www.fionagarden.com/" },
+    { "label": "Art by Ben", "url": "https://www.benashtonart.com/" },
+    { "label": "Music by Steven", "url": "https://www.stevenfairweather.com/" },
+    { "label": "Streaming Stranger Radio", "url": "https://www.strangerradio.com/" },
+    { "label": "Straight & Narrow Management", "url": "https://www.straightxnarrow.com/" },
+    { "label": "Styling by Juliann", "url": "https://www.juliannmccandless.com/" },
+    { "label": "Denim by Decade Studio", "url": "https://www.decadestudio.com/" },
+    { "label": "Creative by Taiyo", "url": "https://taiyokitagawa.com/" },
+    { "label": "Photo Diary by Coco", "url": "https://cocotardiff.com/photo-diary" },
+    { "label": "Music by Jody", "url": "https://jodyglenham.bandcamp.com/" },
+    { "label": "Fashion by LLOYD", "url": "https://www.lloydclothing.com/" },
+    { "label": "Styling by Toyo", "url": "https://www.toyotsuchiya.com/" },
+    { "label": "Pins by InnerDecay", "url": "https://innerdecay.com/" },
+    { "label": "Art by Johanna", "url": "https://johannastickland.bigcartel.com/" },
+    { "label": "Music by Tower", "url": "https://towernyc.bandcamp.com/" },
+    { "label": "Reading Lonesome", "url": "https://lonesomepress.com/" },
+    { "label": "Styling by Zu", "url": "https://zu-sb.com" },
+    { "label": "Music by Mirror of Venus", "url": "https://mirrorofvenus.bandcamp.com/" }
   ]
 }
