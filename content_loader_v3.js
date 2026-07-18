@@ -1,7 +1,13 @@
 // content_loader_v3.js
 // Single content loader for content_v3.json:
-//  - Populates the Dashboard's Social and Recommended sections
+//  - Populates the Portfolio's category pillars, Recently list, and Navigation
 //  - Handles click-to-load / clear behavior for the Portfolio's project display
+//
+// Usage:
+//   ContentLoader.init(currentPageId);
+//   e.g. ContentLoader.init('index_v3'), ContentLoader.init('nfo'), ContentLoader.init('projects')
+//   currentPageId filters that page out of the rendered navigation list.
+//   If omitted, all navigation items are shown.
 
 (function () {
   let contentData = null;
@@ -24,19 +30,45 @@
     return a;
   }
 
-  // ---------- Dashboard: Social + Recommended ----------
+  // ---------- Navigation ----------
+
+  function renderNavigation(data, currentPageId) {
+    const navContainer = document.getElementById('navigation');
+    if (!navContainer || !data.navigation) return;
+
+    const navItems = currentPageId
+      ? data.navigation.filter(function (item) { return item.id !== currentPageId; })
+      : data.navigation;
+
+    navContainer.innerHTML = '';
+
+    const h3 = document.createElement('h3');
+    h3.textContent = 'Navigation';
+    navContainer.appendChild(h3);
+
+    navItems.forEach(function (item) {
+      const navItemDiv = document.createElement('div');
+      navItemDiv.className = 'navitem';
+      navItemDiv.appendChild(link(item.label, item.url, false));
+      navContainer.appendChild(navItemDiv);
+    });
+  }
+
+  // ---------- Dashboard: Social + Recommended (admin.html) ----------
 
   function renderDashboardLists(data) {
     const recDiv = document.getElementById('recommended');
     if (recDiv && data.recommended) {
+      recDiv.innerHTML = '';
       data.recommended.forEach(function (item) {
         recDiv.appendChild(link(item.label, item.url, true));
         recDiv.appendChild(document.createElement('br'));
       });
     }
 
-    const socialDiv = document.getElementById('social');
+    const socialDiv = document.getElementById('social-updates') || document.getElementById('social');
     if (socialDiv && data.social) {
+      socialDiv.innerHTML = '';
       data.social.forEach(function (item) {
         socialDiv.appendChild(link(item.label, item.url, item.external));
         socialDiv.appendChild(document.createElement('br'));
@@ -61,7 +93,7 @@
     showEl && showEl.classList.add('has-project');
     container.innerHTML = '';
 
-    // 1. Hero image — renders FIRST, before the title (matches original placeholder)
+    // 1. Hero image — renders FIRST, before the title
     if (project.heroImage) {
       const heroDiv = document.createElement('div');
       heroDiv.className = 'project-image';
@@ -103,8 +135,7 @@
     });
 
     // Launch Project link is optional: skip it entirely if there's no real
-    // link, treating missing/empty/"#" all as "no link". When a real link
-    // exists, it opens in a new tab.
+    // link (missing/empty/"#" all count as "no link").
     if (project.link && project.link !== '#') {
       const linkDiv = document.createElement('div');
       linkDiv.className = 'project-link';
@@ -118,10 +149,7 @@
     }
     container.appendChild(aboutDiv);
 
-    // 4. Embeds — render AFTER about (matches original placeholder).
-    // "embeds" is an array of FULL raw <iframe> markup strings (copy/paste
-    // straight from the source — Vimeo, YouTube, an external page, whatever),
-    // injected as-is. Supports zero, one, or multiple embeds per project.
+    // 4. Embeds — raw <iframe>/<video> markup strings, injected as-is.
     (project.embeds || []).forEach(function (embedHtml) {
       if (!embedHtml) return;
       const featureDiv = document.createElement('div');
@@ -283,10 +311,11 @@
 
   // ---------- Public init ----------
 
-  function init() {
+  function init(currentPageId) {
     loadContentData().then(function (data) {
       renderDashboardLists(data);
       renderPortfolioPillars(data);
+      renderNavigation(data, currentPageId);
       renderRecentUpdates(data);
       handleDeepLink(data);
     });

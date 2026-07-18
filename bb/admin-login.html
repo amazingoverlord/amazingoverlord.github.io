@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <main class="page-main">
+    <div class="container" style="max-width: 400px;">
+      <div style="padding-top: 100px;">
+        <h1>Admin Login</h1>
+        <p class="text-secondary">Enter the admin password to continue.</p>
+
+        <form id="login-form" class="mt-24">
+          <div class="form-group">
+            <label for="password-input">Password</label>
+            <input type="password" id="password-input" name="password" required autocomplete="current-password" />
+          </div>
+          <div class="error-message" id="login-error"></div>
+          <button type="submit" class="btn btn-primary btn-block" id="login-btn">Log In</button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <script src="env.js"></script>
+  <script src="js/ui-utils.js"></script>
+  <script src="js/admin-auth.js"></script>
+  <script>
+    const loginForm = document.getElementById('login-form');
+    const loginError = document.getElementById('login-error');
+    const loginBtn = document.getElementById('login-btn');
+
+    // If already authenticated, skip straight to the dashboard
+    checkAuth().then((isAuthed) => {
+      if (isAuthed) window.location.href = 'admin-dashboard.html';
+    });
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      loginError.classList.remove('visible');
+      loginBtn.disabled = true;
+      loginBtn.textContent = 'Checking…';
+
+      const password = document.getElementById('password-input').value;
+
+      try {
+        const ok = await login(password);
+        if (ok) {
+          window.location.href = 'admin-dashboard.html';
+        } else {
+          loginError.textContent = 'Incorrect password. Please try again.';
+          loginError.classList.add('visible');
+          loginBtn.disabled = false;
+          loginBtn.textContent = 'Log In';
+        }
+      } catch (err) {
+        loginError.textContent = 'Something went wrong. Please try again.';
+        loginError.classList.add('visible');
+        loginBtn.disabled = false;
+        loginBtn.textContent = 'Log In';
+      }
+    });
+  </script>
+</body>
+</html>

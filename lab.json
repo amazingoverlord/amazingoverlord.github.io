@@ -1,6 +1,13 @@
 {
   "projects": [
     {
+      "title": "Divided",
+      "description": "Divide expenses. Settle together. Divided helps groups track shared expenses and settle up fairly. Add who paid, what they spent, and who it's split between — the app calculates balances and shows exactly who owes whom.",
+      "links": [
+        { "label": "→ Launch", "url": "https://divided.lovable.app/", "external": true }
+      ]
+    },
+    {
       "title": "UI GFX",
       "description": "Interactive UI props for film, programmed for live on-set interaction (HTML/JavaScript web apps, with exploration into Rive for advanced motion graphics) to capture authentic actor performance without the need for post-production VFX replacements.",
       "links": [
@@ -71,7 +78,7 @@
     },
     {
       "title": "Archive",
-      "footnote": "Front Page Archive: <a href=\"/index_v1.html\">v1</a>"
+      "footnote": "Front Page Archive: <a href=\"/index_v1.html\">v1</a>, <a href=\"/index_v2.html\">v2</a>"
     }
   ]
 }

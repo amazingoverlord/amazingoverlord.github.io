@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenido Cruz — UI GFX Kit</title>
+    <link href="/assets/style_v3.css" rel="stylesheet" type="text/css" media="all">
+    <link href="https://fonts.googleapis.com/css2?family=Ballet:opsz@16..72&family=Cormorant:ital,wght@0,300..700;1,300..700&family=Public+Sans:ital,wght@0,100..900;1,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Sometype+Mono:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    
+    <style>
+    
+      @font-face {
+        font-family: 'CalvinSq';
+        src: url('/assets/type/BCCalvinSq7.woff') format('woff2'),
+        url('/assets/type/BCCalvinSq7.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+      }
+      
+      
+      body{
+        color: #262B2E;
+        background-color: #EAE3D6;
+        overflow: auto;
+        margin: 0;
+        padding: 0;
+      }
+      
+      .sub-other h3 {
+        font-family: "CalvinSq", Times, serif;
+        font-size: 1.5rem;
+        line-height: 1.25rem;
+        text-align: left;
+      }
+      
+      .portfolioContent {
+        margin: 0;
+        top: 0;
+      }
+      
+      .sub-container{
+        width: 95%;
+      }
+
+      .sub-other {
+        flex: 1 0 auto;
+        text-align: center;
+         /* The shape */
+         clip-path: polygon(
+         0 0,
+         calc(100% - 15px) 0,
+         100% 15px,
+         100% 100%,
+         0 100%
+         );
+      }
+      
+      lottie-player {
+        width: 240px; 
+        height: 240px; 
+        margin: 0 auto;
+      }
+
+
+@media (max-width: 768px) {
+        .panel-container {
+        width: 80%;
+  }
+}
+      
+      
+    </style>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  </head>
+  <body>
+    
+    <div id="portfolioContent">
+
+      <div class="home">
+        <a href="/"><img src="/assets/logo_sm.svg" width="60px"></a>
+      </div>
+
+      <div class="sub-container">
+        
+        <div class="sub-head">UI GFX KIT</div>
+        
+        <div class="sub-content">
+          
+          <div class="sub-other">
+            <h3>Array 03 (gif ~300k)</h3>
+            <br>
+            <img src="/gfx/array03.gif" width="240">
+          </div>
+          
+          <div class="sub-other">
+            <h3>Array 02 (gif ~500k)</h3>
+            <br>
+            <img src="/gfx/array02.gif" width="240">
+          </div>
+          
+          <div class="sub-other">
+            <h3>Array 01</h3>
+            <br>
+            <lottie-player src="/gfx/array01.json" background="transparent" speed="1" loop autoplay></lottie-player>
+          </div>
+          
+          <div class="sub-other">
+            <h3>Orbit 03</h3>
+            <br>
+            <lottie-player src="/gfx/orbit03.json" background="transparent" speed="1" loop autoplay></lottie-player>
+          </div>
+          
+          <div class="sub-other">
+            <h3>Wave 01 (gif 114k)</h3>
+            <br>
+            <img src="/gfx/wave01.gif" width="240">
+          </div>
+          
+          <div class="sub-other">
+            <h3>Spinners 01</h3>
+            <br>
+            <lottie-player src="/gfx/spinners01.json" background="transparent" speed="1" loop autoplay></lottie-player>
+          </div>
+          
+          <div class="sub-other">
+            <h3>Orbit 02</h3>
+            <br>
+            <lottie-player src="/gfx/orbit02.json" background="transparent" speed="1" loop autoplay></lottie-player>
+          </div>
+          
+          <div class="sub-other">
+            <h3>Orbit 01</h3>
+            <br>
+            <lottie-player src="/gfx/orbit01.json" background="transparent" speed="1" loop autoplay></lottie-player>
+          </div>
+        
+      </div>
+
+    </div>
+    
+
+  </body>
+</html>

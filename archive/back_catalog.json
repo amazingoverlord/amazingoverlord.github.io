@@ -1,14 +1,6 @@
 {
   "projects": [
     {
-      "title": "Space Invaders World Defense",
-      "medium": "Experiential Campaign",
-      "role": "Creative Director",
-      "date": "2024",
-      "notes": "Platinum OBIE award",
-      "link": "https://b-cruz.com/work/siwd"
-    },
-    {
       "title": "siseneG",
       "medium": "Short Film",
       "role": "Director",
@@ -23,22 +15,6 @@
       "date": "2020",
       "notes": "",
       "link": "https://vimeo.com/487750239?fl=tl&fe=ec"
-    },
-    {
-      "title": "The Snowfox",
-      "medium": "Mobile App",
-      "role": "ACD, Film + Motion",
-      "date": "2017",
-      "notes": "Bronze Cube, Pencil, Lion. Adweek Project Isaac Gold, 4 Shorty Awards",
-      "link": "https://b-cruz.com/work/snowfox"
-    },
-    {
-      "title": "Written in the Stars",
-      "medium": "Mobile App",
-      "role": "Motion Graphics Director",
-      "date": "2014",
-      "notes": "Silver Pencil, Silver Lion",
-      "link": "https://b-cruz.com/work/written-in-the-stars"
     },
     {
       "title": "Calvin Klein: Encounter",
@@ -101,7 +77,7 @@
       "medium": "Video Installation",
       "role": "Director",
       "date": "2010",
-      "notes": "ArtWalk Vancouver for the 2010 Winter Olympics",
+      "notes": "Exhibited at ArtWalk Vancouver for the 2010 Winter Olympics",
       "link": "https://vimeo.com/118604360?fl=tl&fe=ec"
     },
     {
@@ -198,7 +174,7 @@
       "role": "Motion Designer",
       "date": "2003",
       "notes": "",
-      "link": "#"
+      "link": ""
     },
     {
       "title": "Circlesquare: Sub-Reminisce",
@@ -214,7 +190,7 @@
       "role": "Director",
       "date": "2001",
       "notes": "",
-      "link": "#"
+      "link": ""
     },
     {
       "title": "Come Together",
@@ -222,7 +198,7 @@
       "role": "Title Designer",
       "date": "2001",
       "notes": "Premiered at VIFF. Titles featured in Variety, Film Threat, and Ain't it Cool News",
-      "link": "#"
+      "link": ""
     },
     {
       "title": "LB: Jealous Guy",
@@ -230,7 +206,7 @@
       "role": "Director",
       "date": "2001",
       "notes": "",
-      "link": "#"
+      "link": ""
     }
   ]
 }

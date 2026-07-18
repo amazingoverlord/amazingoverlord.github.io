@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>You're Invited</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+
+  <style>
+    /* =====================================================
+       Invitation page — extends the shared design system.
+       Everything below is scoped to this page only.
+       ===================================================== */
+
+    body {
+      background: var(--color-bg-subtle);
+    }
+
+    .invitation-wrap {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 20px;
+    }
+
+    .invitation-card {
+      position: relative;
+      width: 100%;
+      max-width: 560px;
+      background: var(--color-bg);
+      padding: 4px;
+    }
+
+    /* Thin double-rule frame, echoing a letterpress invitation edge —
+       the one deliberate flourish on an otherwise quiet page. */
+    .invitation-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: 1px solid var(--color-border);
+      pointer-events: none;
+    }
+
+    .invitation-inner {
+      position: relative;
+      border: 1px solid var(--color-border);
+      padding: 64px 48px;
+      text-align: center;
+    }
+
+    .invitation-eyebrow {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--color-text-secondary);
+      margin: 0 0 32px;
+    }
+
+    .invitation-name {
+      font-size: clamp(30px, 5vw, 42px);
+      font-weight: 300;
+      letter-spacing: 0.02em;
+      line-height: 1.25;
+      color: var(--color-text);
+      margin: 0 0 28px;
+    }
+
+    .invitation-rule {
+      width: 40px;
+      height: 1px;
+      background: var(--color-border);
+      margin: 0 auto 28px;
+    }
+
+    .invitation-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 32px;
+    }
+
+    .invitation-meta-line {
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--color-text);
+    }
+
+    .invitation-meta-line.secondary {
+      font-size: 13px;
+      color: var(--color-text-secondary);
+    }
+
+    .invitation-description {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--color-text-secondary);
+      max-width: 400px;
+      margin: 0 auto 36px;
+    }
+
+    .invitation-rsvp-btn {
+      display: inline-block;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #fff;
+      background: #CC6600;
+      padding: 14px 36px;
+      text-decoration: none;
+      transition: background 0.15s ease;
+    }
+
+    .invitation-rsvp-btn:hover {
+      background: #000;
+    }
+
+    .invitation-footnote {
+      margin-top: 28px;
+      font-size: 12px;
+      color: var(--color-text-secondary);
+    }
+
+    @media (max-width: 480px) {
+      .invitation-inner {
+        padding: 48px 24px;
+      }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .invitation-wrap { padding: 0; }
+      .invitation-rsvp-btn { border: 1px solid var(--color-text); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="invitation-wrap">
+    <div class="invitation-card">
+      <div class="invitation-inner">
+
+        <p class="invitation-eyebrow">You're Invited</p>
+
+        <h1 class="invitation-name">[EVENT NAME]</h1>
+
+        <div class="invitation-rule"></div>
+
+        <div class="invitation-meta">
+          <div class="invitation-meta-line">[DATE], [TIME]</div>
+          <div class="invitation-meta-line">[VENUE NAME]</div>
+          <div class="invitation-meta-line secondary">[VENUE ADDRESS]</div>
+        </div>
+
+        <p class="invitation-description">
+          [Add a short description of the event here — dress code, what to expect, or a personal note to your guests.]
+        </p>
+
+        <a href="index.html" class="invitation-rsvp-btn">RSVP</a>
+
+        <p class="invitation-footnote">Please respond by [RSVP DEADLINE]</p>
+
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

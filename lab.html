@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenido Cruz — Lab</title>
+    <link href="/assets/style_v3.css" rel="stylesheet" type="text/css" media="all">
+    <link href="https://fonts.googleapis.com/css2?family=Ballet:opsz@16..72&family=Cormorant:ital,wght@0,300..700;1,300..700&family=Public+Sans:ital,wght@0,100..900;1,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Sometype+Mono:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <style>
+      
+      .sub-main {
+            display: flex;
+            flex-wrap: wrap;
+            flex: 1 0 auto;
+            width: 90%;
+            padding: 40px 0 20px;
+            align-items: flex-start;
+            margin: 0;
+            background-color: rgba(38, 43, 46, 0);
+            color: #262B2E;
+            z-index: 600;
+            overflow: scroll;
+      }
+      
+      .nav-container {
+            height: 200px;
+            flex: 0 0 0;
+            width: 125px;
+            padding: 0;
+            margin: 0;
+            background-color: rgba(38, 43, 46, 0);
+            color: #262B2E;
+            z-index: 600;
+            overflow: clip;
+      }
+      
+      #navigation {
+        position: relative;
+        left: 90px;
+        transform-origin: top left;
+        rotate: 90deg;
+        width: 200px;
+        z-index: 600;
+      }
+        
+      .panel-container {
+        display: flex;
+        flex: 1 1 auto;
+        flex-wrap: auto;
+        margin: 0;
+        padding: 5px;
+        z-index: 640;
+        background: rgba(0, 0, 0, 0.3); /* Just for debugging visibility */
+      }
+
+      .panel {
+        flex: 0 0 0;
+        flex-wrap: wrap;
+        align-self: flex-start;
+        min-width: 220px;
+        margin: 2px;
+        padding: 15px;
+        color: #262B2E;
+        background-color: rgba(183, 170, 161, 0.75);
+        z-index: 650;
+        
+        /* The shape */
+        clip-path: polygon(
+          0 0,
+          calc(100% - 10px) 0,
+          100% 10px,
+          100% 100%,
+          0 100%
+        );
+      }
+      
+      .panel h3 {
+        font-family: "CalvinSq", "Cormorant", Times, serif;
+        font-size: 20px;
+        line-height: 1.25;
+        margin-top: 2px;
+        margin-bottom: 6px;
+        border-bottom: 0.5px solid #262B2E;
+      }
+
+      .panel a {
+        display: block;
+        background-color: #4C5154;
+        color: #F9F4EB;
+        padding: 1px 2px 1px;
+        margin: 1px;
+        text-decoration: none;
+        transition: all 0.66s;
+      }
+
+      .panel a:hover {
+        color: #F9F4EB;
+        background-color: #cc6600;
+        transition: all 0.1s;
+      }
+
+      #ascii {
+        position: fixed;
+        top: 0;
+        left: 40%;
+        transform: translateX(-50%);
+        z-index: -1;
+        overflow: hidden;
+      }
+
+      #ascii pre {
+        font-family: "Sometype Mono", monospace;
+        font-size: .75vw;
+        line-height: 0.7;
+        white-space: pre;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        z-index: -1;
+      }
+      
+      .plus-pattern {
+        transform-origin: top left;
+        width: 100%;
+        min-height: 100vh;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='110' height='110'%3E%3Ctext x='50%25' y='50%25' font-family='Sometype Mono, monospace' font-size='18' fill='%23B7AAA1' text-anchor='middle' dominant-baseline='central'%3E%2B%3C/text%3E%3C/svg%3E");
+        background-repeat: repeat;
+        background-size: 110px 110px;
+        background-position: top left;
+        position: fixed;
+        z-index: 0;
+      }
+      
+      
+      
+/* ===============================
+   RESPONSIVE
+   =============================== */
+   @media (max-width: 768px) {
+      
+      .nav-container {
+            height: auto;
+            flex: 0 1 auto;
+            width: 100%;
+            padding: 7px 15px 15px;
+            margin: 2px;
+            background-color: rgba(38, 43, 46, 1);
+            color: #EAE3D6;
+            z-index: 600;
+            overflow: clip;
+      }
+      
+      #navigation {
+        position: relative;
+        left: 0;
+        transform-origin: top left;
+        rotate: 0deg;
+        width: 100%;
+        z-index: 600;
+      }
+      
+      .sub-main {
+        padding: 0px;
+      }
+      
+      
+
+      .panel {
+        flex: 1 0 10%;
+      }
+   
+   }
+   
+    </style>
+  </head>
+  <body>
+
+    <div id="ascii">
+      <pre id="newyorker">Loading animation...</pre>
+    </div>
+    
+    <div class="plus-pattern"></div>
+
+    <div id="portfolioContent">
+
+      <div class="home">
+        <a href="/"><img src="/assets/logo_sm.svg" width="60px"></a>
+      </div>
+      
+      <div class="sub-container" style="top: 0; left: 0; margin: 0; width: 90%; transform: translateY(0%);">
+
+        <div class="sub-head">LAB</div>
+
+        <div class="sub-content">
+          
+          <div style="
+            display: flex;
+            flex-wrap: wrap;
+            flex: 1 1 480px;
+            align-self: flex-start;
+            padding: 15px;
+            margin: 2px;
+            background-color: rgba(38, 43, 46, 1);
+            color: #d8d2cc;
+            z-index: 600;
+          ">
+            <h3 style="width:100%;">Abstract</h3>
+            <p>This space exists in the margin between the independent web and a fever dream. The experiments herein are fueled by ▞▛▚▀▖▌▐▞▛▚▀▖▌▐▞▛▚▀▖, happy accidents, and the occasional ꙮᛝꪉꪎ꩜ . If you see something that makes sense, please take a picture with your left eye and report it to the ghost of the last thing you ate. It is likely a ▞▛▚▀▖▌▐▞.</p>
+          </div>
+          
+          <div class="nav-container">
+          <div id="navigation"></div></div>
+
+          <div class="sub-main">
+            <div class="panel">
+              <h3>Divided</h3>
+              <p>Divide expenses. Settle together.</p>
+              <p>Divided helps groups track shared expenses and settle up fairly. Add who paid, what they spent, and who it's split between — the app calculates balances and shows exactly who owes whom.</p>
+              <a href="https://divided.lovable.app/" target="_blank">Launch Divided →</a>
+            </div>
+              
+            <div class="panel">
+              <h3>Utilities</h3>
+              <p>Why do math when you can just make a web app to do it for you?</p>
+              <a href="/utilities/golden_ratio" target="_blank">Golden Ratio Calculator →</a>
+              <a href="/utilities/ar_calculator" target="_blank">Aspect Ratio Calculator →</a>
+            </div>
+            
+            <div class="panel">
+              <h3>UI GFX</h3>
+              <p>Interactive UI props for film, programmed for live on-set interaction (HTML/JavaScript web apps, with exploration into Cavalry, Lottiefiles, and Rive for advanced motion graphics) to capture authentic actor performance without the need for post-production VFX replacements.</p>
+              <a href="/gfx/">UI GFX Kit</a>
+              <a href="/gfx/scifi_keyboard" target="_blank">Satellite Terminal Panel (for iPad) →</a>
+            </div>
+            
+            <div class="panel">
+              <h3>HALFTXT</h3>
+              <p>A suite of client-side tools for creating ASCII art. Includes a media converter for converting images, GIFs, and video into color ASCII art and a frame-by-frame animator with export to WebM, MP4, HTML, and plain text — no backend, no dependencies.</p>
+              <a href="/halftxt/" target="_blank">Launch HALFTXT →</a>
+            </div>
+            
+            <div class="panel">
+              <h3>Unstick</h3>
+              <p>Unstick is a single-screen prompt generator for artists and makers who are stuck. Move the slider from gentle to chaos, get a task, do it.</p>
+              <a href="/unstick/" target="_blank">Launch Unstick →</a>
+            </div>
+            
+            <div class="panel">
+              <h3>Petit Plaisir</h3>
+              <p>A beautifully designed personal menu builder that helps you curate and remember the activities that make you feel alive.</p>
+              <a href="/petitplaisir/" target="_blank">Launch Petit Plaisir →</a>
+            </div>
+            
+            <div class="panel">
+              <h3>Clearing</h3>
+              <p>A minimal home screen dashboard. Live weather, the time, and a quiet way to launch any app, without distraction.</p>
+              <a href="/clearing/index.html" target="_blank">Launch the Web App →</a>
+              <a href="/clearing/about_clearing.html" target="_blank">About Clearing →</a>
+              <a href="/clearing/clearing_debug.html" target="_blank">Debug / Data Panel →</a>
+            </div>
+            
+            <div class="panel">
+              <h3>Feeed Studio</h3>
+              <p>Generate a fake Instagram feed: upload images, crop to IG ratios, auto-fill usernames, captions and likes, then download as PNG.</p>
+              <a href="https://feeedstudio.lovable.app/" target="_blank">Launch Feeed Studio →</a>
+            </div>
+            
+            <div class="panel">
+              <h3>Vibe Color</h3>
+              <p>Generate beautiful color palettes from your mood. Describe how you feel, get five colors that capture the vibe.</p>
+              <a href="https://vibe-color.lovable.app/" target="_blank">Launch Vibe Color →</a>
+            </div>
+            
+            <div class="panel">
+              <h3>Vibe Check</h3>
+              <p>Keep your brand visually consistent with AI-powered image analysis and scoring.</p>
+              <a href="https://vibe-fingerprint-forge.lovable.app/" target="_blank">Launch Vibe Check →</a>
+            </div>
+            
+            <div class="panel">
+              <h3>Art</h3>
+              <p>Traditonal practice.</p>
+              <a href="/art/beds.html" target="_blank">Beds →</a>
+            </div>
+            
+            <div class="panel">
+              <h3>Site Archive</h3>
+              <p>Front Page: <a href="/index_v1.html" target="_blank">v1</a>
+              <a href="/index_v2.html" target="_blank">v2</a></p>
+            </div>
+            
+            <div class="panel">
+              <h3>Guestbook</h3>
+              <iframe height="220" src="https://bc3000.atabook.org" title="Guestbook"></iframe>
+            </div>
+            
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- External JavaScript files -->
+    <script src="/content_loader_v3.js"></script>
+    <script src="/art/ascii/ascii_newyorker.js"></script>
+
+    <script>
+      if (window.ContentLoader) {
+        // IMPORTANT: Change this per page.
+        // For index_v3.html: ContentLoader.init('index_v3')
+        // For nfo.html: ContentLoader.init('nfo')
+        // For projects.html: ContentLoader.init('lab')
+        // This filters the navigation so the current page isn't shown in the nav menu.
+        ContentLoader.init('lab');
+      }
+    </script>
+  </body>
+</html>

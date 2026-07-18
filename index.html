@@ -1,69 +1,77 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AO 3000 BC</title>
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Ballet:opsz@16..72&family=Cormorant:ital,wght@0,300..700;1,300..700&family=Public+Sans:ital,wght@0,100..900;1,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Sometype+Mono:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
-    <link href="/assets/style_v2.css" rel="stylesheet">
-    <style>
-      .pillars-container {
-        width: 55%;
-        min-width: 180px;
-      }
-
-      #ascii {
-        position: fixed;
-        top: 40px;
-        left: 60%;
-        transform: translateX(-50%);
-        z-index: 1;
-        overflow: hidden;
-      }
-
-      #ascii pre {
-        font-family: "Sometype Mono", "Courier New", monospace;
-        font-size: 0.7rem;
-        line-height: 0.7;
-        color: #7d7c7b;
-        white-space: pre;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-      }
-    </style>
+    <title>Bienvenido Cruz — Portfolio</title>
+    <link href="/assets/style_v3.css" rel="stylesheet" type="text/css" media="all">
+    <link href='https://fonts.googleapis.com/css?family=Cormorant' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Sometype Mono' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Public Sans' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Ballet' rel='stylesheet'>
   </head>
   <body>
-    <h1>3000 bc</h1>
-    <div class="pillars-container">
-      <div class="content" id="weather-widget">Loading briefing...</div>
-      <div class="content">
-        Latest Work:<br>
-        <span id="latest-work"></span>
-        <br>
-        Current Forms:<br>
-        <span id="current-forms"></span>
+
+    <!-- PAGE CONTENT (public, no login gate) -->
+    <div id="portfolioContent">
+
+      <div class="portfolio-container">
+
+        <div class="portfolio-show" id="portfolio-show">
+          <div class="project-close"><a href="#" id="portfolio-close">&#10005;</a></div>
+          <!-- Empty-state name grid (sibling of show-content so the loader never wipes it) -->
+          <div id="portfolio-namegrid" class="namegrid-wrap"></div>
+          <div id="portfolio-show-content"></div>
+        </div>
+
+        <div class="portfolio-menu">
+          <div id="portfolio-pillars"></div>
+
+          <div class="portfolio-pillar2">
+            <div id="navigation"></div>
+
+            <br>
+
+            <h3>Recently</h3>
+            <div class="c1" id="recent-updates"></div>
+          </div>
+
+          <div class="portfolio-pillar1" style="clip-path: polygon(0 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%)">
+            <h3>About</h3>
+            Bienvenido Cruz is a New York-based director and designer from Canada. He builds brand systems, content, and interactive work — from AI-driven production pipelines to motion systems and live activations. <br>
+            <em><a href="/nfo.html" target="_blank">Learn More</a></em><br>
+            <br>
+            Current Forms:<br>
+            <a href="https://analogobject.studio" target="_blank">Bookbinding</a><br>
+            <a href="https://bc3000.substack.com/" target="_blank">Writing</a><br>
+            <a href="https://www.behance.net/bienvenido" target="_blank">Behance</a><br>
+            <br>
+            This site is hand-coded, no framework, no template.<br>
+          </div>
+        </div>
+
+        <div class="home"></div>
+
       </div>
-      <div class="content">
-        Recommended:
-        <div class="c1" id="recommended"></div>
-      </div>
-      <div class="footer">
-        <center><a href="https://neocities.org/" target="_blank" style="display: block;">Made by hand at Neocities</a></center>
-      </div>
-      <div class="orange"></div>
+
     </div>
-    <div id="ascii">
-      <pre id="walking">Loading animation...</pre>
-    </div>
-    <script src="briefing_minimal.js"></script>
-    <script src="content_loader_v2.js"></script>
-    <script src="ascii_walking.js"></script>
+    <!-- END OF PAGE CONTENT -->
+
+    <!-- External JavaScript files -->
+    <script src="/content_loader_v3.js"></script>
+    <script src="/assets/portfolio/namegrid.js"></script>
+
     <script>
-      window.WeatherMinimal?.init(document.getElementById('weather-widget'));
+      // No login gate on this page — load content immediately.
+      if (window.ContentLoader) {
+        ContentLoader.init('index_v3');
+      }
+      // Build + start the empty-state name grid
+      if (window.NameGrid) {
+        NameGrid.init(document.getElementById("portfolio-namegrid"));
+        NameGrid.start();
+      }
     </script>
+
   </body>
 </html>

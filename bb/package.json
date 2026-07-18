@@ -1,0 +1,9 @@
+{
+  "name": "rsvp-management-system",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Private single-tenant RSVP system with Supabase backend and Resend email.",
+  "engines": {
+    "node": ">=18"
+  }
+}

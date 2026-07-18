@@ -18,7 +18,7 @@ async function buildSitemapTree() {
         const data = await response.json();
         
         const treeContainer = document.getElementById('sitemapTree');
-        const items = data.items;
+        const items = Array.isArray(data) ? data : data.items;
         buildTree(items, treeContainer, true); // Pass true to expand all
         
     } catch (error) {

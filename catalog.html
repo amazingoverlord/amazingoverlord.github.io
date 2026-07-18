@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bienvenido Cruz — Back Catalog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ballet:opsz@16..72&family=Cormorant:ital,wght@0,300..700;1,300..700&family=Public+Sans:ital,wght@0,100..900;1,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Sometype+Mono:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+  <link href="/assets/style_v3.css" rel="stylesheet">
+  <style>
+    
+    .pillars-container {
+      display: flex;
+      flex-wrap: nowrap;
+      width: 105%;
+      transform:  rotate(7deg);
+      transform-origin: top left;
+      margin: 40px;
+      top: -40px;
+      position: fixed;
+      padding: 0;
+      background-color: rgba(234, 227, 214, 0);
+      z-index: 1;
+    }
+    
+    .bc-nav {
+      position: absolute;
+      transform-origin: top right;
+      top: 20px;
+      right: 0;
+      width: 240px;
+      border-left: 1px solid #EAE3D6;
+      border-bottom: 1px solid #EAE3D6;
+      background-color: #262B2E;
+      color: #EAE3D6;
+      padding: 15px;
+      z-index: 900;
+    }
+    
+    
+    .sub-head {
+      background: none;
+      order: 1;
+      padding: 0;
+    }
+    
+    
+    .sub-main {
+      background: none;
+      order: 2;
+      padding: 0;
+    }
+  
+    .projects {
+      padding: 0;
+      margin: 0;
+      min-width: 350px;
+      background-color: rgba(38, 43, 46, 0.0);
+      color: #EAE3D6;
+      height: 600px;
+      z-index: 1;
+      position: fixed;
+      overflow: scroll;
+    }
+    
+    
+/* ===============================
+   RESPONSIVE
+   =============================== */
+
+@media (max-width: 768px) {
+    
+    .pillars-container {
+      display: flex;
+      flex-wrap: wrap;
+      width: 89%;
+      transform:  rotate(0deg);
+      transform-origin: 0 0;
+      margin: 5px;
+      top: 0;
+    }
+
+}
+    
+    .bc-nav {
+      width: 180px;
+    }
+
+
+    
+/* ===============================
+   Table Stuff
+   =============================== */
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 1px;
+      margin: 0;
+      table-layout: fixed;
+      position: relative;
+      z-index: 2;
+      background-color: transparent;
+    }
+
+    .labels {
+      background-color: #262B2E;
+      font-weight: 700;
+    }
+
+    th {
+      background-color: #262B2E;
+      font-weight: 700;
+      text-align: left;
+      padding: 6px;
+      vertical-align: top;
+    }
+
+    td:nth-child(1), th:nth-child(1) { width: 25%; }
+    td:nth-child(2), th:nth-child(2) { width: 14%; }
+    td:nth-child(3), th:nth-child(3) { width: 15%; }
+    td:nth-child(4), th:nth-child(4) { width: 4%; }
+    td:nth-child(5), th:nth-child(5) { width: 42%; }
+
+    .project-row {
+      cursor: pointer;
+      transition: all 0.5s;
+    }
+
+    .project-row:hover {
+      background-color: #262B2E;
+      color: #EAE3D6;
+      font-size: 1.25rem;
+      transition: all 0.01s;
+    }
+
+    td {
+      border: none;
+      padding: 6px;
+      background-color: rgba(38, 43, 46, 0.8);
+      color: #F9F4EB;
+      vertical-align: top;
+    }
+
+    td a {
+      display: block;
+      text-decoration: none;
+      color: #d8d2cc;
+      transition: all 0.5;
+    }
+
+    td a:hover {
+      background-color: #262B2E;
+      color: #d8d2cc;
+      text-decoration: none;
+      transition: all 0.01s;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="home">
+        <a href="/"><img src="/assets/logo_sm.svg" width="60px"></a>
+      </div>
+
+    
+  <div class="bc-nav">
+    <p>Everyone starts somewhere. These projects taught me everything I know.</p>
+    <p>For current projects and recent work, please visit the <a href="/">main portfolio</a>.</p>
+    <div id="navigation"></div>
+  </div>
+
+  <div class="pillars-container">
+    
+    <div class="sub-head">
+      BACK CATALOG
+    </div>
+    
+    <div class="sub-main">
+      <div class="projects">
+      <table>
+        <tr class="labels">
+          <th>Title</th>
+          <th>Medium</th>
+          <th>Role</th>
+          <th>Date</th>
+          <th>Notes</th>
+        </tr>
+        <tbody id="projectTable"></tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script>
+
+    // Build table from JSON
+    fetch('/archive/back_catalog.json')
+      .then(response => response.json())
+      .then(data => {
+        const tbody = document.getElementById('projectTable');
+        tbody.innerHTML = '';
+        
+        data.projects.forEach(project => {
+          const row = document.createElement('tr');
+          row.className = 'project-row';
+          
+          row.addEventListener('mouseenter', () => {
+            showTitle(project.title);
+          });
+          
+          row.addEventListener('mouseleave', () => {
+            hideTitle();
+          });
+          
+          row.innerHTML = `
+            <td><a href="${project.link}">${project.title}</a></td>
+            <td><a href="${project.link}">${project.medium}</a></td>
+            <td><a href="${project.link}">${project.role}</a></td>
+            <td><a href="${project.link}">${project.date}</a></td>
+            <td><a href="${project.link}">${project.notes}</a></td>
+          `;
+          tbody.appendChild(row);
+        });
+      })
+      .catch(error => console.error('Error loading data:', error));
+  </script>
+  
+  <script src="/content_loader_v3.js"></script>
+
+    <script>
+        if (window.ContentLoader) {
+          ContentLoader.init('catalog');
+        }
+    </script>
+  
+</body>
+</html>

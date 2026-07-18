@@ -1,18 +1,40 @@
 {
+  "navigation": [
+    {
+      "id": "index_v3",
+      "label": "PORTFOLIO",
+      "url": "/"
+    },
+    {
+      "id": "nfo",
+      "label": ".NFO",
+      "url": "/nfo.html"
+    },
+    {
+      "id": "lab",
+      "label": "LAB",
+      "url": "/lab.html"
+    },
+    {
+      "id": "catalog",
+      "label": "BACK CATALOG",
+      "url": "/catalog.html"
+    }
+  ],
   "categories": [
     {
       "id": "frameworks",
-      "label": "Frameworks:",
+      "label": "Frameworks",
       "description": "Scalable brand systems and tools."
     },
     {
       "id": "editorial",
-      "label": "Editorial:",
+      "label": "Editorial",
       "description": "Content and design."
     },
     {
       "id": "experiential",
-      "label": "Experiential:",
+      "label": "Experiential",
       "description": "Activations and interactions."
     }
   ],
@@ -38,25 +60,6 @@
       ],
       "link": "#"
     },
-    "halftxt": {
-      "title": "HALFTXT",
-      "type": "ASCII Art App Suite",
-      "roll": "Director, Developer",
-      "category": "frameworks",
-      "heroImage": "/assets/portfolio/tmp/ballet_3.jpg",
-      "about": [
-        "A suite of client-side tools for converting images, GIFs, and video into ASCII art — built entirely in the browser, with no backend and no dependencies.",
-        "Includes a media converter and a frame-by-frame animator with export to WebM, MP4, HTML, and plain text, demonstrating end-to-end product design and front-end development outside the constraints of client work."
-      ],
-      "embeds": [
-        "<iframe src='https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479' width='100%' height='100%' frameborder='0' allow='autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share' referrerpolicy='strict-origin-when-cross-origin' title='Martens Offset'></iframe>"
-      ],
-      "images": [
-        "/assets/portfolio/tmp/ballet_4.jpg",
-        "/assets/portfolio/tmp/ballet_1.jpg"
-      ],
-      "link": "/halftxt/"
-    },
     "google-imagine-if": {
       "title": "Imagine If",
       "type": "AI Post Engine",
@@ -66,7 +69,7 @@
       "about": [
         "Google DeepMind and XLabs turned NYC's transit system into a user-generated art exhibit. Five local artists used AI to transform hundreds of New Yorkers' ideas into video artworks for thousands of MTA screens.",
         "The challenge: every video needed to run on both vertical and horizontal DOOH screens. Manual processing would have taken 12 hours per hundred videos.",
-        "I built an AI-powered solution from scratch. I created separate horizontal and vertical After Effects templates, then used JSON files to dynamically populate each video with the correct borough, artist credit, and submission prompttext. To scale the work, I used AI to write custom Mac shell scripts, After Effects extensions, and plugins that automated the entire pipeline — feeding every raw video into both templates simultaneously.",
+        "I built an AI-powered solution from scratch. I created separate horizontal and vertical After Effects templates, then used JSON files to dynamically populate each video with the correct borough, artist credit, and submission prompttext. To scale the work, I used AI to write custom Mac shell scripts, After Effects extensions, and plugins that automated the entire pipeline \u2014 feeding every raw video into both templates simultaneously.",
         "The result: processing a hundred videos in about one hour instead of one day, with each delivered in both formats. The campaign ran across all five boroughs and culminated in a Times Square finale."
       ],
       "embeds": [
@@ -140,25 +143,6 @@
       ],
       "link": "#"
     },
-    "all-night-wrong": {
-      "title": "All Night Wrong",
-      "type": "Title Design",
-      "roll": "Director, Designer",
-      "category": "editorial",
-      "heroImage": "/assets/portfolio/tmp/ballet_3.jpg",
-      "about": [
-        "All Night Wrong is an upcoming comedy directed by Jason James, premiering at South by Southwest London on June 2, 2026. The film follows Gary and Ell, who meet on a blind date and end up stealing a killer's car — along with a dead body and $40,000.",
-        "It stars Maria Bakalova (Borat Subsequent Moviefilm) and Zach Cherry (Severance), alongside Emily Hampshire, Tyler Labine, and Ryan Beil. I designed the film's main title sequence, setting the tone before the story even starts."
-      ],
-      "embeds": [
-        "<iframe src='https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479' width='100%' height='100%' frameborder='0' allow='autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share' referrerpolicy='strict-origin-when-cross-origin' title='Martens Offset'></iframe>"
-      ],
-      "images": [
-        "/assets/portfolio/tmp/ballet_4.jpg",
-        "/assets/portfolio/tmp/ballet_1.jpg"
-      ],
-      "link": "#"
-    },
     "outfront-brand-film": {
       "title": "OUTFRONT Brand Film",
       "type": "Event Film",
@@ -166,7 +150,7 @@
       "category": "editorial",
       "heroImage": "/assets/portfolio/outbydesign/asset1-80.webp",
       "about": [
-        "What began as a request for a high-energy hype film to build excitement at Cannes evolved into something more significant — a film that helped shape a new brand identity for OUTFRONT.",
+        "What began as a request for a high-energy hype film to build excitement at Cannes evolved into something more significant \u2014 a film that helped shape a new brand identity for OUTFRONT.",
         "Rather than the typical montage of billboards and screens common to OOH media, I introduced double exposures as a visual through-line, and integrated AI-generated NeRF and Gaussian splatting to reframe existing footage in unexpected ways.",
         "The result became a centerpiece of OUTFRONT's CEO's presentation at Cannes, and established a unified creative direction that continues to influence the company's brand communications today."
       ],
@@ -190,9 +174,9 @@
       "category": "editorial",
       "heroImage": "/assets/portfolio/cityinmotion/cait-visual-creative.jpg",
       "about": [
-        "The goal of City in Motion was to shift advertiser perception from transit as mass impressions to transit as a portfolio of diverse, desirable audiences. We started from the insight that a rider's choice of transit mode reveals their identity, lifestyle stage, and daily priorities—not just their commute. That insight led to the big idea: Every commuter has a different city in motion.",
+        "The goal of City in Motion was to shift advertiser perception from transit as mass impressions to transit as a portfolio of diverse, desirable audiences. We started from the insight that a rider's choice of transit mode reveals their identity, lifestyle stage, and daily priorities\u2014not just their commute. That insight led to the big idea: Every commuter has a different city in motion.",
         "Under my direction, our internal team shot documentary-style profiles of real NYC commuters, including Cait, a subway-dependent creative juggling multiple gigs per day, and Vanessa, a Long Island parent who uses the LIRR for both work and weekend family trips into the city. I set the handheld, rhythmically edited visual language to match each mode's energy and art-directed the motion graphics to amplify each persona without distracting from their story.",
-        "The series gave advertisers emotional segmentation they could see and feel—proving not just how many people ride, but who rides, when, and why their brand belongs there."
+        "The series gave advertisers emotional segmentation they could see and feel\u2014proving not just how many people ride, but who rides, when, and why their brand belongs there."
       ],
       "embeds": [
         "<center><video width='100%' controls><source src='/assets/portfolio/cityinmotion/CityInMotion01_Cait_BC3_FINAL_1080WEB.mp4' type='video/mp4'></video><br><video width='100%' controls><source src='/assets/portfolio/cityinmotion/CityInMotion02_Vanessa_BC_FINAL_WEB.mp4' type='video/mp4'></video></center>"
@@ -248,7 +232,7 @@
       "category": "editorial",
       "heroImage": "/assets/portfolio/cc_remix/cc_remix_1.jpg",
       "about": [
-        "Art direction and motion graphic design for the launch video introducing Creative Commons' 2016–2020 Organizational Strategy, debuted at an event at MoMA.",
+        "Art direction and motion graphic design for the launch video introducing Creative Commons' 2016\u20132020 Organizational Strategy, debuted at an event at MoMA.",
         "Released under a Creative Commons Attribution-ShareAlike license, the project was produced in direct collaboration with Creative Commons' CEO to define the visual language for the organization's new strategic direction."
       ],
       "embeds": [
@@ -265,19 +249,14 @@
       "type": "Campaign",
       "roll": "Motion Graphics Director",
       "category": "editorial",
-      "heroImage": "/assets/portfolio/tmp/ballet_2.jpg",
+      "heroImage": "/assets/portfolio/olympus/om-n.webp",
       "about": [
         "Motion Graphics Director across multiple global launch campaigns for Olympus at AKQA, including the brand's global website relaunch and several flagship product debuts.",
         "\"Never Stop\" became the basis for a global ad spot; \"Share Beautifully\" was translated into 18 languages and drove the highest-performing PEN camera launch to date; and the OM-D E-M10 spot introduced the brand's latest mirrorless model worldwide."
       ],
       "embeds": [
-        "<iframe src='https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479' width='100%' height='100%' frameborder='0' allow='autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share' referrerpolicy='strict-origin-when-cross-origin' title='Martens Offset'></iframe>"
-      ],
-      "images": [
-        "/assets/portfolio/tmp/ballet_3.jpg",
-        "/assets/portfolio/tmp/ballet_1.jpg"
-      ],
-      "link": "#"
+        "<center><video width='100%' controls><source src='/assets/portfolio/olympus/omn_final_en_h2641080hd.mp4' type='video/mp4'></video><br><video width='100%' controls><source src='/assets/portfolio/olympus/never_stop_final_1080_lo.mp4' type='video/mp4'></video></center>"
+      ]
     },
     "must-have-squared": {
       "title": "#MustHaveSquared",
@@ -293,41 +272,23 @@
         "<center><video width='100%' controls><source src='/assets/portfolio/musthave2/wt_mh2_a_lo.mp4' type='video/mp4'></video><br><video width='100%' controls><source src='/assets/portfolio/musthave2/wt_mh2_b_lo.mp4' type='video/mp4'></video></center>"
       ]
     },
-    "clearing": {
-      "title": "Clearing",
-      "type": "Mobile App",
-      "roll": "Creator",
-      "category": "experiential",
-      "heroImage": "/assets/portfolio/tmp/ballet_2.jpg",
-      "about": [
-        "Clearing is a web app and minimal iOS dashboard concept built around a single idea: every time you check the weather, your phone pulls you somewhere else. Clearing gives you what you came for, and nothing more.",
-        "Concepted and executed in roughly two days, the project is an exercise in product design, branding, storytelling, and positioning — end to end, solo."
-      ],
-      "embeds": [
-        "<iframe src='https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479' width='100%' height='100%' frameborder='0' allow='autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share' referrerpolicy='strict-origin-when-cross-origin' title='Martens Offset'></iframe>"
-      ],
-      "images": [
-        "/assets/portfolio/tmp/ballet_3.jpg",
-        "/assets/portfolio/tmp/ballet_1.jpg"
-      ],
-      "link": "/clearing/about_clearing"
-    },
     "aruba-effect": {
       "title": "The Aruba Effect",
       "type": "Activation",
       "roll": "Creative Director",
       "category": "experiential",
-      "heroImage": "/assets/portfolio/tmp/ballet_3.jpg",
+      "heroImage": "/assets/portfolio/aruba/aruba_keyart.jpg",
       "about": [
-        "For Aruba Tourism, working with OUTFRONT XLabs, I helped develop QRad — a proprietary technology letting audiences interact with a massive Times Square billboard through a simple QR scan.",
-        "Passersby could scan the billboard and instantly take control of the screen based on their own vacation vibe, turning a passive impression into a live, participatory brand moment — proving DOOH could be both contextual and interactive at city scale."
+        "QRad is a proprietary OUTFRONT XLabs technology that lets audiences take control of a digital billboard through a simple QR scan. I contributed to its creative development over several campaigns; testing, and concepting new ways to use it.",
+        "For Aruba Tourism, I directed one such activation in Times Square: passersby could scan the billboard and instantly reshape the screen around their own idea of a getaway, turning a passive impression into a live, participatory brand moment, and showing DOOH could be contextual and interactive at city scale."
       ],
       "embeds": [
-        "<iframe src='https://player.vimeo.com/video/1177170199?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479' width='100%' height='100%' frameborder='0' allow='autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share' referrerpolicy='strict-origin-when-cross-origin' title='Martens Offset'></iframe>"
+        "<center><video width='100%' controls><source src='/assets/portfolio/aruba/OUTFRONTP_Aruba_2025OBIES_bc5_lo.mp4' type='video/mp4'></video></center>"
       ],
       "images": [
-        "/assets/portfolio/tmp/ballet_4.jpg",
-        "/assets/portfolio/tmp/ballet_2.jpg"
+        "/assets/portfolio/aruba/Aruba_Tourism-QRad-Times_Square-Phone-1152x648.jpg",
+        "/assets/portfolio/aruba/Aruba_Tourism-QRad-Times_Square-Selected-1152x648.jpg",
+        "/assets/portfolio/aruba/Aruba_Tourism-QRad-Times_Square-Girl-1152x648.jpg"
       ],
       "link": "#"
     },
@@ -339,8 +300,8 @@
       "heroImage": "/assets/portfolio/spaceinvaders/si_img-f.jpg",
       "about": [
         "For the 45th anniversary of Space Invaders, XLabs partnered with Google and Unit9 to launch a mobile game powered by ARCore and Google's geospatial API, anchored by a citywide Times Square activation.",
-        "The campaign unfolded in three phases — anticipation billboards, a live launch event, and neighborhood leaderboards fueled by real user data — turning New York City into a living game board.",
-        "Space Invaders: World Defense won Platinum at the Out of Home Advertising Association of America's 82nd OBIE Awards — the first Platinum win in OUTFRONT's 86-year history."
+        "The campaign unfolded in three phases \u2014 anticipation billboards, a live launch event, and neighborhood leaderboards fueled by real user data \u2014 turning New York City into a living game board.",
+        "Space Invaders: World Defense won Platinum at the Out of Home Advertising Association of America's 82nd OBIE Awards \u2014 the first Platinum win in OUTFRONT's 86-year history."
       ],
       "embeds": [
         "<center><video width='100%' autoplay loop muted playsinline><source src='/assets/portfolio/spaceinvaders/SI_KeyDemo_03_1.mp4' type='video/mp4'></video><br><video width='100%' controls><source src='/assets/portfolio/spaceinvaders/Space_Invaders_Google_NoBlur_0116_1.mp4' type='video/mp4'></video></center>"
@@ -358,7 +319,7 @@
       "category": "experiential",
       "heroImage": "/assets/portfolio/snowfox/AKQA-Snowfox-02.webp",
       "about": [
-        "The Snow Fox is a customizable digital storybook app that uses Siri to animate the story to a child's voice — featured by Apple as one of its \"New Apps We Love\" in the UK App Store.",
+        "The Snow Fox is a customizable digital storybook app that uses Siri to animate the story to a child's voice \u2014 featured by Apple as one of its \"New Apps We Love\" in the UK App Store.",
         "I led the scenic animation, visual effects compositing for the launch film, and full production of the case study film, on a project that won a Cannes Lions Bronze Lion, a One Show Bronze Pencil, and two ADC Bronze Cubes."
       ],
       "embeds": [
@@ -378,7 +339,7 @@
       "heroImage": "/assets/portfolio/writteninthestars/wits_phones.jpg",
       "about": [
         "Written in the Stars is a holiday digital experience that let users send and receive messages in the heavens, set to a soundtrack composed by 3D of Massive Attack.",
-        "I directed the motion graphics team behind the typographic animations and promotional films — and watched two real proposals get revealed live in the stars.",
+        "I directed the motion graphics team behind the typographic animations and promotional films \u2014 and watched two real proposals get revealed live in the stars.",
         "The project won a Cannes Lions Silver Lion in Mobile and a One Show Silver Pencil in Interactive."
       ],
       "embeds": [
@@ -412,6 +373,18 @@
   },
   "recent": [
     {
+      "label": "Much 93-97",
+      "small": "2026.07.16 Redbubble",
+      "url": "https://www.redbubble.com/shop/ap/182277508",
+      "external": true
+    },
+    {
+      "label": "BC Calvin Sq7",
+      "small": "2026.07.09 Behance",
+      "url": "https://www.behance.net/gallery/252467931/BC-Calvin-Sq7",
+      "external": true
+    },
+    {
       "label": "You Can't Bully Yourself Into Brilliance",
       "small": "2026.06.29 Substack",
       "url": "https://bc3000.substack.com/p/you-cant-bully-yourself-into-brilliance",
@@ -430,6 +403,18 @@
       "external": true
     },
     {
+      "label": "Classic Chase",
+      "small": "2026.06.12 Behance",
+      "url": "https://www.behance.net/gallery/251012163/Classic-Chase",
+      "external": true
+    },
+    {
+      "label": "The Nothing, The Backrooms, and the Death of Imagination",
+      "small": "2026.06.06 Substack",
+      "url": "https://bc3000.substack.com/p/the-nothing-the-backrooms-and-the",
+      "external": true
+    },
+    {
       "label": "HALFTXT",
       "small": "2026.06.1",
       "url": "/halftxt/",
@@ -437,42 +422,159 @@
     }
   ],
   "social": [
-    { "label": "Bandcamp", "url": "https://bandcamp.com/bcruz3000", "external": true },
-    { "label": "Behance", "url": "https://www.behance.net/bienvenido", "external": true },
-    { "label": "Dribbble", "url": "https://dribbble.com/bienvenidoc3", "external": true },
-    { "label": "GitHub", "url": "https://github.com/amazingoverlord", "external": true },
-    { "label": "IG: Amazingoverlord", "url": "https://www.instagram.com/amazingoverlord/", "external": true },
-    { "label": "IG: Onism and Sonder", "url": "https://www.instagram.com/onism_and_sonder/", "external": true },
-    { "label": "IG: AnalogObject.Studio", "url": "https://www.instagram.com/analogobject.studio/", "external": true },
-    { "label": "LinkedIn", "url": "https://www.linkedin.com/in/bcruz3/", "external": true },
-    { "label": "Substack", "url": "https://substack.com/@bc3000", "external": true },
-    { "label": "Vimeo", "url": "https://vimeo.com/bcruz3", "external": true },
-    { "label": "YouTube", "url": "https://www.youtube.com/BienvenidoCruz", "external": true }
+    {
+      "label": "Bandcamp",
+      "url": "https://bandcamp.com/bcruz3000",
+      "external": true
+    },
+    {
+      "label": "Behance",
+      "url": "https://www.behance.net/bienvenido",
+      "external": true
+    },
+    {
+      "label": "Dribbble",
+      "url": "https://dribbble.com/bienvenidoc3",
+      "external": true
+    },
+    {
+      "label": "GitHub",
+      "url": "https://github.com/amazingoverlord",
+      "external": true
+    },
+    {
+      "label": "IG: Amazingoverlord",
+      "url": "https://www.instagram.com/amazingoverlord/",
+      "external": true
+    },
+    {
+      "label": "IG: Onism and Sonder",
+      "url": "https://www.instagram.com/onism_and_sonder/",
+      "external": true
+    },
+    {
+      "label": "IG: AnalogObject.Studio",
+      "url": "https://www.instagram.com/analogobject.studio/",
+      "external": true
+    },
+    {
+      "label": "LinkedIn",
+      "url": "https://www.linkedin.com/in/bcruz3/",
+      "external": true
+    },
+    {
+      "label": "Redbubble",
+      "url": "https://www.redbubble.com/people/bcruz3000/shop?asc=u",
+      "external": true
+    },
+    {
+      "label": "Substack",
+      "url": "https://substack.com/@bc3000",
+      "external": true
+    },
+    {
+      "label": "Vimeo",
+      "url": "https://vimeo.com/bcruz3",
+      "external": true
+    },
+    {
+      "label": "YouTube",
+      "url": "https://www.youtube.com/BienvenidoCruz",
+      "external": true
+    }
   ],
   "recommended": [
-    { "label": "Monocle", "url": "https://monocle.com/" },
-    { "label": "Wallpaper", "url": "https://www.wallpaper.com/" },
-    { "label": "The Nomad", "url": "https://www.the-nomad-magazine.com/" },
-    { "label": "Kinfolk", "url": "https://www.kinfolk.com/" },
-    { "label": "It's Nice That", "url": "https://www.itsnicethat.com/" },
-    { "label": "Games by Henry", "url": "https://henryfaber.itch.io/" },
-    { "label": "Photography by Fiona", "url": "https://www.fionagarden.com/" },
-    { "label": "Art by Ben", "url": "https://www.benashtonart.com/" },
-    { "label": "Music by Steven", "url": "https://www.stevenfairweather.com/" },
-    { "label": "Streaming Stranger Radio", "url": "https://www.strangerradio.com/" },
-    { "label": "Straight & Narrow Management", "url": "https://www.straightxnarrow.com/" },
-    { "label": "Styling by Juliann", "url": "https://www.juliannmccandless.com/" },
-    { "label": "Denim by Decade Studio", "url": "https://www.decadestudio.com/" },
-    { "label": "Creative by Taiyo", "url": "https://taiyokitagawa.com/" },
-    { "label": "Photo Diary by Coco", "url": "https://cocotardiff.com/photo-diary" },
-    { "label": "Music by Jody", "url": "https://jodyglenham.bandcamp.com/" },
-    { "label": "Fashion by LLOYD", "url": "https://www.lloydclothing.com/" },
-    { "label": "Styling by Toyo", "url": "https://www.toyotsuchiya.com/" },
-    { "label": "Pins by InnerDecay", "url": "https://innerdecay.com/" },
-    { "label": "Art by Johanna", "url": "https://johannastickland.bigcartel.com/" },
-    { "label": "Music by Tower", "url": "https://towernyc.bandcamp.com/" },
-    { "label": "Reading Lonesome", "url": "https://lonesomepress.com/" },
-    { "label": "Styling by Zu", "url": "https://zu-sb.com" },
-    { "label": "Music by Mirror of Venus", "url": "https://mirrorofvenus.bandcamp.com/" }
+    {
+      "label": "Monocle",
+      "url": "https://monocle.com/"
+    },
+    {
+      "label": "Wallpaper",
+      "url": "https://www.wallpaper.com/"
+    },
+    {
+      "label": "The Nomad",
+      "url": "https://www.the-nomad-magazine.com/"
+    },
+    {
+      "label": "Kinfolk",
+      "url": "https://www.kinfolk.com/"
+    },
+    {
+      "label": "IdN",
+      "url": "https://www.idnworld.com/"
+    },
+    {
+      "label": "It's Nice That",
+      "url": "https://www.itsnicethat.com/"
+    },
+    {
+      "label": "henryfaber games",
+      "url": "https://henryfaber.itch.io/"
+    },
+    {
+      "label": "Fiona Garden Photography",
+      "url": "https://www.fionagarden.com/"
+    },
+    {
+      "label": "Ben Ashton Art",
+      "url": "https://www.benashtonart.com/"
+    },
+    {
+      "label": "Steven Fairweather Music",
+      "url": "https://www.stevenfairweather.com/"
+    },
+    {
+      "label": "Stranger Radio",
+      "url": "https://www.strangerradio.com/"
+    },
+    {
+      "label": "Juliann McCandless, Fashion Stylist",
+      "url": "https://www.juliannmccandless.com/"
+    },
+    {
+      "label": "Straight & Narrow Management",
+      "url": "https://www.straightxnarrow.com/"
+    },
+    {
+      "label": "Decade Studio Denim",
+      "url": "https://www.decadestudio.com/"
+    },
+    {
+      "label": "Jody Glenham Music",
+      "url": "https://jodyglenham.bandcamp.com/"
+    },
+    {
+      "label": "LLOYD Fashion",
+      "url": "https://www.lloydclothing.com/"
+    },
+    {
+      "label": "Jeremy Shaw Art",
+      "url": "https://jeremyshaw.net"
+    },
+    {
+      "label": "Toyo Tsuchiya, Fashion Stylist",
+      "url": "https://www.toyotsuchiya.com/"
+    },
+    {
+      "label": "InnerDecay",
+      "url": "https://innerdecay.com/"
+    },
+    {
+      "label": "Johanna Stickland Art",
+      "url": "https://johannastickland.bigcartel.com/"
+    },
+    {
+      "label": "Lonesome Press",
+      "url": "https://lonesomepress.com/"
+    },
+    {
+      "label": "Tower Music",
+      "url": "https://towernyc.bandcamp.com/"
+    },
+    {
+      "label": "Mirror of Venus Music",
+      "url": "https://mirrorofvenus.bandcamp.com/"
+    }
   ]
 }

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Event Detail</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="page-header">
+    <div class="container">
+      <h2 style="margin:0;">RSVP Admin</h2>
+      <a href="admin-dashboard.html" class="btn btn-secondary">Back to Dashboard</a>
+    </div>
+  </header>
+
+  <main class="page-main">
+    <div class="container">
+
+      <div id="loading-state" class="loading-state">
+        <div class="spinner"></div>
+        <span>Loading event…</span>
+      </div>
+
+      <div id="event-content" class="hidden">
+
+        <div class="event-card-header">
+          <div>
+            <h1 id="event-name">Event Name</h1>
+            <p class="text-secondary" id="event-meta"></p>
+          </div>
+          <span class="badge" id="event-status-badge"></span>
+        </div>
+
+        <div class="flex gap-8 mb-16" style="flex-wrap: wrap;">
+          <button class="btn btn-secondary" id="toggle-active-btn"></button>
+          <a class="btn btn-secondary" id="edit-event-link" href="#">Edit Event</a>
+          <button class="btn btn-secondary" id="duplicate-event-btn">Duplicate Event</button>
+          <button class="btn btn-secondary" id="send-reminder-btn">Send Reminder</button>
+        </div>
+
+        <div class="stats-grid" id="event-stats-grid"></div>
+
+        <div class="table-toolbar">
+          <input type="text" id="guest-search-input" class="search-input" placeholder="Search guests…" />
+          <div class="table-actions">
+            <button class="btn btn-secondary btn-sm" id="add-guest-btn">Add Guest</button>
+            <button class="btn btn-secondary btn-sm" id="import-csv-btn">Import CSV</button>
+            <button class="btn btn-secondary btn-sm" id="export-csv-btn">Export CSV</button>
+          </div>
+        </div>
+
+        <div class="card" style="padding: 0; overflow-x: auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Max +1</th>
+                <th>RSVP Status</th>
+                <th>Notes</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="guest-table-body"></tbody>
+          </table>
+        </div>
+
+        <div id="guest-empty-state" class="empty-state hidden">No guests match your search.</div>
+
+        <div class="pagination" id="pagination-controls"></div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Add Guest Modal -->
+  <div class="modal-overlay" id="add-guest-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Add Guest</h2>
+        <button class="modal-close" data-close-modal="add-guest-modal">&times;</button>
+      </div>
+      <form id="add-guest-form">
+        <div class="form-group">
+          <label for="guest-name-search">Guest Name</label>
+          <input type="text" id="guest-name-search" required autocomplete="off" placeholder="Start typing a name…" />
+          <div id="master-guest-suggestions" style="margin-top:6px;"></div>
+          <input type="hidden" id="selected-master-guest-id" value="" />
+        </div>
+        <div class="form-group">
+          <label class="radio-option" style="display:flex; align-items:center; gap:8px;">
+            <input type="checkbox" id="add-to-master-list-checkbox" style="width:auto;" checked />
+            Also add this person to the master guest list
+          </label>
+        </div>
+        <div class="form-group">
+          <label for="guest-email-input">Email (optional, for confirmations/reminders)</label>
+          <input type="email" id="guest-email-input" placeholder="guest@example.com" />
+        </div>
+        <div class="form-group">
+          <label for="max-plus-ones-select">Max Plus Ones</label>
+          <select id="max-plus-ones-select">
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="guest-notes-input">Notes</label>
+          <textarea id="guest-notes-input" rows="2"></textarea>
+        </div>
+        <div class="error-message" id="add-guest-error"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-close-modal="add-guest-modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Add Guest</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Guest Modal -->
+  <div class="modal-overlay" id="edit-guest-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Edit Guest</h2>
+        <button class="modal-close" data-close-modal="edit-guest-modal">&times;</button>
+      </div>
+      <form id="edit-guest-form">
+        <input type="hidden" id="edit-guest-id" />
+        <div class="form-group">
+          <label for="edit-guest-name-input">Guest Name</label>
+          <input type="text" id="edit-guest-name-input" required />
+        </div>
+        <div class="form-group">
+          <label for="edit-max-plus-ones-select">Max Plus Ones</label>
+          <select id="edit-max-plus-ones-select">
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="edit-guest-notes-input">Notes</label>
+          <textarea id="edit-guest-notes-input" rows="2"></textarea>
+        </div>
+        <div class="error-message" id="edit-guest-error"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-close-modal="edit-guest-modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Import CSV Modal -->
+  <div class="modal-overlay" id="import-csv-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Import Guests from CSV</h2>
+        <button class="modal-close" data-close-modal="import-csv-modal">&times;</button>
+      </div>
+      <p class="text-sm text-secondary">Expected columns: <code>guest_name, email, phone, max_plus_ones, notes</code></p>
+      <div class="dropzone" id="csv-dropzone">
+        <input type="file" id="csv-file-input" accept=".csv" class="hidden" />
+        Drag and drop a CSV file here, or click to choose one
+      </div>
+      <div id="csv-preview" class="mt-16"></div>
+      <div class="error-message" id="import-csv-error"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-close-modal="import-csv-modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="confirm-import-btn" disabled>Import Guests</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Send Reminder Modal -->
+  <div class="modal-overlay" id="send-reminder-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Send Reminder</h2>
+        <button class="modal-close" data-close-modal="send-reminder-modal">&times;</button>
+      </div>
+      <p class="text-sm text-secondary" id="pending-count-text">0 guests pending</p>
+      <form id="send-reminder-form">
+        <div class="form-group">
+          <label for="reminder-subject-input">Subject</label>
+          <input type="text" id="reminder-subject-input" required placeholder="Reminder: RSVP for {event_name}" />
+        </div>
+        <div class="form-group">
+          <label for="reminder-message-input">Message</label>
+          <textarea id="reminder-message-input" rows="6" required placeholder="Hi {guest_name}, just a reminder to RSVP for {event_name} on {event_date}. Please respond by {rsvp_deadline}. {rsvp_link}"></textarea>
+          <p class="text-sm text-secondary" style="margin-top:4px;">
+            Placeholders: {guest_name}, {event_name}, {event_date}, {rsvp_deadline}, {rsvp_link}
+          </p>
+        </div>
+        <div class="error-message" id="reminder-error"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-close-modal="send-reminder-modal">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="send-reminder-submit-btn">Send Reminders</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="env.js"></script>
+  <script src="js/ui-utils.js"></script>
+  <script src="js/admin-auth.js"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="js/email.js"></script>
+  <script src="js/admin-event-detail.js"></script>
+</body>
+</html>

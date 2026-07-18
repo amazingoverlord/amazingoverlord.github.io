@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RSVP</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="page-header">
+    <div class="container">
+      <h2 style="margin:0;">RSVP</h2>
+    </div>
+  </header>
+
+  <main class="page-main">
+    <div class="container">
+
+      <section id="search-section" class="search-hero">
+        <h1>Find your invitation</h1>
+        <p class="text-secondary">Enter your name to see the events you're invited to and RSVP.</p>
+        <form id="search-form" class="search-form">
+          <input type="text" id="guest-name-input" placeholder="Your full name" autocomplete="name" required />
+          <button type="submit" class="btn btn-primary" id="find-me-btn">Find Me</button>
+        </form>
+        <div class="error-message" id="search-error"></div>
+      </section>
+
+      <section id="dashboard-section" class="hidden">
+        <div class="flex-between mb-16">
+          <div>
+            <h1 id="dashboard-greeting">Welcome</h1>
+            <p class="text-secondary">Here's what you're invited to.</p>
+          </div>
+          <button class="btn btn-secondary btn-sm" id="search-again-btn">Search a different name</button>
+        </div>
+        <div id="events-list"></div>
+      </section>
+
+      <div id="loading-state" class="loading-state hidden">
+        <div class="spinner"></div>
+        <span>Loading…</span>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="env.js"></script>
+  <script src="js/ui-utils.js"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="js/email.js"></script>
+  <script src="js/rsvp.js"></script>
+</body>
+</html>
